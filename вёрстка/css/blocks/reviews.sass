@@ -1,0 +1,98 @@
+.reviews {
+  padding-bottom: 57px;
+  padding-top: 92px;
+  h2 {
+    text-align: center;
+    margin-bottom: 77px; }
+  &__content {
+    margin: 0 -35px;
+    display: flex;
+    flex-wrap: wrap; }
+  &-item {
+    width: 50%;
+    padding: 0 35px;
+    margin-bottom: 65px;
+    text-align: center;
+    &__box {}
+    &__name {
+      font-weight: 700;
+      margin-bottom: 20px;
+      span {
+        color: #e9ae4a; } }
+    &__text {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 20px;
+      margin-bottom: 20px; }
+    &__date {
+      color: #bababa;
+      font-size: 14px;
+      font-weight: 300; } }
+  &-faq {
+    margin-bottom: 90px;
+    h2 {
+      margin-bottom: 58px; }
+    &__box {
+      width: 100%;
+      max-width: 945px;
+      margin: 0 auto 20px;
+      border-radius: 2px;
+      border: 2px solid #f0f0f0;
+      overflow: hidden;
+      &.opened {
+        .reviews-faq__link {
+          &:after {
+            transform: rotate(-135deg);
+            margin-top: -4px; } }
+        .reviews-faq__content {
+          height: auto;
+          max-height: 600px; } } }
+    &__link {
+      display: block;
+      border-radius: 2px;
+      background-color: #f0f0f0;
+      padding: 15px 80px 15px 30px;
+      color: #212121;
+      font-weight: 700;
+      line-height: 20px;
+      position: relative;
+      text-decoration: none;
+      &:hover {
+        background-color: darken(#f0f0f0, 10%); }
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        margin-top: -12px;
+        right: 30px;
+        width: 16px;
+        height: 16px;
+        border-bottom: 2px solid #000;
+        border-right: 2px solid #000;
+        transform: rotate(45deg); } }
+    &__content {
+      font-weight: 300;
+      transition: .3s;
+      max-height: 0;
+      &-box {
+          padding: 15px 30px; } } }
+  &-info {
+    color: rgba(33, 33, 33, 0.8);
+    &__title {
+      font-weight: 700;
+      line-height: 20px;
+      margin-bottom: 10px; }
+    p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 24px;
+      margin-bottom: 10px;
+      &:last-child {
+        margin-bottom: 20px; } }
+    &__link {
+      text-decoration: underline;
+      color: rgba(248, 177, 62, 0.8);
+      font-size: 14px;
+      font-weight: 700;
+      &:hover {
+        text-decoration: none; } } } }

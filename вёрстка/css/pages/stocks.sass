@@ -1,0 +1,62 @@
+.stocks {
+  padding-bottom: 95px;
+  h2 {
+    margin-bottom: 45px; }
+  &__content {
+    display: flex;
+    margin: 0 -15px; }
+  &__box {
+    &:nth-child(odd) {
+      width: 33.333333333%;
+      padding: 0 15px; }
+    &:nth-child(even) {
+      width: 66.666666666%;
+      &:after {
+        content: '';
+        display: table;
+        clear: both; } } }
+  &-item {
+    height: 542px;
+    position: relative;
+    display: block;
+    text-decoration: none;
+    transition: .3s;
+    &__info {
+      padding-top: 94px;
+      text-align: center;
+      display: block; }
+    &__title {
+      color: #ffffff;
+      font-family: Comfortaa, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 48px;
+      line-height: 0.8;
+      span {
+        margin-top: 20px;
+        display: block;
+        font-size: 18px; } }
+    &:hover {
+      box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+    &__box {
+      width: 50%;
+      padding: 0 15px;
+      height: 342px;
+      float: left;
+      .stocks-item {
+        height: 200px;
+        &__info {
+          position: absolute;
+          top: 50%;
+          left: 55px;
+          transform: translateY(-50%);
+          padding-top: 0;
+          text-align: left; }
+        &__title {
+          font-size: 60px;
+          &--color {
+            color: #e9ae4a; } } } }
+    &__text {
+      padding: 15px 10px;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 24px; } } }

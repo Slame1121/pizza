@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ru">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карточка</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa:700&amp;amp;subset=cyrillic">
+<link rel="stylesheet" href="libs/slider/owl.carousel.min.css">
+<link rel="stylesheet" href="libs/popup/magnific-popup.css">
+<link rel="stylesheet" href="css/main.css">
+<body>
+<div class="all">
+	<header class="header">
+		<div class="container"><a class="logo" href="index.html"><img src="img/logo.png" alt="Jamiqlia"></a>
+			<div class="header__content">
+				<div class="header-box">
+					<div class="header-box__top">
+						<div class="header-box__info">Доставим за 60 минут <br>или пицца БЕСПЛАТНО!</div>
+						<div class="header-box__phone">
+							<div class="phone">
+								<div class="phone__item">(099) 123 45 67</div>
+								<div class="phone__item">(098) 123 45 67</div>
+								<div class="phone__text">11:00 - 23:00 Без выходных</div>
+								<div class="phone__text phone__text--small">с 11 до 23:00</div>
+							</div>
+						</div>
+						<div class="header-box__ctrls">
+							<div class="header-box__shipping">Бесплатная<span>доставка пиццы!</span></div>
+							<div class="header-box__block">
+								<div class="header-box__lang">
+									<div class="header-box__lang-box">
+										<input type="radio" name="lang" id="lang-uk">
+										<label class="header-box__lang-label header-box__lang-label-uk" for="lang-uk">Укр</label>
+									</div>
+									<div class="header-box__lang-box">
+										<input type="radio" name="lang" id="lang-ru" checked>
+										<label class="header-box__lang-label header-box__lang-label-ru" for="lang-ru">Рус</label>
+									</div>
+								</div>
+								<div class="header-box__card">
+									<div class="header-box__card-item header-box__card-item-visa"></div>
+									<div class="header-box__card-item header-box__card-item-master"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<nav class="header-box__menu">
+						<ul class="header-box__list">
+							<li class="header-box__item"><a class="header-box__link active" href="menu.html">Пицца</a></li>
+							<li class="header-box__item"><a class="header-box__link" href="#">Салаты</a></li>
+							<li class="header-box__item"><a class="header-box__link" href="#">Напитки</a></li>
+							<li class="header-box__item"><a class="header-box__link" href="stocks.html">Акции</a></li>
+							<li class="header-box__item"><a class="header-box__link" href="#"> О нас</a></li>
+							<li class="header-box__item"><a class="header-box__link" href="contacts.html">Контакты</a></li>
+							<li class="header-box__item"><a class="header-box__link" href="payment.html">Доставка и оплата</a></li>
+						</ul>
+					</nav>
+				</div>
+				<div class="header-box">
+					<div class="header-basket">
+						<div class="header-basket__box">
+							<div class="header-basket__icon" data-items="2"></div>
+							<div class="header-basket__summa">1290 грн</div>
+						</div>
+						<div class="basket-log">
+							<div class="basket-log__box active">
+								<div class="basket-log__top">
+									<div class="basket-log__title">Ваша корзина</div><a class="basket-log__top-btn basket-log__top-btn--right" href="#">Очистить заказ</a><a class="basket-log__close" href="#"></a>
+								</div>
+								<div class="basket-log__content">
+									<div class="basket-log__item" style="background-image: url('img/basket-log__img.png');"><a class="basket-log__item-close" href="#"></a>
+										<div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
+											<div class="basket-log__item-content">
+												<div class="basket-log__item-num"><a class="basket-log__item-btn basket-log__item-btn--left" href="#">-</a>
+													<input type="text" name="num[]" value="1"><a class="basket-log__item-btn basket-log__item-btn--right" href="#">+</a>
+												</div>
+												<div class="basket-log__item-price">218 грн</div>
+											</div>
+										</div>
+									</div>
+									<div class="basket-log__item" style="background-image: url('img/basket-log__img.png');"><a class="basket-log__item-close" href="#"></a>
+										<div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
+											<div class="basket-log__item-content">
+												<div class="basket-log__item-num"><a class="basket-log__item-btn basket-log__item-btn--left" href="#">-</a>
+													<input type="text" name="num[]" value="1"><a class="basket-log__item-btn basket-log__item-btn--right" href="#">+</a>
+												</div>
+												<div class="basket-log__item-price">218 грн</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="basket-log__bottom basket-log__bottom--right">
+									<div class="basket-log__summa">436 грн</div><a class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a>
+								</div>
+							</div>
+							<div class="basket-log__box">
+								<div class="basket-log__top">
+									<div class="basket-log__title">Оформление заказа</div><a class="basket-log__top-btn basket-log__top-btn--left" href="#">← Назад</a><a class="basket-log__close" href="#"></a>
+								</div>
+								<div class="basket-log__tabs">
+									<label class="basket-log__tabs-box">
+										<input type="radio" name="tabs-box" checked><span class="basket-log__tabs-item">Доставка</span>
+									</label>
+									<label class="basket-log__tabs-box">
+										<input type="radio" name="tabs-box"><span class="basket-log__tabs-item">Самовывоз</span>
+									</label>
+								</div>
+								<div class="basket-log__content">
+									<form class="basket-log__form">
+										<div class="basket-log__form-box">
+											<label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Сохраненные адреса</span>
+												<select class="basket-log__form-value">
+													<option>ул. Ворошилова д. 3</option>
+													<option>ул. Мира д. 100</option>
+													<option>гостиница Тан н. 10</option>
+												</select>
+											</label>
+										</div>
+										<div class="basket-log__form-box">
+											<label class="basket-log__form-label"><span class="basket-log__form-name">Улица<span>*</span></span>
+												<input class="basket-log__form-value" type="text" name="box">
+											</label>
+											<label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
+												<select class="basket-log__form-value">
+													<option>Новобирючево</option>
+													<option>Мали</option>
+													<option>Оскол</option>
+													<option>Новобирючево</option>
+													<option>Мали</option>
+													<option>Оскол</option>
+												</select>
+											</label>
+											<div class="basket-log__form-multi">
+												<label class="basket-log__form-label"><span class="basket-log__form-name">Дом<span>*</span></span>
+													<input class="basket-log__form-value" type="text" name="box">
+												</label>
+												<label class="basket-log__form-label"><span class="basket-log__form-name">Парадня</span>
+													<input class="basket-log__form-value" type="text" name="box">
+												</label>
+												<label class="basket-log__form-label"><span class="basket-log__form-name">Этаж</span>
+													<input class="basket-log__form-value" type="text" name="box">
+												</label>
+												<label class="basket-log__form-label"><span class="basket-log__form-name">Квартира</span>
+													<input class="basket-log__form-value" type="text" name="box">
+												</label>
+												<label class="basket-log__form-label"><span class="basket-log__form-name">Код двери</span>
+													<input class="basket-log__form-value" type="text" name="box">
+												</label>
+											</div>
+										</div>
+										<div class="basket-log__form-box">
+											<label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Телефон<span>*</span></span>
+												<select class="basket-log__form-value">
+													<option>8 923 312 22 11</option>
+													<option>7 232 234 23 12</option>
+												</select>
+											</label>
+											<label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">E-mail<span>*</span></span>
+												<select class="basket-log__form-value">
+													<option>emailone@mail.il</option>
+													<option>emailtwo@mail.il</option>
+												</select>
+											</label>
+										</div>
+										<div class="basket-log__form-box">
+											<label class="basket-log__form-label"><span class="basket-log__form-name">Комментарий</span>
+												<textarea class="basket-log__form-mess"></textarea>
+											</label>
+										</div>
+										<div class="basket-log__form-box">
+											<label class="basket-log__form-label basket-log__form-label--bonus"><span class="basket-log__form-name basket-log__form-name--bonus">Количество бонусов<span>Доступно 0</span></span>
+												<input class="basket-log__form-value basket-log__form-value--bonus" type="text" name="box">
+											</label>
+										</div>
+										<div class="basket-log__form-box">
+											<label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Метод оплаты</span>
+												<select class="basket-log__form-value">
+													<option>Наличные</option>
+													<option>На карту банка</option>
+												</select>
+											</label>
+										</div>
+										<div class="basket-log__form-box">
+											<div class="basket-log__form-summa">
+												<div class="basket-log__form-name">Цена с купоном</div>
+												<div class="basket-log__form-num">436 грн</div>
+											</div>
+										</div>
+										<div class="basket-log__form-text">Вы получите 178.58 гривен на бонусный счет за этот заказ, <br>если сейчас присоединитесь к семье <a href="#">Pizza Famiglia</a></div>
+									</form>
+								</div>
+								<div class="basket-log__bottom basket-log__bottom--center"><a class="btn basket-log__btn btn-orange" href="#">Далее</a></div>
+							</div>
+							<div class="basket-log__box">
+								<div class="basket-log__top">
+									<div class="basket-log__title">Подтверждение заказа</div><a class="basket-log__top-btn basket-log__top-btn--left" href="#">← Назад</a><a class="basket-log__close" href="#"></a>
+								</div>
+								<div class="basket-log__content">
+									<div class="basket-log__item basket-log__item--center" style="background-image: url('img/basket-log__img.png');">
+										<div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
+											<div class="basket-log__item-price">218 грн</div>
+										</div>
+									</div>
+									<div class="basket-log__item basket-log__item--center" style="background-image: url('img/basket-log__img.png');">
+										<div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
+											<div class="basket-log__item-price">218 грн</div>
+										</div>
+									</div>
+									<div class="basket-log__info">
+										<div class="basket-log__info-line">
+											<div class="basket-log__info-name">Населенный пункт:</div>
+											<div class="basket-log__info-value">Название города</div>
+										</div>
+										<div class="basket-log__info-line">
+											<div class="basket-log__info-name">Улица:</div>
+											<div class="basket-log__info-value">Кирова, 23</div>
+										</div>
+										<div class="basket-log__info-line">
+											<div class="basket-log__info-name">Телефон:</div>
+											<div class="basket-log__info-value">8 920 219 76 72</div>
+										</div>
+										<div class="basket-log__info-line">
+											<div class="basket-log__info-name">E-mail:</div>
+											<div class="basket-log__info-value">d.klinchuk@mil.ru</div>
+										</div>
+										<div class="basket-log__info-line">
+											<div class="basket-log__info-name">Время доставки:</div>
+											<div class="basket-log__info-value">13:00</div>
+										</div>
+										<div class="basket-log__info-line">
+											<div class="basket-log__info-name">Количество бонусов:</div>
+											<div class="basket-log__info-value">0</div>
+										</div>
+										<div class="basket-log__info-line">
+											<div class="basket-log__info-name">Метод обплаты:</div>
+											<div class="basket-log__info-value">Наличные</div>
+										</div>
+										<div class="basket-log__info-line basket-log__info-line--all">
+											<div class="basket-log__info-name">Всего:</div>
+											<div class="basket-log__info-value">436 грн</div>
+										</div>
+									</div>
+								</div>
+								<div class="basket-log__bottom basket-log__bottom--center"><a class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a></div>
+							</div>
+							<div class="basket-log__box">
+								<div class="basket-log__end">
+									<div class="basket-log__end-title">Спасибо!</div>
+									<div class="basket-log__end-text">В ближайшее время наш оператор свяжется с вами.</div>
+								</div>
+							</div>
+						</div>
+					</div><a class="header-sing" href="#">Вход/Регистрация</a>
+					<div class="sing-log">
+						<form class="sing-log__form">
+							<label class="sing-log__label"><span class="sing-log__label-name">Телефон</span>
+								<input type="tel" name="tel">
+							</label>
+							<label class="sing-log__label"><span class="sing-log__label-name">Пароль</span>
+								<input class="error" type="password" name="password" placeholder="Неверный пароль">
+							</label>
+							<div class="sing-log__box">
+								<label class="sing-log__box-label">
+									<input type="checkbox" name="checkbox"><span class="sing-log__box-check"></span><span class="sing-log__box-name">Запомнить меня</span>
+								</label><a class="sing-log__box-link" href="#">Забыли пароль?</a>
+							</div>
+							<div class="sing-log__enter">
+								<div class="sing-log__enter-title">Войти с помощью:</div><a class="sing-log__enter-item sing-log__enter-item-facebook" href="#"></a>
+							</div>
+							<div class="sing-log__controls">
+								<div class="sing-log__reg-wrap"><a class="sing-log__reg" href="#">Зарегистрироваться</a></div><a class="btn sing-log__btn btn-orange" href="profile.html">Войти</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div><a class="burg" href="#">
+				<svg width="36" height="38">
+					<g>
+						<rect x="0" y="22" fill="#e9ae4a" width="36" height="4"></rect>
+						<rect x="0" y="10" fill="#e9ae4a" width="36" height="4"></rect>
+						<rect x="0" y="34" fill="#e9ae4a" width="36" height="4"></rect>
+					</g>
+				</svg></a>
+		</div>
+		<div class="drop-menu">
+			<div class="drop-menu__bg"></div>
+			<div class="drop-menu__box"><a class="drop-menu__close" href="#"></a>
+				<div class="drop-menu__sing"><a class="drop-menu__sing-link" href="#"><span> </span>Вход/Регистрация</a></div>
+				<div class="drop-menu__sing-content">
+					<form class="sing-log__form">
+						<label class="sing-log__label"><span class="sing-log__label-name">Телефон</span>
+							<input type="tel" name="tel">
+						</label>
+						<label class="sing-log__label"><span class="sing-log__label-name">Пароль</span>
+							<input class="error" type="password" name="password" placeholder="Неверный пароль">
+						</label>
+						<div class="sing-log__box">
+							<label class="sing-log__box-label">
+								<input type="checkbox" name="checkbox"><span class="sing-log__box-check"></span><span class="sing-log__box-name">Запомнить меня</span>
+							</label><a class="sing-log__box-link" href="#">Забыли пароль?</a>
+						</div>
+						<div class="sing-log__enter">
+							<div class="sing-log__enter-title">Войти с помощью:</div><a class="sing-log__enter-item sing-log__enter-item-facebook" href="#"></a>
+						</div>
+						<div class="sing-log__controls">
+							<div class="sing-log__reg-wrap"><a class="sing-log__reg" href="#">Зарегистрироваться</a></div><a class="btn sing-log__btn btn-orange" href="#">Войти</a>
+						</div>
+					</form>
+				</div>
+				<ul class="drop-menu__list">
+					<li class="drop-menu__item"><a class="drop-menu__link" href="#">Пицца</a></li>
+					<li class="drop-menu__item"><a class="drop-menu__link" href="#">Салаты</a></li>
+					<li class="drop-menu__item"><a class="drop-menu__link" href="#">Напитки</a></li>
+					<li class="drop-menu__item"><a class="drop-menu__link" href="#">Акции</a></li>
+					<li class="drop-menu__item"><a class="drop-menu__link" href="#">О нас</a></li>
+					<li class="drop-menu__item"><a class="drop-menu__link" href="#">Контакты</a></li>
+					<li class="drop-menu__item"><a class="drop-menu__link" href="#">Доставка и оплата</a></li>
+				</ul>
+				<div class="drop-menu__lang">
+					<div class="header-box__lang">
+						<div class="header-box__lang-box">
+							<input type="radio" name="lang-menu" id="lang-uk-menu">
+							<label class="header-box__lang-label header-box__lang-label-uk" for="lang-uk-menu">Укр</label>
+						</div>
+						<div class="header-box__lang-box">
+							<input type="radio" name="lang-menu" id="lang-ru-menu" checked>
+							<label class="header-box__lang-label header-box__lang-label-ru" for="lang-ru-menu">Рус</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<section class="card page">
+		<div class="container">
+			<div class="card__top">
+				<h2>Итальянская</h2>
+				<div class="card__controls"><a class="card__btn card__prev" href="#">← Четыре сыра</a><a class="card__btn card__next" href="#">Гавайская →</a></div>
+			</div>
+			<div class="card__content">
+				<div class="card__block">
+					<div class="card__img"><img src="img/card__img.png" alt="">
+						<div class="card__text">Вид реального товара может незначительно отличаться от изображения на сайте</div>
+					</div>
+				</div>
+				<div class="card-price__wrap">
+					<div class="card-price">
+						<label class="card-price__box">
+							<input type="radio" name="card-price"><span class="card-price__dot"></span><span class="card-price__info"><span class="card-price__size">30 см<span>500 ± 50 гр</span></span><span class="card-price__num">148 грн</span></span>
+						</label>
+						<label class="card-price__box active">
+							<input type="radio" name="card-price" checked><span class="card-price__dot"></span><span class="card-price__info"><span class="card-price__size">40 см<span>900 ± 50 гр</span></span><span class="card-price__num">205 грн</span></span>
+						</label>
+					</div>
+					<div class="card-price__controls"><a class="btn card-price__btn btn-orange" href="#">Заказать</a><a class="btn card-price__btn for-popup" href="#ingredients">+ Добавить ингредиенты</a></div>
+				</div>
+			</div>
+			<div class="ingredients">
+				<div class="ingredients__title">Состав</div>
+				<div class="ingredients__content">
+					<div class="ingredients-item">
+						<div class="ingredients-item__box">
+							<div class="ingredients-item__img"><img src="img/ingredient__img_1.png" alt=""></div>
+							<div class="ingredients-item__name">Оливки</div>
+						</div>
+					</div>
+					<div class="ingredients-item">
+						<div class="ingredients-item__box">
+							<div class="ingredients-item__img"><img src="img/ingredient__img_2.png" alt=""></div>
+							<div class="ingredients-item__name">Пеперони</div>
+						</div>
+					</div>
+					<div class="ingredients-item">
+						<div class="ingredients-item__box">
+							<div class="ingredients-item__img"><img src="img/ingredient__img_3.png" alt=""></div>
+							<div class="ingredients-item__name">Лук</div>
+						</div>
+					</div>
+					<div class="ingredients-item">
+						<div class="ingredients-item__box">
+							<div class="ingredients-item__img"><img src="img/ingredient__img_4.png" alt=""></div>
+							<div class="ingredients-item__name">Моцарелла</div>
+						</div>
+					</div>
+					<div class="ingredients-item">
+						<div class="ingredients-item__box">
+							<div class="ingredients-item__img"><img src="img/ingredient__img_5.png" alt=""></div>
+							<div class="ingredients-item__name">Томатная паста</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card__recom">
+				<h2>Рекомендуем</h2>
+				<div class="hit__content">
+					<div class="hit-item"><a class="hit-item__box mode-hit" href="card.html" style="background-image: url(img/hit__img1.png);" data-info="Хит"><span class="hit-item__name">Итальянская</span><span class="hit-item__text">Карбонат, помилоры, оливки, сыр «Моцарелла», томатный соус, шампиньоны</span><span class="hit-item__info"><span class="hit-item__info-box"><span class="hit-item__info-block"><span class="hit-item__info-size">30 см<span>500 ± 50 гр</span></span><span class="hit-item__info-price">148 грн</span></span><span class="btn hit-item__btn">Заказать</span></span><span class="hit-item__info-box"><span class="hit-item__info-block"><span class="hit-item__info-size">40 см<span>900 ± 50 гр</span></span><span class="hit-item__info-price">215 грн</span></span><span class="btn hit-item__btn">Заказать</span></span></span></a></div>
+					<div class="hit-item"><a class="hit-item__box mode-hit" href="card.html" style="background-image: url(img/hit__img2.png);" data-info="Хит"><span class="hit-item__name">Гавайская</span><span class="hit-item__text">Карбонат, помилоры, оливки, сыр «Моцарелла», томатный соус, шампиньоны</span><span class="hit-item__info"><span class="hit-item__info-box"><span class="hit-item__info-block"><span class="hit-item__info-size">30 см<span>500 ± 50 гр</span></span><span class="hit-item__info-price">148 грн</span></span><span class="btn hit-item__btn">Заказать</span></span><span class="hit-item__info-box"><span class="hit-item__info-block"><span class="hit-item__info-size">40 см<span>900 ± 50 гр</span></span><span class="hit-item__info-price">215 грн</span></span><span class="btn hit-item__btn">Заказать</span></span></span></a></div>
+					<div class="hit-item"><a class="hit-item__box mode-hit" href="card.html" style="background-image: url(img/hit__img3.png);" data-info="Хит"><span class="hit-item__name">Четыре сыра</span><span class="hit-item__text">Карбонат, помилоры, оливки, сыр «Моцарелла», томатный соус, шампиньоны</span><span class="hit-item__info"><span class="hit-item__info-box"><span class="hit-item__info-block"><span class="hit-item__info-size">30 см<span>500 ± 50 гр</span></span><span class="hit-item__info-price">148 грн</span></span><span class="btn hit-item__btn">Заказать</span></span><span class="hit-item__info-box"><span class="hit-item__info-block"><span class="hit-item__info-size">40 см<span>900 ± 50 гр</span></span><span class="hit-item__info-price">215 грн</span></span><span class="btn hit-item__btn">Заказать</span></span></span></a></div>
+				</div>
+			</div>
+		</div>
+		<div class="card-reviews">
+			<div class="container">
+				<h2>Оставить отзыв</h2>
+				<form class="card-reviews__form">
+					<div class="card-reviews__box">
+						<input type="text" name="name" placeholder="Имя">
+						<input type="text" name="phone" placeholder="Телефон">
+					</div>
+					<div class="card-reviews__box">
+						<input type="email" name="enail" placeholder="E-mail">
+						<div class="card-reviews__stars"><a class="card-reviews__stars-item" href="#"></a><a class="card-reviews__stars-item" href="#"></a><a class="card-reviews__stars-item" href="#"></a><a class="card-reviews__stars-item" href="#"></a><a class="card-reviews__stars-item" href="#"></a></div>
+					</div>
+					<textarea class="card-reviews__mess" placeholder="Сообщение"></textarea>
+					<input class="card-reviews__submit" type="submit" name="submit" value="Отправить">
+				</form>
+			</div>
+		</div>
+		<div class="container">
+			<h2>Отзывы</h2>
+			<div class="reviews__content">
+				<div class="reviews-item">
+					<div class="reviews-item__box">
+						<div class="reviews-item__name">Александр, <span>«Итальянская»</span></div>
+						<div class="reviews-item__text">Это не шутка! Если мы не успеем доставить пиццу за 60минут - вы получите карточку на бесплатную пиццу! ГАРАНТИЯ доставки действует только на ограниченую зону доставки по Вишневому (северная сторона) и Софиевской Борщаговке.</div>
+						<div class="reviews-item__date">19.05.2017</div>
+					</div>
+				</div>
+				<div class="reviews-item">
+					<div class="reviews-item__box">
+						<div class="reviews-item__name">Светалана, <span>«Четыре сыра»</span></div>
+						<div class="reviews-item__text">Это не шутка! Если мы не успеем доставить пиццу за 60минут - вы получите карточку на бесплатную пиццу!</div>
+						<div class="reviews-item__date">19.05.2017</div>
+					</div>
+				</div>
+				<div class="reviews-item">
+					<div class="reviews-item__box">
+						<div class="reviews-item__name">Александр, <span>«Итальянская»</span></div>
+						<div class="reviews-item__text">Это не шутка! Если мы не успеем доставить пиццу за 60минут - вы получите карточку на бесплатную пиццу! ГАРАНТИЯ доставки действует только на ограниченую зону доставки по Вишневому (северная сторона) и Софиевской Борщаговке.</div>
+						<div class="reviews-item__date">19.05.2017</div>
+					</div>
+				</div>
+				<div class="reviews-item">
+					<div class="reviews-item__box">
+						<div class="reviews-item__name">Егор, <span>«Капоте»</span></div>
+						<div class="reviews-item__text">Это не шутка! Если мы не успеем доставить пиццу за 60минут - вы получите карточку на бесплатную пиццу! ГАРАНТИЯ доставки действует только на ограниченую зону доставки по Вишневому (северная сторона) и Софиевской Борщаговке.ГАРАНТИЯ доставки действует только на ограниченую зону доставки по Вишневому (северная сторона) и Софиевской Борщаговке.</div>
+						<div class="reviews-item__date">19.05.2017</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="hidden">
+		<div class="ingredients-popup container" id="ingredients">
+			<div class="ingredients-popup__top">
+				<div class="ingredients-popup__item">
+					<div class="ingredients-popup__item-img"><img src="img/pizza__img.png" alt=""></div>
+					<div class="ingredients-popup__item-name">Итальянская</div>
+					<div class="ingredients-popup__item-price">246 грн</div><a class="btn ingredients-popup__item-btn btn-orange" href="#">Заказать</a>
+				</div>
+				<div class="ingredients-popup__box">
+					<div class="ingredients-popup__box-item">
+						<div class="ingredients-popup__box-add">+</div>
+						<div class="ingredients-popup__box-img"><img src="img/ingredient__img_4.png" alt=""></div>
+						<div class="ingredients-popup__box-name">Моцарелла</div><a class="ingredients-popup__box-close" href="#"></a>
+					</div>
+					<div class="ingredients-popup__box-item">
+						<div class="ingredients-popup__box-add">+</div>
+						<div class="ingredients-popup__box-img"><img src="img/ingredient__img_3.png" alt=""></div>
+						<div class="ingredients-popup__box-name">Лук</div><a class="ingredients-popup__box-close" href="#"></a>
+					</div>
+				</div>
+			</div>
+			<div class="ingredients-popup__tabs">
+				<div class="menu-tabs">
+					<div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Мясо</a>
+						<div class="menu-tabs__drop">
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Овощи</a>
+						<div class="menu-tabs__drop">
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Сыры</a>
+						<div class="menu-tabs__drop">
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Грибы</a>
+						<div class="menu-tabs__drop">
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Фрукты</a>
+						<div class="menu-tabs__drop">
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Морепродукты</a>
+						<div class="menu-tabs__drop">
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Соусы</a>
+						<div class="menu-tabs__drop">
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
+								</label>
+							</div>
+							<div class="menu-tabs__line">
+								<label class="menu-tabs__line-label">
+									<input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="ingredients-popup__range">
+				<div class="ingredients-popup__range-item">
+					<div class="ingredients-popup__range-img"><img src="img/ingredient__img_1.png" alt=""></div>
+					<div class="ingredients-popup__range-name">Оливки</div>
+					<div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
+				</div>
+				<div class="ingredients-popup__range-item">
+					<div class="ingredients-popup__range-img"><img src="img/ingredient__img_2.png" alt=""></div>
+					<div class="ingredients-popup__range-name">Пеперони</div>
+					<div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
+				</div>
+				<div class="ingredients-popup__range-item">
+					<div class="ingredients-popup__range-img"><img src="img/ingredient__img_3.png" alt=""></div>
+					<div class="ingredients-popup__range-name">Лук</div>
+					<div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
+				</div>
+				<div class="ingredients-popup__range-item">
+					<div class="ingredients-popup__range-img"><img src="img/ingredient__img_4.png" alt=""></div>
+					<div class="ingredients-popup__range-name">Моцарелла</div>
+					<div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
+				</div>
+				<div class="ingredients-popup__range-item">
+					<div class="ingredients-popup__range-img"><img src="img/ingredient__img_5.png" alt=""></div>
+					<div class="ingredients-popup__range-name">Томатная паста</div>
+					<div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="footer">
+		<div class="container"><a class="logo" href="#"><img src="img/logo.png" alt="Jamiqlia"></a>
+			<div class="footer__box">
+				<ul class="footer__list">
+					<li class="footer__item"><a class="footer__link" href="#">Новинки</a></li>
+					<li class="footer__item"><a class="footer__link" href="#">Пицца</a></li>
+					<li class="footer__item"><a class="footer__link" href="#">Салаты</a></li>
+					<li class="footer__item"><a class="footer__link" href="#">Напитки</a></li>
+				</ul>
+				<ul class="footer__list">
+					<li class="footer__item"><a class="footer__link" href="#">Акции</a></li>
+					<li class="footer__item"><a class="footer__link" href="#">О нас</a></li>
+					<li class="footer__item"><a class="footer__link" href="#">Контакты</a></li>
+				</ul>
+			</div>
+			<div class="footer__info">
+				<ul class="social">
+					<li class="social__item"><a class="social__link social__link-facebook" href="#"></a></li>
+					<li class="social__item"><a class="social__link social__link-instagram" href="#"></a></li>
+				</ul>
+				<div class="footer__copy">&copy; pizza Jamiglia</div>
+			</div>
+			<div class="footer__phone">
+				<div class="phone">
+					<div class="phone__item">(099) 123 45 67</div>
+					<div class="phone__item">(098) 123 45 67</div>
+					<div class="phone__text">11:00 - 23:00 Без выходных</div>
+					<div class="phone__text phone__text--small">с 11 до 23:00</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+</div>
+<script src="libs/jquery/jquery-3.2.1.min.js"></script>
+<script src="libs/slider/owl.carousel.min.js"></script>
+<script src="libs/popup/jquery.magnific-popup.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

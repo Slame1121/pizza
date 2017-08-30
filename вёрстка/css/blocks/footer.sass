@@ -1,0 +1,62 @@
+.footer {
+  background-color: #1b1b1b;
+  padding: 49px 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  .container {
+    display: flex;
+    justify-content: space-between;
+    position: relative; }
+  &__box {
+    display: flex; }
+  &__list {
+    list-style-type: none;
+    margin-left: 65px;
+    &:first-child {
+      margin-left: 0; } }
+  &__item {
+    padding-right: 20px;
+    margin-bottom: 7px; }
+  &__link {
+    text-decoration: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    &:hover {
+      text-decoration: underline; } }
+  &__info {
+    display: flex;
+    flex-direction: column; }
+  &__copy {
+    margin-bottom: 0;
+    margin-top: auto;
+    color: #aaa;
+    font-size: 14px;
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    right: 20px; }
+  .phone {
+    color: #fff;
+    &__text {
+      text-align: center; } } }
+
+.social {
+  &__item {
+    margin: 0 17px;
+    display: inline-block;
+    vertical-align: middle; }
+  &__link {
+    opacity: 0.8;
+    transition: .3s;
+    display: inline-block;
+    &-vk {
+      @include sprite($vk); }
+    &-facebook {
+      @include sprite($facebook); }
+    &-instagram {
+      @include sprite($instagram); }
+    &:hover {
+      opacity: 1; } } }

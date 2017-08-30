@@ -1,0 +1,37 @@
+.services {
+  padding: 80px 0 50px;
+  &__content {
+    margin: 0 -8px;
+    display: flex; }
+  &-item {
+    width: 25%;
+    padding: 0 8px;
+    &__box {
+      position: relative;
+      padding-top: 100px;
+      text-align: center; }
+    &__icon {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      &-dough {
+        @include sprite($dough);
+        top: 0; }
+      &-products {
+        @include sprite($products);
+        top: 2px; }
+      &-rolling {
+        @include sprite($rolling);
+        top: 12px; }
+      &-kitchen {
+        @include sprite($kitchen);
+        top: 3px; } }
+    &__name {
+      font-family: Comfortaa, Arial, sans-serif;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 18px; }
+    &__text {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 30px; } } }

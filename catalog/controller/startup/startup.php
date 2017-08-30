@@ -2,7 +2,7 @@
 class ControllerStartupStartup extends Controller {
 
 	public function checkLessStyles(){
-
+		$this->registry->set('Less', new \Less\Less($this->registry));
 	}
 
 	public function index() {
@@ -13,7 +13,7 @@ class ControllerStartupStartup extends Controller {
 			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`url`, 'www.', '') = '" . $this->db->escape('http://' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
 		}
 
-		$this->checkLessStyles();
+
 		
 		if (isset($this->request->get['store_id'])) {
 			$this->config->set('config_store_id', (int)$this->request->get['store_id']);
@@ -38,7 +38,7 @@ class ControllerStartupStartup extends Controller {
 				$this->config->set($result['key'], json_decode($result['value'], true));
 			}
 		}
-
+		$this->checkLessStyles();
 		// Theme
 		$this->config->set('template_cache', $this->config->get('developer_theme'));
 		

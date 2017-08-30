@@ -1,0 +1,266 @@
+.header {
+  background-color: #f0f0f0;
+  padding-top: 15px;
+  .container {
+    display: flex; }
+  .logo {
+    min-width: 147px;
+    margin-right: 47px; }
+  &__content {
+    display: flex;
+    flex: 1;
+    position: relative; }
+  &-box {
+    &:first-child {
+      flex: 1;
+      display: flex;
+      flex-direction: column; }
+    &:last-child {
+      width: 165px;
+      margin-left: 40px;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 25px; }
+    &__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
+    &__info {
+      color: #e51a4c;
+      font-weight: 900;
+      line-height: 24px; }
+    &__phone {
+      &__text {
+        font-size: 18px;
+        text-align: center; } }
+    &__shipping {
+      padding-left: 60px;
+      position: relative;
+      font-size: 18px;
+      line-height: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      padding-right: 25px;
+      span {
+        font-weight: 300;
+        display: block; }
+      &:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        .sprite(@header-shipping); } }
+    &__block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
+    &__lang {
+      border-radius: 2px;
+      border: 1px solid #bababa;
+      display: flex;
+      input {
+        display: none; }
+      &-label {
+        color: #bababa;
+        display: block;
+        width: 50px;
+        text-align: center;
+        line-height: 25px;
+        font-size: 14px;
+        font-weight: 300;
+        transition: .3s;
+        cursor: pointer;
+        &:hover {
+          color: #fff;
+          background-color: lighten(#bababa, 15%); } } }
+    &__card {
+      font-size: 0;
+      &-item {
+        display: inline-block;
+        &-visa {
+          .sprite(@visa); }
+        &-master {
+          .sprite(@mscard);
+          margin-left: 12px; } } }
+    &__list {
+      display: table-row;
+      margin-top: 7px; }
+    &__item {
+      display: table-cell;
+      width: 1%; }
+    &__link {
+      display: block;
+      text-decoration: none;
+      color: #212121;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      padding: 18px 0;
+      margin-top: 8px;
+      white-space: nowrap;
+      border-bottom: 4px solid transparent;
+      transition: .3s;
+      &.active,
+      &:hover {
+        border-bottom: 4px solid #e9ae4a; } } }
+  &-basket {
+    position: relative;
+    &__box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: .3s;
+      &:hover {
+        opacity: 1; } }
+    &__icon {
+      .sprite(@basket);
+      margin-bottom: 15px;
+      position: relative;
+      &:after {
+        content: attr(data-items);
+        position: absolute;
+        top: -5px;
+        right: -15px;
+        width: 30px;
+        height: 30px;
+        background-color: #e51a4c;
+        border-radius: 50%;
+        color: #fff;
+        font-family: Comfortaa;
+        font-size: 18px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center; } }
+    &__summa {
+      color: #f8b13e;
+      font-weight: 700; } }
+  &-sing {
+    display: block;
+    margin-top: auto;
+    margin-bottom: 0;
+    position: relative;
+    padding-left: 40px;
+    color: #bababa;
+    font-size: 14px;
+    transition: .3s;
+    white-space: nowrap;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      .sprite(@sing); }
+    &:hover {
+      // text-decoration: none
+      color: #212121; } }
+  .phone__text {
+    text-align: center; } }
+
+
+
+#lang-uk:checked ~ .header-box__lang-label-uk,
+#lang-ru:checked ~ .header-box__lang-label-ru {
+  background-color: #bababa;
+  color: #fff; }
+
+
+.drop-menu {
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100%;
+  transition: .3s;
+  &__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999; }
+  &.opened {
+    right: -100%; }
+  &__box {
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 80%;
+    min-width: 280px;
+    box-shadow: 0 0 30px 1px rgba(20, 24, 30, 0.5);
+    background-color: #fff;
+    padding: 30px 30px 40px 30px; }
+  &__close {
+    .sprite(@close);
+    position: absolute;
+    top: 20px;
+    right: 17px;
+    opacity: .8;
+    transition: .3s;
+    &:hover {
+      opacity: 1; } }
+  &__sing {
+    margin-bottom: 30px;
+    position: relative;
+    &-link {
+      display: inline-block;
+      padding-left: 40px;
+      position: relative;
+      color: #bababa;
+      font-size: 14px;
+      font-weight: 300;
+      span {
+        position: absolute;
+	    .sprite(@sing);
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%); } }
+    &-content {
+      display: none;
+      margin-bottom: 30px;
+      &.opened {
+        display: block; } } }
+  &__list {
+    margin-bottom: 45px;
+    list-style-type: none; }
+  &__item {}
+  &__link {
+    display: block;
+    padding: 7px 0;
+    text-decoration: none;
+    color: #212121;
+    font-size: 16px;
+    font-weight: 700; }
+  &__lang {
+    .header-box__lang {
+      border-radius: 2px;
+      border: 1px solid #bababa;
+      display: flex;
+      width: 100px;
+      input {
+        display: none; }
+      &-label {
+        color: #bababa;
+        display: block;
+        width: 50px;
+        text-align: center;
+        line-height: 25px;
+        font-size: 14px;
+        font-weight: 300;
+        transition: .3s;
+        cursor: pointer;
+        &:hover {
+          color: #fff;
+          background-color: lighten(#bababa, 15%); } } } } }
+
+.header-box__lang input:checked ~ .header-box__lang-label {
+  background-color: #bababa;
+  color: #fff; }

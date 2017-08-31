@@ -56,12 +56,13 @@
       justify-content: space-between;
       align-items: center; }
     &__lang {
+	  form{
       border-radius: 2px;
       border: 1px solid #bababa;
       display: flex;
       input {
         display: none; }
-      &-label {
+      .header-box__lang-label {
         color: #bababa;
         display: block;
         width: 50px;
@@ -73,7 +74,8 @@
         cursor: pointer;
         &:hover {
           color: #fff;
-          background-color: lighten(#bababa, 15%); } } }
+          background-color: lighten(#bababa, 15%); } }
+	}}
     &__card {
       font-size: 0;
       &-item {

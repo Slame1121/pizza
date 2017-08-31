@@ -56,6 +56,12 @@ class ControllerCommonFooter extends Controller {
 			$this->model_tool_online->addOnline($ip, $this->customer->getId(), $url, $referer);
 		}
 
+		if (is_file(DIR_IMAGE . $this->config->get('config_logo'))) {
+			$data['logo'] = HTTP_SERVER . 'image/' . $this->config->get('config_logo');
+		} else {
+			$data['logo'] = '';
+		}
+
 		$data['scripts'] = $this->document->getScripts('footer');
 		
 		return $this->load->view('common/footer', $data);

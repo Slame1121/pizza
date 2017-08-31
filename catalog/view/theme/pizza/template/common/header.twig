@@ -25,6 +25,11 @@
     {% for style in styles %}
         <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
     {% endfor %}
+
+    <script src="/catalog/view/javascript/libs/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/catalog/view/javascript/libs/slider/owl.carousel.min.js"></script>
+    <script src="/catalog/view/javascript/libs/popup/jquery.magnific-popup.min.js"></script>
+    <script src="/catalog/view/javascript/main.js"></script>
     {% for script in scripts %}
         <script src="{{ script }}" type="text/javascript"></script>
     {% endfor %}
@@ -51,16 +56,7 @@
                         <div class="header-box__ctrls">
                             <div class="header-box__shipping">Бесплатная<span>доставка пиццы!</span></div>
                             <div class="header-box__block">
-                                <div class="header-box__lang">
-                                    <div class="header-box__lang-box">
-                                        <input type="radio" name="lang" id="lang-uk">
-                                        <label class="header-box__lang-label header-box__lang-label-uk" for="lang-uk">Укр</label>
-                                    </div>
-                                    <div class="header-box__lang-box">
-                                        <input type="radio" name="lang" id="lang-ru" checked>
-                                        <label class="header-box__lang-label header-box__lang-label-ru" for="lang-ru">Рус</label>
-                                    </div>
-                                </div>
+                                {{ language }}
                                 <div class="header-box__card">
                                     <div class="header-box__card-item header-box__card-item-visa"></div>
                                     <div class="header-box__card-item header-box__card-item-master"></div>

@@ -1,5 +1,5 @@
 <footer class="footer">
-    <div class="container"><a class="logo" href="#"><img src="img/logo.png" alt="Jamiqlia"></a>
+    <div class="container"><a class="logo" href="#"><img src="{{ logo }}" alt="Jamiqlia"></a>
         <div class="footer__box">
             <ul class="footer__list">
                 <li class="footer__item"><a class="footer__link" href="#">Новинки</a></li>
@@ -31,10 +31,8 @@
     </div>
 </footer>
 </div>
-<script src="libs/jquery/jquery-3.2.1.min.js"></script>
-<script src="libs/slider/owl.carousel.min.js"></script>
-<script src="libs/popup/jquery.magnific-popup.min.js"></script>
-<script src="js/main.js"></script>
+
+
 {% for script in scripts %}
 <script src="{{ script }}" type="text/javascript"></script>
 {% endfor %}

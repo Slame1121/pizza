@@ -1,0 +1,57 @@
+{{ header }}
+<section class="menu page">
+    <div class="container">
+        <h2>Пицца</h2>
+        <div class="menu-tabs">
+            {% for group, attrs in attributes %}
+                <div class="menu-tabs__item"><a class="menu-tabs__link" href="#">{{ group }}</a>
+                    <div class="menu-tabs__drop">
+                        {% for attr in attrs %}
+                            <div class="menu-tabs__line">
+                                <label class="menu-tabs__line-label">
+                                    <input type="checkbox" name="checkbox"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">{{ attr.name }}</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="menu__text">Вид реального товара может незначительно отличаться от изображения на сайте</div>
+        <div class="hit__content">
+            {{ products }}
+         </div>
+        <h2>Отзывы</h2>
+        <div class="reviews__content">
+            <div class="reviews-item">
+                <div class="reviews-item__box">
+                    <div class="reviews-item__name">Александр, <span>«Итальянская»</span></div>
+                    <div class="reviews-item__text">Это не шутка! Если мы не успеем доставить пиццу за 60минут - вы получите карточку на бесплатную пиццу! ГАРАНТИЯ доставки действует только на ограниченую зону доставки по Вишневому (северная сторона) и Софиевской Борщаговке.</div>
+                    <div class="reviews-item__date">19.05.2017</div>
+                </div>
+            </div>
+            <div class="reviews-item">
+                <div class="reviews-item__box">
+                    <div class="reviews-item__name">Светалана, <span>«Четыре сыра»</span></div>
+                    <div class="reviews-item__text">Это не шутка! Если мы не успеем доставить пиццу за 60минут - вы получите карточку на бесплатную пиццу!</div>
+                    <div class="reviews-item__date">19.05.2017</div>
+                </div>
+            </div>
+            <div class="reviews-item">
+                <div class="reviews-item__box">
+                    <div class="reviews-item__name">Александр, <span>«Итальянская»</span></div>
+                    <div class="reviews-item__text">Это не шутка! Если мы не успеем доставить пиццу за 60минут - вы получите карточку на бесплатную пиццу! ГАРАНТИЯ доставки действует только на ограниченую зону доставки по Вишневому (северная сторона) и Софиевской Борщаговке.</div>
+                    <div class="reviews-item__date">19.05.2017</div>
+                </div>
+            </div>
+            <div class="reviews-item">
+                <div class="reviews-item__box">
+                    <div class="reviews-item__name">Егор, <span>«Капоте»</span></div>
+                    <div class="reviews-item__text">Это не шутка! Если мы не успеем доставить пиццу за 60минут - вы получите карточку на бесплатную пиццу! ГАРАНТИЯ доставки действует только на ограниченую зону доставки по Вишневому (северная сторона) и Софиевской Борщаговке.ГАРАНТИЯ доставки действует только на ограниченую зону доставки по Вишневому (северная сторона) и Софиевской Борщаговке.</div>
+                    <div class="reviews-item__date">19.05.2017</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{ footer }}

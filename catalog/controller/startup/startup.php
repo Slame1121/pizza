@@ -151,7 +151,7 @@ class ControllerStartupStartup extends Controller {
 		if (isset($this->request->cookie['currency']) && !array_key_exists($code, $currencies)) {
 			$code = $this->request->cookie['currency'];
 		}
-		
+
 		if (!array_key_exists($code, $currencies)) {
 			$code = $this->config->get('config_currency');
 		}

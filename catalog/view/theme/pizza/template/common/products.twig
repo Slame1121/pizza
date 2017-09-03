@@ -1,0 +1,27 @@
+{% for product in products %}
+<div class="hit-item">
+    <a class="hit-item__box mode-hit" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="Хит">
+        <span class="hit-item__name">{{ product.name }}</span>
+        <span class="hit-item__text">
+            {% for group_key, attribute_group in product.attribute_groups %}
+                {% for attr_key, attribute in attribute_group.attribute %}
+                    {{ attribute.name }}{% if group_key + 1 == product.attribute_groups|length and  attr_key + 1 == attribute_group.attribute|length %} {% else %} ,{% endif %}
+                {% endfor %}
+            {% endfor %}
+        </span>
+        <span class="hit-item__info">
+            {% for option in product.options %}
+                {% for value in option.product_option_value %}
+                    <span class="hit-item__info-box">
+                        <span class="hit-item__info-block">
+                            <span class="hit-item__info-size">{{ value.name }}<span>500 ± 50 гр</span></span>
+                            <span class="hit-item__info-price">{{ value.price }}</span>
+                        </span><span class="btn hit-item__btn">Заказать</span>
+                    </span>
+                {% endfor %}
+            {% endfor %}
+
+        </span>
+    </a>
+</div>
+{% endfor %}

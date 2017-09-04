@@ -13,12 +13,24 @@
             </div>
             <div class="card-price__wrap">
                 <div class="card-price">
-                    <label class="card-price__box">
-                        <input type="radio" name="card-price"><span class="card-price__dot"></span><span class="card-price__info"><span class="card-price__size">30 см<span>500 ± 50 гр</span></span><span class="card-price__num">148 грн</span></span>
-                    </label>
-                    <label class="card-price__box active">
-                        <input type="radio" name="card-price" checked><span class="card-price__dot"></span><span class="card-price__info"><span class="card-price__size">40 см<span>900 ± 50 гр</span></span><span class="card-price__num">205 грн</span></span>
-                    </label>
+                    {% if options %}
+                        {% for option in options %}
+                            {% if option.type == 'checkbox' %}
+                                {% for key, option_value in option.product_option_value %}
+                                    <label class="card-price__box {% if key == 0 %}active{% endif %}">
+                                        <input type="radio" name="card-price" {% if key == 0 %}checked{% endif %}>
+                                        <span class="card-price__dot"></span>
+                                    <span class="card-price__info">
+                                        <span class="card-price__size">{{ option_value.name }}
+                                            <span>500 ± 50 гр</span>
+                                        </span>
+                                        <span class="card-price__num">{% if option_value.price %}{{ option_value.price }}{% endif %}</span>
+                                    </span>
+                                    </label>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
                 <div class="card-price__controls"><a class="btn card-price__btn btn-orange" href="#">Заказать</a><a class="btn card-price__btn for-popup" href="#ingredients">+ Добавить ингредиенты</a></div>
             </div>
@@ -26,37 +38,19 @@
         <div class="ingredients">
             <div class="ingredients__title">Состав</div>
             <div class="ingredients__content">
-                <div class="ingredients-item">
-                    <div class="ingredients-item__box">
-                        <div class="ingredients-item__img"><img src="img/ingredient__img_1.png" alt=""></div>
-                        <div class="ingredients-item__name">Оливки</div>
-                    </div>
-                </div>
-                <div class="ingredients-item">
-                    <div class="ingredients-item__box">
-                        <div class="ingredients-item__img"><img src="img/ingredient__img_2.png" alt=""></div>
-                        <div class="ingredients-item__name">Пеперони</div>
-                    </div>
-                </div>
-                <div class="ingredients-item">
-                    <div class="ingredients-item__box">
-                        <div class="ingredients-item__img"><img src="img/ingredient__img_3.png" alt=""></div>
-                        <div class="ingredients-item__name">Лук</div>
-                    </div>
-                </div>
-                <div class="ingredients-item">
-                    <div class="ingredients-item__box">
-                        <div class="ingredients-item__img"><img src="img/ingredient__img_4.png" alt=""></div>
-                        <div class="ingredients-item__name">Моцарелла</div>
-                    </div>
-                </div>
-                <div class="ingredients-item">
-                    <div class="ingredients-item__box">
-                        <div class="ingredients-item__img"><img src="img/ingredient__img_5.png" alt=""></div>
-                        <div class="ingredients-item__name">Томатная паста</div>
-                    </div>
-                </div>
-            </div>
+                {% if attribute_groups %}
+                    {% for attribute_group in attribute_groups %}
+                        {% for attribute in attribute_group.attribute %}
+                            <div class="ingredients-item">
+                                <div class="ingredients-item__box">
+                                    <div class="ingredients-item__img"><img src="{{ attribute.thumb }}" alt=""></div>
+                                    <div class="ingredients-item__name">{{ attribute.name }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+             </div>
         </div>
         <div class="card__recom">
             <h2>Рекомендуем</h2>
@@ -122,8 +116,8 @@
     <div class="ingredients-popup container" id="ingredients">
         <div class="ingredients-popup__top">
             <div class="ingredients-popup__item">
-                <div class="ingredients-popup__item-img"><img src="img/pizza__img.png" alt=""></div>
-                <div class="ingredients-popup__item-name">Итальянская</div>
+                <div class="ingredients-popup__item-img"><img src="{{ popup }}" alt=""></div>
+                <div class="ingredients-popup__item-name">{{ heading_title }}</div>
                 <div class="ingredients-popup__item-price">246 грн</div><a class="btn ingredients-popup__item-btn btn-orange" href="#">Заказать</a>
             </div>
             <div class="ingredients-popup__box">
@@ -141,237 +135,19 @@
         </div>
         <div class="ingredients-popup__tabs">
             <div class="menu-tabs">
-                <div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Мясо</a>
-                    <div class="menu-tabs__drop">
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
-                            </label>
+                {% if indegrients %}
+                    {% set count_arr = 1 %}
+                    {% for group_id, group in indegrients %}
+                        <div class="menu-tabs__item"><a data-group-id="{{ group_id }}" class="menu-tabs__link {% if count_arr == 1 %}active{% endif %}" href="#">{{ group.name }}</a>
+
                         </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Овощи</a>
-                    <div class="menu-tabs__drop">
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Сыры</a>
-                    <div class="menu-tabs__drop">
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Грибы</a>
-                    <div class="menu-tabs__drop">
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Фрукты</a>
-                    <div class="menu-tabs__drop">
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Морепродукты</a>
-                    <div class="menu-tabs__drop">
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="menu-tabs__item"><a class="menu-tabs__link" href="#">Соусы</a>
-                    <div class="menu-tabs__drop">
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Курица</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Ветчина</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Салями</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Колбаски охотничьи</span>
-                            </label>
-                        </div>
-                        <div class="menu-tabs__line">
-                            <label class="menu-tabs__line-label">
-                                <input type="checkbox" name="checkbox[]"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">Прошутто</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                        {% set count_arr = count_arr + 1 %}
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <div class="ingredients-popup__range">
-            <div class="ingredients-popup__range-item">
-                <div class="ingredients-popup__range-img"><img src="img/ingredient__img_1.png" alt=""></div>
-                <div class="ingredients-popup__range-name">Оливки</div>
-                <div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
-            </div>
-            <div class="ingredients-popup__range-item">
-                <div class="ingredients-popup__range-img"><img src="img/ingredient__img_2.png" alt=""></div>
-                <div class="ingredients-popup__range-name">Пеперони</div>
-                <div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
-            </div>
-            <div class="ingredients-popup__range-item">
-                <div class="ingredients-popup__range-img"><img src="img/ingredient__img_3.png" alt=""></div>
-                <div class="ingredients-popup__range-name">Лук</div>
-                <div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
-            </div>
-            <div class="ingredients-popup__range-item">
-                <div class="ingredients-popup__range-img"><img src="img/ingredient__img_4.png" alt=""></div>
-                <div class="ingredients-popup__range-name">Моцарелла</div>
-                <div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
-            </div>
-            <div class="ingredients-popup__range-item">
-                <div class="ingredients-popup__range-img"><img src="img/ingredient__img_5.png" alt=""></div>
-                <div class="ingredients-popup__range-name">Томатная паста</div>
-                <div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
-            </div>
+            {{ first_group_indigrients }}
         </div>
     </div>
 </div>

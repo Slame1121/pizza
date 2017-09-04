@@ -50,12 +50,16 @@ class ModelCatalogCatalog extends Model
 		$attributes = [];
 
 		foreach($result as $attr){
-			if(!isset($attributes[$attr['attribute_group']])){
-				$attributes[$attr['attribute_group']] = [];
+			if(!isset($attributes[$attr['attribute_group_id']])){
+				$attributes[$attr['attribute_group_id']] = [
+					'name' => $attr['attribute_group'],
+					'id' => $attr['attribute_group_id'],
+					'attr' => []
+				];
 			}
-
-			$attributes[$attr['attribute_group']][] = $attr;
+			$attributes[$attr['attribute_group_id']]['attr'][] = $attr;
 		}
+
 		return $attributes;
 	}
 }

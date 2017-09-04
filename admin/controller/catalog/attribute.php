@@ -338,6 +338,18 @@ class ControllerCatalogAttribute extends Controller {
 			$data['sort_order'] = '';
 		}
 
+		if (isset($this->request->post['image'])) {
+			$data['image'] = $this->request->post['image'];
+		} elseif (!empty($attribute_info) && $attribute_info['image'] != '') {
+			$data['image'] = $attribute_info['image'];
+		} else {
+			$data['image'] = 'no_image.png';
+		}
+
+		$this->load->model('tool/image');
+
+		$data['thumb'] = $this->model_tool_image->resize($data['image'], 100, 100 );
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');

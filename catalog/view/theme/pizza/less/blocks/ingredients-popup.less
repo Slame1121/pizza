@@ -3,7 +3,20 @@
   background-color: #ffffff;
   position: relative;
   .menu-tabs {
-    margin-bottom: 0; }
+    margin-bottom: 0;
+
+	&__link{
+	  padding:15px;
+	  transition: all .2s;
+	  &:after{
+		content:none;
+		border:0 none;
+	  }
+	  &.active{
+		border-bottom: 3px solid #e9ae4a;
+	  }
+	}
+  }
   &.container {
     padding: 20px; }
   &__top {
@@ -37,6 +50,7 @@
     &-btn {
       width: 140px;
       height: 30px; } }
+
   &__box {
     display: flex;
     flex-wrap: wrap;

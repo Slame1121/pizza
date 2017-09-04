@@ -218,6 +218,7 @@ class ControllerProductProduct extends Controller {
 			$this->document->setDescription($product_info['meta_description']);
 			$this->document->setKeywords($product_info['meta_keyword']);
 			$this->document->addLink($this->url->link('product/product', 'product_id=' . $this->request->get['product_id']), 'canonical');
+			$this->document->addScript('/catalog/view/javascript/pages/product_page.js');
 			//$this->document->addScript('catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js');
 			//$this->document->addStyle('catalog/view/javascript/jquery/magnific/magnific-popup.css');
 			//$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js');
@@ -372,7 +373,14 @@ class ControllerProductProduct extends Controller {
 			$data['share'] = $this->url->link('product/product', 'product_id=' . (int)$this->request->get['product_id']);
 
 			$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($this->request->get['product_id']);
+			$this->load->model('catalog/catalog');
+			$indigrients_groups = $this->model_catalog_catalog->getAttributes();
 
+
+			$data['indegrients'] = $indigrients_groups;
+
+
+			$data['first_group_indigrients'] = $this->getIndigrientsByGroup(array_shift($indigrients_groups)['id']);
 			$data['products'] = array();
 
 			$results = $this->model_catalog_product->getProductRelated($this->request->get['product_id']);
@@ -597,6 +605,28 @@ class ControllerProductProduct extends Controller {
 
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
+	}
+
+	public function getIndigrientsByGroup($group_id_arg = false){
+		$group_id = $group_id_arg ? $group_id_arg : intval($_POST['id']);
+
+		$filter = ['filter_attribute_group_id' => $group_id];
+		$this->load->model('catalog/catalog');
+		$this->load->model('tool/image');
+		$indigrients_groups = $this->model_catalog_catalog->getAttributes($filter);
+
+		foreach($indigrients_groups as  $group_key => $group){
+			foreach($group['attr'] as $key => $indigrient){
+				$indigrients_groups[$group_key]['attr'][$key]['thumb'] = $this->model_tool_image->resize($indigrient['image'], 80, 60);
+			}
+		}
+		$data['indegrients'] = $indigrients_groups;
+		if($group_id_arg){
+			return $this->load->view('product/indigrients', $data);
+		}else{
+			$this->response->setOutput($this->load->view('product/indigrients', $data));
+		}
+
 	}
 
 	public function getRecurringDescription() {

@@ -1,0 +1,11 @@
+{% if indegrients %}
+    {% for group in indegrients %}
+        {% for indigrient in group.attr %}
+            <div class="ingredients-popup__range-item">
+                <div class="ingredients-popup__range-img"><img src="{{ indigrient.thumb }}" alt=""></div>
+                <div class="ingredients-popup__range-name">{{ indigrient.name }}</div>
+                <div class="ingredients-popup__range-price">15 грн</div><a class="ingredients-popup__range-add" href="#">+ДОБАВИТЬ</a>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}

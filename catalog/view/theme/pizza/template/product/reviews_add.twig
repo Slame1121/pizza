@@ -1,0 +1,23 @@
+<h2>{{ text_title_review_add }}</h2>
+<div id="reviewsAddForm" class="card-reviews__form">
+    <input type="hidden" id="action" value="{{ action }}">
+    <input type="hidden" name="category_id" value="{{ category_id }}">
+    <input type="hidden" name="product_id" value="{{ product_id }}">
+    <input type="hidden" name="rating" value="1">
+    <div class="card-reviews__box">
+        <input type="text" name="name" placeholder="{{ text_tip_name }}">
+        <input type="text" name="phone" placeholder="{{ text_tip_tel }}">
+    </div>
+    <div class="card-reviews__box">
+        <input type="email" name="email" placeholder="{{ text_tip_email }}">
+        <div class="card-reviews__stars">
+            <a class="card-reviews__stars-item" href="#"></a>
+            <a class="card-reviews__stars-item" href="#"></a>
+            <a class="card-reviews__stars-item" href="#"></a>
+            <a class="card-reviews__stars-item" href="#"></a>
+            <a class="card-reviews__stars-item" href="#"></a>
+        </div>
+    </div>
+    <textarea name="text" class="card-reviews__mess" placeholder="{{ text_tip_area }}"></textarea>
+    <span id="reviewsAdd" class="card-reviews__submit" >{{ text_btn_name }}</span>
+</div>

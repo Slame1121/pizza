@@ -1,0 +1,19 @@
+{% if reviews %}
+    <h2>{{ text_titl }}</h2>
+    <div class="reviews__content">
+        {% for _reviews in reviews %}
+            <div class="reviews-item">
+                <div class="reviews-item__box">
+                    <div class="reviews-item__name">{{ _reviews.author }}, <span>«{{ _reviews.product_name }}»</span></div>
+                    <div class="reviews-item__text">{{ _reviews.text }}</div>
+                    <div class="reviews-item__date">{{ _reviews.date_added }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <h2>{{ text_titl }}</h2>
+    <div class="reviews__content">
+        <p>{{ text_no_reviews }}</p>
+    </div>
+{% endif %}

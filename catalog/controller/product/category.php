@@ -160,7 +160,7 @@ class ControllerProductCategory extends Controller {
 			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
 			$results = $this->model_catalog_product->getProducts($filter_data);
-
+            //var_dump($results);die;
 			foreach ($results as $result) {
 				if ($result['image']) {
 					$image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
@@ -383,7 +383,9 @@ class ControllerProductCategory extends Controller {
 			if ($limit && ceil($product_total / $limit) > $page) {
 			    $this->document->addLink($this->url->link('product/category', 'path=' . $category_info['category_id'] . '&page='. ($page + 1)), 'next');
 			}
-
+            //Otziv
+            $data['reviews'] = $this->load->controller('product/review');
+            //var_dump($data['reviews']);die;
 			$data['sort'] = $sort;
 			$data['order'] = $order;
 			$data['limit'] = $limit;
@@ -396,7 +398,7 @@ class ControllerProductCategory extends Controller {
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
-
+            //var_dump($data);die;
 			$this->response->setOutput($this->load->view('product/category', $data));
 		} else {
 			$url = '';

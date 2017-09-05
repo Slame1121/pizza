@@ -312,7 +312,7 @@ h2 {
 	-webkit-transform: translateY(-50%);
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -184px -113px;
 	width: 38px;
 	height: 26px; }
@@ -359,12 +359,12 @@ h2 {
 .header-box__card-item {
 	display: inline-block; }
 .header-box__card-item-visa {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -215px -139px;
 	width: 30px;
 	height: 17px; }
 .header-box__card-item-master {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -184px -139px;
 	width: 31px;
 	height: 18px;
@@ -419,7 +419,7 @@ h2 {
 .header-basket__box:hover {
 	opacity: 1; }
 .header-basket__icon {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -184px -63px;
 	width: 47px;
 	height: 50px;
@@ -474,7 +474,7 @@ h2 {
 	-webkit-transform: translateY(-50%);
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -148px -100px;
 	width: 20px;
 	height: 24px; }
@@ -520,7 +520,7 @@ h2 {
 	background-color: #fff;
 	padding: 30px 30px 40px 30px; }
 .drop-menu__close {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -222px -113px;
 	width: 25px;
 	height: 25px;
@@ -545,7 +545,7 @@ h2 {
 	font-weight: 300; }
 .drop-menu__sing-link span {
 	position: absolute;
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -148px -100px;
 	width: 20px;
 	height: 24px;
@@ -706,7 +706,7 @@ h2 {
 	-webkit-transition: .3s;
 	-o-transition: .3s;
 	transition: .3s;
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -222px -113px;
 	width: 25px;
 	height: 25px; }
@@ -1109,25 +1109,25 @@ h2 {
 	-ms-transform: translateX(-50%);
 	transform: translateX(-50%); }
 .services-item__icon-dough {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -74px -100px;
 	width: 74px;
 	height: 70px;
 	top: 0; }
 .services-item__icon-products {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: 0px -100px;
 	width: 74px;
 	height: 72px;
 	top: 2px; }
 .services-item__icon-rolling {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -184px 0px;
 	width: 64px;
 	height: 63px;
 	top: 12px; }
 .services-item__icon-kitchen {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -110px 0px;
 	width: 74px;
 	height: 73px;
@@ -1496,17 +1496,17 @@ h2 {
 	transition: .3s;
 	display: inline-block; }
 .social__link-vk {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: 0px -172px;
 	width: 27px;
 	height: 16px; }
 .social__link-facebook {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -110px -73px;
 	width: 22px;
 	height: 22px; }
 .social__link-instagram {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -132px -73px;
 	width: 22px;
 	height: 22px; }
@@ -1657,7 +1657,7 @@ h2 {
 .sing-log__enter-item:hover {
 	opacity: 1; }
 .sing-log__enter-item-facebook {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -148px -145px;
 	width: 21px;
 	height: 21px; }
@@ -1797,7 +1797,7 @@ h2 {
 .ingredients-popup__box-close {
 	display: block;
 	margin: 0 auto;
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -148px -124px;
 	width: 21px;
 	height: 21px;
@@ -2080,12 +2080,12 @@ h2 {
 .contacts-info__icon:hover {
 	opacity: 1; }
 .contacts-info__icon-vk {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -184px -157px;
 	width: 26px;
 	height: 15px; }
 .contacts-info__icon-facebook {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -148px -145px;
 	width: 21px;
 	height: 21px; }
@@ -2464,7 +2464,7 @@ h2 {
 	-ms-flex-pack: justify;
 	justify-content: space-between; }
 .card-reviews__stars-item {
-	background-image: url(../img/sprite.png);
+	background-image: url(../image/sprite.png);
 	background-position: -154px -73px;
 	width: 22px;
 	height: 22px; }
@@ -2510,7 +2510,8 @@ h2 {
 	background-color: transparent;
 	margin: 20px auto 0;
 	-webkit-border-radius: 2px;
-	border-radius: 2px; }
+	border-radius: 2px;
+	cursor: pointer; }
 .card-reviews__submit:hover {
 	color: #212121;
 	background-color: #fff; }
@@ -3116,7 +3117,7 @@ h2 {
 		display: block;
 		top: 12px;
 		right: 33px;
-		background-image: url(../img/sprite.png);
+		background-image: url(../image/sprite.png);
 		background-position: -148px -124px;
 		width: 21px;
 		height: 21px; }

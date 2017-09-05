@@ -100,7 +100,7 @@ class  ControllerProductReview extends Controller
             $this->data['category_id'] = 0;
         }
 
-        $this->data['action'] = $this->url->link('product/review/write', 'user_token=' . $this->session->data['user_token'] . '&type=module', true);
+        $this->data['action'] = $this->url->link('product/review/write');
         $this->data['review_status'] = $this->config->get('config_review_status');
         $this->data['text_title_review_add'] = $this->language->get('text_title_review_add');
         $this->data['text_tip_name'] = $this->language->get('text_tip_name');

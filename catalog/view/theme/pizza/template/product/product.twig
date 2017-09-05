@@ -17,8 +17,9 @@
                         {% for option in options %}
                             {% if option.type == 'checkbox' %}
                                 {% for key, option_value in option.product_option_value %}
-                                    <label class="card-price__box {% if key == 0 %}active{% endif %}">
+                                    <label class="card-price__box{% if key == 0 %} active{% endif %}">
                                         <input type="radio" name="card-price" {% if key == 0 %}checked{% endif %}>
+                                        <input type="hidden" name="size-price" value="{% if option_value.cost %}{{ option_value.cost }}{% endif %}" />
                                         <span class="card-price__dot"></span>
                                     <span class="card-price__info">
                                         <span class="card-price__size">{{ option_value.name }}
@@ -77,19 +78,22 @@
             <div class="ingredients-popup__item">
                 <div class="ingredients-popup__item-img"><img src="{{ popup }}" alt=""></div>
                 <div class="ingredients-popup__item-name">{{ heading_title }}</div>
+                <div class="ingredients-popup__item-size">
+                    {% if options %}
+                        {% for option in options %}
+                            {% if option.type == 'checkbox' %}
+                                {% for key, option_value in option.product_option_value %}
+                                    {% if key == 0 %} ({{ option_value.name }} 500 ± 50гр){% endif %}
+
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
                 <div class="ingredients-popup__item-price">246 грн</div><a class="btn ingredients-popup__item-btn btn-orange" href="#">Заказать</a>
             </div>
             <div class="ingredients-popup__box">
-                <div class="ingredients-popup__box-item">
-                    <div class="ingredients-popup__box-add">+</div>
-                    <div class="ingredients-popup__box-img"><img src="img/ingredient__img_4.png" alt=""></div>
-                    <div class="ingredients-popup__box-name">Моцарелла</div><a class="ingredients-popup__box-close" href="#"></a>
-                </div>
-                <div class="ingredients-popup__box-item">
-                    <div class="ingredients-popup__box-add">+</div>
-                    <div class="ingredients-popup__box-img"><img src="img/ingredient__img_3.png" alt=""></div>
-                    <div class="ingredients-popup__box-name">Лук</div><a class="ingredients-popup__box-close" href="#"></a>
-                </div>
+
             </div>
         </div>
         <div class="ingredients-popup__tabs">

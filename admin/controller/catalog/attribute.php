@@ -346,6 +346,14 @@ class ControllerCatalogAttribute extends Controller {
 			$data['image'] = 'no_image.png';
 		}
 
+		if (isset($this->request->post['price'])) {
+			$data['price'] = $this->request->post['price'];
+		} elseif (!empty($attribute_info) && $attribute_info['price'] > 0 ) {
+			$data['price'] = $attribute_info['price'];
+		} else {
+			$data['price'] = 0;
+		}
+
 		$this->load->model('tool/image');
 
 		$data['thumb'] = $this->model_tool_image->resize($data['image'], 100, 100 );

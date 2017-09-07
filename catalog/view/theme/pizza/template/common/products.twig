@@ -11,8 +11,8 @@
         </span>
         <span class="hit-item__info">
             {% for option in product.options %}
-                {% for value in option.product_option_value %}
-                    <span class="hit-item__info-box">
+                {% for key, value in option.product_option_value %}
+                    <span class="hit-item__info-box {% if key == 0 %}active{% endif %}">
                         <span class="hit-item__info-block">
                             <span class="hit-item__info-size">{{ value.name }}<span>500 ± 50 гр</span></span>
                             <span class="hit-item__info-price">{{ value.price }}</span>

@@ -55,9 +55,9 @@ $('document').ready(function(){
 
     })
 
-    if( $('input[type=tel]').exists()){
-        $('input[type=tel]').mask('38 (999) 999-99-99');
-    }
+    //if( $('input[type=tel]').exists()){
+        //$('input[type=tel]').mask('38 (999) 999-99-99');
+   // }
 
 });
 

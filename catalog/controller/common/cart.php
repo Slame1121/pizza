@@ -47,7 +47,7 @@ class ControllerCommonCart extends Controller {
 			array_multisort($sort_order, SORT_ASC, $totals);
 		}
 
-		$data['text_items'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
+		$data['text_items'] = $this->cart->countProducts();
 
 		$this->load->model('tool/image');
 		$this->load->model('tool/upload');
@@ -94,6 +94,21 @@ class ControllerCommonCart extends Controller {
 				$total = false;
 			}
 
+			$this->load->model('catalog/catalog');
+
+			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
+
+
+			$attributes = [];
+
+			foreach($product['attrs'] as $igredient_id => $count){
+				$attributes[] = [
+					'id' => $igredient_id,
+					'name' => $all_attrs[$igredient_id]['name'],
+					'count' => $count
+				];
+			}
+
 			$data['products'][] = array(
 				'cart_id'   => $product['cart_id'],
 				'thumb'     => $image,
@@ -104,10 +119,10 @@ class ControllerCommonCart extends Controller {
 				'quantity'  => $product['quantity'],
 				'price'     => $price,
 				'total'     => $total,
+				'attrs'     => $attributes,
 				'href'      => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 			);
 		}
-
 		// Gift Voucher
 		$data['vouchers'] = array();
 
@@ -129,6 +144,8 @@ class ControllerCommonCart extends Controller {
 				'text'  => $this->currency->format($total['value'], $this->session->data['currency']),
 			);
 		}
+
+		$data['total'] = $total_data['total'];
 
 		$data['cart'] = $this->url->link('checkout/cart');
 		$data['checkout'] = $this->url->link('checkout/checkout', '', true);

@@ -1,4 +1,7 @@
 var Product = {
+
+	product_id : 0,
+
 	bindIndigrientsInPopUp: function () {
 		$('.menu-tabs__link').on('click', function(){
 			var self = $(this);
@@ -45,7 +48,7 @@ var Product = {
 			var name = $(this).parent().find('.ingredients-popup__range-name').text();
 			var price = $(this).parent().find('.ingredients-popup__range-price').data('price');
 			var item = '<div class="ingredients-popup__box-item">\
-				<input data-price="'+price+'" type="hidden" class="igredient_input" id="input-ingredient-'+attr_id+'" name="ingredient['+attr_id+']" value="1" />\
+				<input data-price="'+price+'" type="hidden" class="igredient_input" id="input-ingredient-'+attr_id+'" name="attrs['+attr_id+']" value="1" />\
 				<div class="ingredients-popup__box-add">+</div>\
 				<div class="ingredients-popup__box-img"><img src="'+image+'" alt=""></div>\
 				<div class="ingredients-popup__box-name">'+name+' <span class="ingredients-popup__box-name_count hidden">x 1</span></div><a class="ingredients-popup__box-close" href="#"></a>\
@@ -72,6 +75,22 @@ var Product = {
 			self.recalcPizzaPrice();
 		})
 	},
+	addProductButton: function () {
+		var self = this;
+		$('#add_product').on('click', function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			cart.add(self.product_id,1, $(".option").serialize());
+		});
+	},
+	addProductWithIgredients: function () {
+		var self = this;
+		$('#add_product_with_attr').on('click', function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			cart.add(self.product_id,1, $(".option").serialize(), $('.igredient_input').serialize());
+		});
+	},
 	init : function(){
 		this.bindIndigrientsInPopUp();
 
@@ -80,6 +99,10 @@ var Product = {
 		this.addIdigrientToPizza();
 
 		this.removeIgredientFromPizza();
+
+		this.addProductButton();
+
+		this.addProductWithIgredients();
 	},
 
 	recalcPizzaPrice: function(){

@@ -85,7 +85,7 @@ class  ControllerProductReview extends Controller
     }
 
     public function add(){
-        $this->document->addScript('jquery.maskedinput.min.js');
+       //$this->document->addScript('jquery.maskedinput.min.js');
         $this->document->addScript('/catalog/view/javascript/reviews.js');
         $this->load->language('product/review');
         $this->load->language('product/product');

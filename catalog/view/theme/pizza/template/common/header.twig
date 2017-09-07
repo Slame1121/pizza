@@ -30,6 +30,7 @@
     <script src="/catalog/view/javascript/libs/slider/owl.carousel.min.js"></script>
     <script src="/catalog/view/javascript/libs/popup/jquery.magnific-popup.min.js"></script>
     <script src="/catalog/view/javascript/main.js"></script>
+    <script src="/catalog/view/javascript/cart.js"></script>
     {% for script in scripts %}
         <script src="{{ script }}" type="text/javascript"></script>
     {% endfor %}
@@ -76,220 +77,187 @@
                 </div>
                 <div class="header-box">
                     <div class="header-basket">
-                        <div class="header-basket__box">
-                            <div class="header-basket__icon" data-items="2"></div>
-                            <div class="header-basket__summa">1290 грн</div>
-                        </div>
-                        <div class="basket-log">
-                            <div class="basket-log__box active">
-                                <div class="basket-log__top">
-                                    <div class="basket-log__title">Ваша корзина</div><a class="basket-log__top-btn basket-log__top-btn--right" href="#">Очистить заказ</a><a class="basket-log__close" href="#"></a>
+
+                        <div class="header-basket">
+                            <div class="header-basket__box">
+                                <div class="header-basket__icon" data-items="{{ cart_count }}"></div>
+                                <div class="header-basket__summa">{{ total }} грн</div>
+                            </div>
+                            <div class="basket-log">
+                                <div class="basket-log__box active">
+                                    <div class="basket-log__top">
+                                        <div class="basket-log__title">Ваша корзина</div><a class="basket-log__top-btn basket-log__top-btn--right" href="#">Очистить заказ</a><a class="basket-log__close" href="#"></a>
+                                    </div>
+                                    <div class="basket-log__content">
+
+                                        {{ cart }}
+                                    </div>
+                                    <div class="basket-log__bottom basket-log__bottom--right">
+                                        <div class="basket-log__summa">{{ total }} грн</div><a class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a>
+                                    </div>
                                 </div>
-                                <div class="basket-log__content">
-                                    <div class="basket-log__item" style="background-image: url('img/basket-log__img.png');"><a class="basket-log__item-close" href="#"></a>
-                                        <div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
-                                            <div class="basket-log__item-content">
-                                                <div class="basket-log__item-num"><a class="basket-log__item-btn basket-log__item-btn--left" href="#">-</a>
-                                                    <input type="text" name="num[]" value="1"><a class="basket-log__item-btn basket-log__item-btn--right" href="#">+</a>
+                                <div class="basket-log__box">
+                                    <div class="basket-log__top">
+                                        <div class="basket-log__title">Оформление заказа</div><a class="basket-log__top-btn basket-log__top-btn--left" href="#">← Назад</a><a class="basket-log__close" href="#"></a>
+                                    </div>
+                                    <div class="basket-log__tabs">
+                                        <label class="basket-log__tabs-box">
+                                            <input type="radio" name="tabs-box" checked><span class="basket-log__tabs-item">Доставка</span>
+                                        </label>
+                                        <label class="basket-log__tabs-box">
+                                            <input type="radio" name="tabs-box"><span class="basket-log__tabs-item">Самовывоз</span>
+                                        </label>
+                                    </div>
+                                    <div class="basket-log__content">
+                                        <form class="basket-log__form">
+                                            <div class="basket-log__form-box">
+                                                <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Сохраненные адреса</span>
+                                                    <select class="basket-log__form-value">
+                                                        <option>ул. Ворошилова д. 3</option>
+                                                        <option>ул. Мира д. 100</option>
+                                                        <option>гостиница Тан н. 10</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="basket-log__form-box">
+                                                <label class="basket-log__form-label"><span class="basket-log__form-name">Улица<span>*</span></span>
+                                                    <input class="basket-log__form-value" type="text" name="box">
+                                                </label>
+                                                <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
+                                                    <select class="basket-log__form-value">
+                                                        <option>Новобирючево</option>
+                                                        <option>Мали</option>
+                                                        <option>Оскол</option>
+                                                        <option>Новобирючево</option>
+                                                        <option>Мали</option>
+                                                        <option>Оскол</option>
+                                                    </select>
+                                                </label>
+                                                <div class="basket-log__form-multi">
+                                                    <label class="basket-log__form-label"><span class="basket-log__form-name">Дом<span>*</span></span>
+                                                        <input class="basket-log__form-value" type="text" name="box">
+                                                    </label>
+                                                    <label class="basket-log__form-label"><span class="basket-log__form-name">Парадня</span>
+                                                        <input class="basket-log__form-value" type="text" name="box">
+                                                    </label>
+                                                    <label class="basket-log__form-label"><span class="basket-log__form-name">Этаж</span>
+                                                        <input class="basket-log__form-value" type="text" name="box">
+                                                    </label>
+                                                    <label class="basket-log__form-label"><span class="basket-log__form-name">Квартира</span>
+                                                        <input class="basket-log__form-value" type="text" name="box">
+                                                    </label>
+                                                    <label class="basket-log__form-label"><span class="basket-log__form-name">Код двери</span>
+                                                        <input class="basket-log__form-value" type="text" name="box">
+                                                    </label>
                                                 </div>
+                                            </div>
+                                            <div class="basket-log__form-box">
+                                                <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Телефон<span>*</span></span>
+                                                    <select class="basket-log__form-value">
+                                                        <option>8 923 312 22 11</option>
+                                                        <option>7 232 234 23 12</option>
+                                                    </select>
+                                                </label>
+                                                <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">E-mail<span>*</span></span>
+                                                    <select class="basket-log__form-value">
+                                                        <option>emailone@mail.il</option>
+                                                        <option>emailtwo@mail.il</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="basket-log__form-box">
+                                                <label class="basket-log__form-label"><span class="basket-log__form-name">Комментарий</span>
+                                                    <textarea class="basket-log__form-mess"></textarea>
+                                                </label>
+                                            </div>
+                                            <div class="basket-log__form-box">
+                                                <label class="basket-log__form-label basket-log__form-label--bonus"><span class="basket-log__form-name basket-log__form-name--bonus">Количество бонусов<span>Доступно 0</span></span>
+                                                    <input class="basket-log__form-value basket-log__form-value--bonus" type="text" name="box">
+                                                </label>
+                                            </div>
+                                            <div class="basket-log__form-box">
+                                                <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Метод оплаты</span>
+                                                    <select class="basket-log__form-value">
+                                                        <option>Наличные</option>
+                                                        <option>На карту банка</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="basket-log__form-box">
+                                                <div class="basket-log__form-summa">
+                                                    <div class="basket-log__form-name">Цена с купоном</div>
+                                                    <div class="basket-log__form-num">436 грн</div>
+                                                </div>
+                                            </div>
+                                            <div class="basket-log__form-text">Вы получите 178.58 гривен на бонусный счет за этот заказ, <br>если сейчас присоединитесь к семье <a href="#">Pizza Famiglia</a></div>
+                                        </form>
+                                    </div>
+                                    <div class="basket-log__bottom basket-log__bottom--center"><a class="btn basket-log__btn btn-orange" href="#">Далее</a></div>
+                                </div>
+                                <div class="basket-log__box">
+                                    <div class="basket-log__top">
+                                        <div class="basket-log__title">Подтверждение заказа</div><a class="basket-log__top-btn basket-log__top-btn--left" href="#">← Назад</a><a class="basket-log__close" href="#"></a>
+                                    </div>
+                                    <div class="basket-log__content">
+                                        <div class="basket-log__item basket-log__item--center" style="background-image: url('img/basket-log__img.png');">
+                                            <div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
                                                 <div class="basket-log__item-price">218 грн</div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="basket-log__item" style="background-image: url('img/basket-log__img.png');"><a class="basket-log__item-close" href="#"></a>
-                                        <div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
-                                            <div class="basket-log__item-content">
-                                                <div class="basket-log__item-num"><a class="basket-log__item-btn basket-log__item-btn--left" href="#">-</a>
-                                                    <input type="text" name="num[]" value="1"><a class="basket-log__item-btn basket-log__item-btn--right" href="#">+</a>
-                                                </div>
+                                        <div class="basket-log__item basket-log__item--center" style="background-image: url('img/basket-log__img.png');">
+                                            <div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
                                                 <div class="basket-log__item-price">218 грн</div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="basket-log__bottom basket-log__bottom--right">
-                                    <div class="basket-log__summa">436 грн</div><a class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a>
-                                </div>
-                            </div>
-                            <div class="basket-log__box">
-                                <div class="basket-log__top">
-                                    <div class="basket-log__title">Оформление заказа</div><a class="basket-log__top-btn basket-log__top-btn--left" href="#">← Назад</a><a class="basket-log__close" href="#"></a>
-                                </div>
-                                <div class="basket-log__tabs">
-                                    <label class="basket-log__tabs-box">
-                                        <input type="radio" name="tabs-box" checked><span class="basket-log__tabs-item">Доставка</span>
-                                    </label>
-                                    <label class="basket-log__tabs-box">
-                                        <input type="radio" name="tabs-box"><span class="basket-log__tabs-item">Самовывоз</span>
-                                    </label>
-                                </div>
-                                <div class="basket-log__content">
-                                    <form class="basket-log__form">
-                                        <div class="basket-log__form-box">
-                                            <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Сохраненные адреса</span>
-                                                <select class="basket-log__form-value">
-                                                    <option>ул. Ворошилова д. 3</option>
-                                                    <option>ул. Мира д. 100</option>
-                                                    <option>гостиница Тан н. 10</option>
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="basket-log__form-box">
-                                            <label class="basket-log__form-label"><span class="basket-log__form-name">Улица<span>*</span></span>
-                                                <input class="basket-log__form-value" type="text" name="box">
-                                            </label>
-                                            <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
-                                                <select class="basket-log__form-value">
-                                                    <option>Новобирючево</option>
-                                                    <option>Мали</option>
-                                                    <option>Оскол</option>
-                                                    <option>Новобирючево</option>
-                                                    <option>Мали</option>
-                                                    <option>Оскол</option>
-                                                </select>
-                                            </label>
-                                            <div class="basket-log__form-multi">
-                                                <label class="basket-log__form-label"><span class="basket-log__form-name">Дом<span>*</span></span>
-                                                    <input class="basket-log__form-value" type="text" name="box">
-                                                </label>
-                                                <label class="basket-log__form-label"><span class="basket-log__form-name">Парадня</span>
-                                                    <input class="basket-log__form-value" type="text" name="box">
-                                                </label>
-                                                <label class="basket-log__form-label"><span class="basket-log__form-name">Этаж</span>
-                                                    <input class="basket-log__form-value" type="text" name="box">
-                                                </label>
-                                                <label class="basket-log__form-label"><span class="basket-log__form-name">Квартира</span>
-                                                    <input class="basket-log__form-value" type="text" name="box">
-                                                </label>
-                                                <label class="basket-log__form-label"><span class="basket-log__form-name">Код двери</span>
-                                                    <input class="basket-log__form-value" type="text" name="box">
-                                                </label>
+                                        <div class="basket-log__info">
+                                            <div class="basket-log__info-line">
+                                                <div class="basket-log__info-name">Населенный пункт:</div>
+                                                <div class="basket-log__info-value">Название города</div>
+                                            </div>
+                                            <div class="basket-log__info-line">
+                                                <div class="basket-log__info-name">Улица:</div>
+                                                <div class="basket-log__info-value">Кирова, 23</div>
+                                            </div>
+                                            <div class="basket-log__info-line">
+                                                <div class="basket-log__info-name">Телефон:</div>
+                                                <div class="basket-log__info-value">8 920 219 76 72</div>
+                                            </div>
+                                            <div class="basket-log__info-line">
+                                                <div class="basket-log__info-name">E-mail:</div>
+                                                <div class="basket-log__info-value">d.klinchuk@mil.ru</div>
+                                            </div>
+                                            <div class="basket-log__info-line">
+                                                <div class="basket-log__info-name">Время доставки:</div>
+                                                <div class="basket-log__info-value">13:00</div>
+                                            </div>
+                                            <div class="basket-log__info-line">
+                                                <div class="basket-log__info-name">Количество бонусов:</div>
+                                                <div class="basket-log__info-value">0</div>
+                                            </div>
+                                            <div class="basket-log__info-line">
+                                                <div class="basket-log__info-name">Метод обплаты:</div>
+                                                <div class="basket-log__info-value">Наличные</div>
+                                            </div>
+                                            <div class="basket-log__info-line basket-log__info-line--all">
+                                                <div class="basket-log__info-name">Всего:</div>
+                                                <div class="basket-log__info-value">436 грн</div>
                                             </div>
                                         </div>
-                                        <div class="basket-log__form-box">
-                                            <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Телефон<span>*</span></span>
-                                                <select class="basket-log__form-value">
-                                                    <option>8 923 312 22 11</option>
-                                                    <option>7 232 234 23 12</option>
-                                                </select>
-                                            </label>
-                                            <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">E-mail<span>*</span></span>
-                                                <select class="basket-log__form-value">
-                                                    <option>emailone@mail.il</option>
-                                                    <option>emailtwo@mail.il</option>
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="basket-log__form-box">
-                                            <label class="basket-log__form-label"><span class="basket-log__form-name">Комментарий</span>
-                                                <textarea class="basket-log__form-mess"></textarea>
-                                            </label>
-                                        </div>
-                                        <div class="basket-log__form-box">
-                                            <label class="basket-log__form-label basket-log__form-label--bonus"><span class="basket-log__form-name basket-log__form-name--bonus">Количество бонусов<span>Доступно 0</span></span>
-                                                <input class="basket-log__form-value basket-log__form-value--bonus" type="text" name="box">
-                                            </label>
-                                        </div>
-                                        <div class="basket-log__form-box">
-                                            <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Метод оплаты</span>
-                                                <select class="basket-log__form-value">
-                                                    <option>Наличные</option>
-                                                    <option>На карту банка</option>
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="basket-log__form-box">
-                                            <div class="basket-log__form-summa">
-                                                <div class="basket-log__form-name">Цена с купоном</div>
-                                                <div class="basket-log__form-num">436 грн</div>
-                                            </div>
-                                        </div>
-                                        <div class="basket-log__form-text">Вы получите 178.58 гривен на бонусный счет за этот заказ, <br>если сейчас присоединитесь к семье <a href="#">Pizza Famiglia</a></div>
-                                    </form>
-                                </div>
-                                <div class="basket-log__bottom basket-log__bottom--center"><a class="btn basket-log__btn btn-orange" href="#">Далее</a></div>
-                            </div>
-                            <div class="basket-log__box">
-                                <div class="basket-log__top">
-                                    <div class="basket-log__title">Подтверждение заказа</div><a class="basket-log__top-btn basket-log__top-btn--left" href="#">← Назад</a><a class="basket-log__close" href="#"></a>
-                                </div>
-                                <div class="basket-log__content">
-                                    <div class="basket-log__item basket-log__item--center" style="background-image: url('img/basket-log__img.png');">
-                                        <div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
-                                            <div class="basket-log__item-price">218 грн</div>
-                                        </div>
                                     </div>
-                                    <div class="basket-log__item basket-log__item--center" style="background-image: url('img/basket-log__img.png');">
-                                        <div class="basket-log__item-box"><a class="basket-log__item-name" href="card.html">Прошутто-Пера DeLuxe</a>
-                                            <div class="basket-log__item-price">218 грн</div>
-                                        </div>
-                                    </div>
-                                    <div class="basket-log__info">
-                                        <div class="basket-log__info-line">
-                                            <div class="basket-log__info-name">Населенный пункт:</div>
-                                            <div class="basket-log__info-value">Название города</div>
-                                        </div>
-                                        <div class="basket-log__info-line">
-                                            <div class="basket-log__info-name">Улица:</div>
-                                            <div class="basket-log__info-value">Кирова, 23</div>
-                                        </div>
-                                        <div class="basket-log__info-line">
-                                            <div class="basket-log__info-name">Телефон:</div>
-                                            <div class="basket-log__info-value">8 920 219 76 72</div>
-                                        </div>
-                                        <div class="basket-log__info-line">
-                                            <div class="basket-log__info-name">E-mail:</div>
-                                            <div class="basket-log__info-value">d.klinchuk@mil.ru</div>
-                                        </div>
-                                        <div class="basket-log__info-line">
-                                            <div class="basket-log__info-name">Время доставки:</div>
-                                            <div class="basket-log__info-value">13:00</div>
-                                        </div>
-                                        <div class="basket-log__info-line">
-                                            <div class="basket-log__info-name">Количество бонусов:</div>
-                                            <div class="basket-log__info-value">0</div>
-                                        </div>
-                                        <div class="basket-log__info-line">
-                                            <div class="basket-log__info-name">Метод обплаты:</div>
-                                            <div class="basket-log__info-value">Наличные</div>
-                                        </div>
-                                        <div class="basket-log__info-line basket-log__info-line--all">
-                                            <div class="basket-log__info-name">Всего:</div>
-                                            <div class="basket-log__info-value">436 грн</div>
-                                        </div>
-                                    </div>
+                                    <div class="basket-log__bottom basket-log__bottom--center"><a class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a></div>
                                 </div>
-                                <div class="basket-log__bottom basket-log__bottom--center"><a class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a></div>
-                            </div>
-                            <div class="basket-log__box">
-                                <div class="basket-log__end">
-                                    <div class="basket-log__end-title">Спасибо!</div>
-                                    <div class="basket-log__end-text">В ближайшее время наш оператор свяжется с вами.</div>
+                                <div class="basket-log__box">
+                                    <div class="basket-log__end">
+                                        <div class="basket-log__end-title">Спасибо!</div>
+                                        <div class="basket-log__end-text">В ближайшее время наш оператор свяжется с вами.</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div><a class="header-sing" href="#">Вход/Регистрация</a>
-                    <div class="sing-log">
-                        <form class="sing-log__form">
-                            <label class="sing-log__label"><span class="sing-log__label-name">Телефон</span>
-                                <input type="tel" name="tel">
-                            </label>
-                            <label class="sing-log__label"><span class="sing-log__label-name">Пароль</span>
-                                <input class="error" type="password" name="password" placeholder="Неверный пароль">
-                            </label>
-                            <div class="sing-log__box">
-                                <label class="sing-log__box-label">
-                                    <input type="checkbox" name="checkbox"><span class="sing-log__box-check"></span><span class="sing-log__box-name">Запомнить меня</span>
-                                </label><a class="sing-log__box-link" href="#">Забыли пароль?</a>
-                            </div>
-                            <div class="sing-log__enter">
-                                <div class="sing-log__enter-title">Войти с помощью:</div><a class="sing-log__enter-item sing-log__enter-item-facebook" href="#"></a>
-                            </div>
-                            <div class="sing-log__controls">
-                                <div class="sing-log__reg-wrap"><a class="sing-log__reg" href="#">Зарегистрироваться</a></div><a class="btn sing-log__btn btn-orange" href="profile.html">Войти</a>
-                            </div>
-                        </form>
+
                     </div>
+                    <a class="header-sing noLink" href="#">Вход/Регистрация</a>
+                    {{ form_login }}
                 </div>
             </div><a class="burg" href="#">
                 <svg width="36" height="38">

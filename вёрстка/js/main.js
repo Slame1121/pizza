@@ -216,7 +216,7 @@ $('.basket-log__top-btn--left').click(function(e) {
 });
 
 
-$('.for-popup').magnificPopup();
+//$('.for-popup').magnificPopup();
 $('#slider').owlCarousel({
 	items: 1,
 	loop: true,

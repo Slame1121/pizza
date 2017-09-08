@@ -7,11 +7,29 @@ class ModelAccountCustomer extends Model {
 			$customer_group_id = $this->config->get('config_customer_group_id');
 		}
 
+		$data['firstname'] = '';
+        $data['lastname'] = '';
+        $data['telephone'] = $data['tel'];
+
 		$this->load->model('account/customer_group');
 
 		$customer_group_info = $this->model_account_customer_group->getCustomerGroup($customer_group_id);
 
-		$this->db->query("INSERT INTO " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$customer_group_id . "', store_id = '" . (int)$this->config->get('config_store_id') . "', language_id = '" . (int)$this->config->get('config_language_id') . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['lastname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']['account']) ? json_encode($data['custom_field']['account']) : '') . "', salt = '" . $this->db->escape($salt = token(9)) . "', password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($data['password'])))) . "', newsletter = '" . (isset($data['newsletter']) ? (int)$data['newsletter'] : 0) . "', ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "', status = '" . (int)!$customer_group_info['approval'] . "', date_added = NOW()");
+		$this->db->query("INSERT INTO " . DB_PREFIX . "customer 
+		                    SET customer_group_id = '" . (int)$customer_group_id . "', 
+		                    store_id = '" . (int)$this->config->get('config_store_id') . "', 
+		                    language_id = '" . (int)$this->config->get('config_language_id') . "', 
+		                    firstname = '" . $this->db->escape($data['firstname']) . "', 
+		                    lastname = '" . $this->db->escape($data['lastname']) . "', 
+		                    email = '" . $this->db->escape($data['email']) . "', 
+		                    telephone = '" . $this->db->escape($data['telephone']) . "', 
+		                    custom_field = '" . $this->db->escape(isset($data['custom_field']['account']) ? json_encode($data['custom_field']['account']) : '') . "', 
+		                    salt = '" . $this->db->escape($salt = token(9)) . "', 
+		                    password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($data['password'])))) . "', 
+		                    newsletter = '" . (isset($data['newsletter']) ? (int)$data['newsletter'] : 0) . "', 
+		                    ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "', 
+		                    status = '" . (int)!$customer_group_info['approval'] . "', 
+		                    date_added = NOW()");
 
 		$customer_id = $this->db->getLastId();
 
@@ -50,6 +68,12 @@ class ModelAccountCustomer extends Model {
 
 	public function getCustomerByEmail($email) {
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE LOWER(email) = '" . $this->db->escape(utf8_strtolower($email)) . "'");
+
+		return $query->row;
+	}
+
+	public function getCustomerByTel($tel) {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE LOWER(telephone) = '" . $this->db->escape(utf8_strtolower($tel)) . "'");
 
 		return $query->row;
 	}
@@ -118,6 +142,12 @@ class ModelAccountCustomer extends Model {
 
 	public function getLoginAttempts($email) {
 		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "customer_login` WHERE email = '" . $this->db->escape(utf8_strtolower($email)) . "'");
+
+		return $query->row;
+	}
+
+	public function getLoginAttemptsNew($tel) {
+		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "customer_login` WHERE telephone = '" . $this->db->escape(utf8_strtolower($tel)) . "'");
 
 		return $query->row;
 	}

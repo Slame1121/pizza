@@ -5,12 +5,17 @@
     <input type="hidden" name="product_id" value="{{ product_id }}">
     <input type="hidden" name="rating" value="0">
     <div class="card-reviews__box">
-
-        <input type="text" name="name" placeholder="{{ text_tip_name }}" required="required">
-        <input type="tel" name="phone" placeholder="{{ text_tip_tel }}" required="required">
+        <div>
+            <input type="text" name="name" placeholder="{{ text_tip_name }}" required="required">
+        </div>
+        <div>
+            <input type="tel" name="phone" placeholder="{{ text_tip_tel }}" required="required">
+        </div>
     </div>
     <div class="card-reviews__box">
-        <input type="email" name="email" placeholder="{{ text_tip_email }}" required="required">
+        <div>
+            <input type="email" name="email" placeholder="{{ text_tip_email }}" required="required">
+        </div>
         <div class="card-reviews__stars wrapper">
             <a class="card-reviews__stars-item" href="#"></a>
             <a class="card-reviews__stars-item" href="#"></a>
@@ -19,6 +24,8 @@
             <a class="card-reviews__stars-item" href="#"></a>
         </div>
     </div>
-    <textarea name="text" class="card-reviews__mess" placeholder="{{ text_tip_area }}" required="required"></textarea>
+    <div>
+        <textarea name="text" class="card-reviews__mess" placeholder="{{ text_tip_area }}" required="required"></textarea>
+    </div>
     <span id="reviewsAdd" class="card-reviews__submit" >{{ text_btn_name }}</span>
 </div>

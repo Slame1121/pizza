@@ -60,7 +60,7 @@ $('document').ready(function(){
 			var itemsProf = $('.profile-history__item');
 			var coundItem = 0;
 
-			for ( var itemPr of itemsProf) {
+			for ( var itemPr in itemsProf) {
 				if (coundItem > 1) {
 					itemPr.classList.add('hide');
 				}
@@ -76,7 +76,7 @@ $('document').ready(function(){
 
 		var items = $('.profile-history__item');
 
-		for (var item of items) {
+		for (var item in items) {
 			item.classList.remove('hide');
 		}
 
@@ -85,7 +85,7 @@ $('document').ready(function(){
 
 		var items = $('.header-box__link');
 
-		for ( var item of items) {
+		for ( var item in items) {
 			item.classList.remove('active');
 		}
 
@@ -215,32 +215,129 @@ $('document').ready(function(){
 			.siblings()
 			.removeClass('active');
 	});
+
+	var loginValid = valid;
 	var btn_caption;
+
+	loginValid.init('form.user-auth');
 	$('.sing-log__reg').on('click', function () {
-		$('#user-auth .label-email').removeClass('hidden');
-		$('#user-auth .sing-log__reg-wrap.login').removeClass('hidden');
-		$('#user-auth .sing-log__reg-wrap.regis').addClass('hidden');
-		$('#user-auth #auth_type').val('reg');
-        $('#user-auth .btn.sing-log__btn.btn-orange').html('Регистрация');
+		var action = $('form.user-auth input.auth_registr').val();
+        $('form.user-auth').prop('action', action);
+		$('form.user-auth .label-email').removeClass('hidden');
+        $('form.user-auth .label-password').removeClass('hidden');
+        $('form.user-auth .label-confirm').removeClass('hidden');
+        $('form.user-auth .label-tel').removeClass('hidden');
+
+		$('form.user-auth .sing-log__reg-wrap.login').removeClass('hidden');
+        $('form.user-auth .auth_confirm').removeClass('hidden');
+		$('form.user-auth .sing-log__reg-wrap.regis').addClass('hidden');
+		$('form.user-auth .auth_type').val('reg');
+		$('form.user-auth .auth_email').prop('required', true);
+        $('form.user-auth .auth_tel').prop('required', true);
+        $('form.user-auth .auth_pass').prop('required', true);
+        $('form.user-auth .btn.sing-log__btn.btn-orange').html('Регистрация');
         //auth
     })
 	$('.sing-log__log').on('click', function () {
-		$('#user-auth .label-email').addClass('hidden');
-        $('#user-auth .sing-log__reg-wrap.login').addClass('hidden');
-        $('#user-auth .sing-log__reg-wrap.regis').removeClass('hidden');
-		$('#user-auth #auth_type').val('auth');
-        $('#user-auth .btn.sing-log__btn.btn-orange').html('Войти');
+        var action = $('form.user-auth input.auth_login').val();
+        $('form.user-auth').prop('action', action);
+		$('form.user-auth .label-email').addClass('hidden');
+        $('form.user-auth .label-password').removeClass('hidden');
+        $('form.user-auth .label-confirm').removeClass('hidden');
+        $('form.user-auth .label-tel').removeClass('hidden');
+
+        $('form.user-auth .sing-log__reg-wrap.login').addClass('hidden');
+        $('form.user-auth .sing-log__reg-wrap.regis').removeClass('hidden');
+        $('form.user-auth .auth_confirm').removeClass('hidden');
+		$('form.user-auth .auth_type').val('auth');
+        $('form.user-auth .auth_email').prop('required', false);
+        $('form.user-auth .auth_tel').prop('required', true);
+        $('form.user-auth .auth_pass').prop('required', true);
+        $('form.user-auth .btn.sing-log__btn.btn-orange').html('Войти');
+        //auth
+    })
+	$('.auth-forgot').on('click', function () {
+        var action = $('form.user-auth input.auth_forgots').val();
+        $('form.user-auth').prop('action', action);
+
+        $('form.user-auth .label-email').removeClass('hidden');
+        $('form.user-auth .label-password').addClass('hidden');
+        $('form.user-auth .label-tel').addClass('hidden');
+        $('form.user-auth .label-confirm').addClass('hidden');
+
+        $('form.user-auth .auth_email').prop('required', true);
+        $('form.user-auth .auth_tel').prop('required', false);
+        $('form.user-auth .auth_pass').prop('required', false);
+
+        $('form.user-auth .sing-log__reg-wrap.regis').addClass('hidden');
+        $('form.user-auth .sing-log__reg-wrap.login').removeClass('hidden');
+		$('form.user-auth .auth_type').val('forgot');
+
+        $('form.user-auth .btn.sing-log__btn.btn-orange').html('Отправить');
         //auth
     })
 
-    $('#user-auth .btn.sing-log__btn.btn-orange').on('click',function () {
-        $('#user-auth').submit();
-    });
-    $('#user-auth').submit(function () {
-        e.preventDefault();
-		console.log('submit');
-    });
+    $('form.user-auth .btn.sing-log__btn.btn-orange').on('click',function () {
+        if(loginValid.valid('.user-auth')){
+            formAuth();
+        }else{
+            return false;
+        }
 
+    });
+    $('form.user-auth').submit(function (e) {
+        e.preventDefault();
+        return false;
+    });
+	function formAuth() {
+        var action = $('form.user-auth').prop('action');
+        var param = $('form.user-auth:visible input').serializeArray();
+        $.ajax({
+            url: action,
+            type: 'post',
+            data: param,
+            dataType: 'json',
+            crossDomain: true,
+            success: function(json) {
+                if(json.success){
+                    if(json.success.success){
+						if(json.success.redirect){
+							window.location.href = json.success.redirect;
+						}
+						if(json.success.text_success){
+                            $('.sing-log__log').click();
+                            $('form.user-auth .label-info span').html(json.success.text_success);
+                            $('form.user-auth .label-info').removeClass('hidden');
+                            setTimeout(function () {
+                                $('form.user-auth .label-info').addClass('hidden');
+                            },3000);
+						}
+                    }
+                    if(json.error){
+                        $.each(json.error, function(i, er) {
+                            var el = $("form.user-auth "+er.inp);
+                            $(el).next('.reviews-text-error').remove();
+                            htm = '<span class="reviews-text-error">'+er.text+'</span>';
+                            $(el).addClass('error').after(htm).show();
+                        });
+                    }
+                }else{
+                    if(json.error){
+                        $.each(json.error, function(i, er) {
+                        	var el = $("form.user-auth "+er.inp);
+                            $(el).next('.reviews-text-error').remove();
+                            htm = '<span class="reviews-text-error">'+er.text+'</span>';
+                            $(el).addClass('error').after(htm).show();
+                            //$("form.user-auth "+er.inp).addClass('error').attr('title',er.text);
+                        });
+                    }
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
 
 	$('a.noLink').on('click',function (e) {
         e.preventDefault();

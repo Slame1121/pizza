@@ -57,7 +57,11 @@ class ControllerCommonHeader extends Controller {
 		}
 
 		$data['text_logged'] = sprintf($this->language->get('text_logged'), $this->url->link('account/account', '', true), $this->customer->getFirstName(), $this->url->link('account/logout', '', true));
+        $data['form_login_action'] = $this->url->link('account/login/logins', '', true);
+        $data['form_register_action'] = $this->url->link('account/register/registr', '', true);
+        $data['form_forgot_action'] = $this->url->link('account/forgotten/forgot', '', true);
 		$data['form_login'] = $this->load->view('account/form_login', $data);
+
 		$data['home'] = $this->url->link('common/home');
 		$data['wishlist'] = $this->url->link('account/wishlist', '', true);
 		$data['logged'] = $this->customer->isLogged();
@@ -68,6 +72,7 @@ class ControllerCommonHeader extends Controller {
 		$data['transaction'] = $this->url->link('account/transaction', '', true);
 		$data['download'] = $this->url->link('account/download', '', true);
 		$data['logout'] = $this->url->link('account/logout', '', true);
+		$data['logout_home'] = $this->url->link('common/home', '', true);
 		$data['shopping_cart'] = $this->url->link('checkout/cart');
 		$data['checkout'] = $this->url->link('checkout/checkout', '', true);
 		$data['contact'] = $this->url->link('information/contact');

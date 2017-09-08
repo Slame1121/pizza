@@ -80,4 +80,44 @@ class ControllerAccountForgotten extends Controller {
 
 		return !$this->error;
 	}
+
+    public function forgot(){
+        $data = false;
+
+        if ($this->customer->isLogged()) {
+            $this->response->redirect($this->url->link('account/account', '', true));
+        }
+
+        $this->load->language('account/forgotten');
+        $this->load->model('account/customer');
+
+        $data['redirect'] = false;
+        $data['error'] = false;
+        $data['success'] = false;
+        $data['text_success'] = '';
+        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+            $this->model_account_customer->editCode($this->request->post['email'], token(40));
+            $data['text_success'] = $this->language->get('text_success');
+            $this->session->data['success'] = $this->language->get('text_success');
+
+            //$data['redirect'] = $this->url->link('account/login', '', true);
+            $data['success'] = true;
+        }else{
+            if (isset($this->error['warning'])) {
+                $json['error'][] = ['inp' => "input[name='email']" , 'text' => $this->error['warning']];
+            }
+        }
+
+
+
+
+        if (!isset($json['error'])) {
+            $json['success'] = $data;
+        }else{
+            $json['success'] = false;
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
 }

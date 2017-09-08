@@ -29,6 +29,7 @@
     <script src="/catalog/view/javascript/libs/jquery/jquery-3.2.1.min.js"></script>
     <script src="/catalog/view/javascript/libs/slider/owl.carousel.min.js"></script>
     <script src="/catalog/view/javascript/libs/popup/jquery.magnific-popup.min.js"></script>
+    <script src="/catalog/view/javascript/valid.js"></script>
     <script src="/catalog/view/javascript/main.js"></script>
     <script src="/catalog/view/javascript/cart.js"></script>
     {% for script in scripts %}
@@ -256,42 +257,39 @@
                         </div>
 
                     </div>
-                    <a class="header-sing noLink" href="#">Вход/Регистрация</a>
-                    {{ form_login }}
+                    {% if logged %}
+                        <a class="header-sing" href="{{ logout }}">{{ text_logout }}</a>
+                    {% else %}
+                        <a class="header-sing noLink" href="#">Вход/Регистрация</a>
+                        <div class="sing-log">{{ form_login }}</div>
+                    {% endif %}
                 </div>
-            </div><a class="burg" href="#">
+            </div>
+            <a class="burg noLink" href="#">
                 <svg width="36" height="38">
                     <g>
                         <rect x="0" y="22" fill="#e9ae4a" width="36" height="4"></rect>
                         <rect x="0" y="10" fill="#e9ae4a" width="36" height="4"></rect>
                         <rect x="0" y="34" fill="#e9ae4a" width="36" height="4"></rect>
                     </g>
-                </svg></a>
+                </svg>
+            </a>
         </div>
         <div class="drop-menu">
             <div class="drop-menu__bg"></div>
-            <div class="drop-menu__box"><a class="drop-menu__close" href="#"></a>
-                <div class="drop-menu__sing"><a class="drop-menu__sing-link" href="#"><span> </span>Вход/Регистрация</a></div>
+            <div class="drop-menu__box"><a class="drop-menu__close noLink" href="#"></a>
+                <div class="drop-menu__sing">
+                    {% if logged %}
+                        <a class="drop-menu__sing-link" href="{{ logout }}">{{ text_logout }}</a>
+                    {% else %}
+                        <a class="drop-menu__sing-link noLink" href="#"><span> </span>Вход/Регистрация</a>
+                    {% endif %}
+                </div>
                 <div class="drop-menu__sing-content">
-                    <form class="sing-log__form">
-                        <label class="sing-log__label"><span class="sing-log__label-name">Телефон</span>
-                            <input type="tel" name="tel">
-                        </label>
-                        <label class="sing-log__label"><span class="sing-log__label-name">Пароль</span>
-                            <input class="error" type="password" name="password" placeholder="Неверный пароль">
-                        </label>
-                        <div class="sing-log__box">
-                            <label class="sing-log__box-label">
-                                <input type="checkbox" name="checkbox"><span class="sing-log__box-check"></span><span class="sing-log__box-name">Запомнить меня</span>
-                            </label><a class="sing-log__box-link" href="#">Забыли пароль?</a>
-                        </div>
-                        <div class="sing-log__enter">
-                            <div class="sing-log__enter-title">Войти с помощью:</div><a class="sing-log__enter-item sing-log__enter-item-facebook" href="#"></a>
-                        </div>
-                        <div class="sing-log__controls">
-                            <div class="sing-log__reg-wrap"><a class="sing-log__reg" href="#">Зарегистрироваться</a></div><a class="btn sing-log__btn btn-orange" href="#">Войти</a>
-                        </div>
-                    </form>
+                    {% if logged %}
+                    {% else %}
+                    {{ form_login }}
+                    {% endif %}
                 </div>
                 <ul class="drop-menu__list">
                     <li class="drop-menu__item"><a class="drop-menu__link" href="#">Пицца</a></li>

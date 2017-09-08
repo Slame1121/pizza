@@ -1,0 +1,35 @@
+<div class="sing-log">
+    <form id="user-auth" class="sing-log__form">
+        <input id="auth_type" type="hidden" name="type_auth" value="auth">
+        <label class="sing-log__label label-email hidden">
+            <span class="sing-log__label-name ">E-mail</span>
+            <input type="email" name="email" placeholder="E-mail">
+        </label>
+        <label class="sing-log__label"><span class="sing-log__label-name">Телефон</span>
+            <input type="tel" name="tel" placeholder="телефон" required>
+        </label>
+        <label class="sing-log__label"><span class="sing-log__label-name">Пароль</span>
+            <input type="password" name="password" placeholder="пароль" required>
+        </label>
+        <div class="sing-log__box">
+            <label class="sing-log__box-label">
+                <input type="checkbox" name="checkbox"><span class="sing-log__box-check"></span>
+                <span class="sing-log__box-name">Запомнить меня</span>
+            </label>
+            <a class="sing-log__box-link noLink" href="#">Забыли пароль?</a>
+        </div>
+        <div class="sing-log__enter">
+            <div class="sing-log__enter-title">Войти с помощью:</div>
+            <a class="sing-log__enter-item sing-log__enter-item-facebook  noLink" href="#"></a>
+        </div>
+        <div class="sing-log__controls">
+            <div class="sing-log__reg-wrap login hidden">
+                <a class="sing-log__log  noLink" href="#">Авторизироваться</a>
+            </div>
+            <div class="sing-log__reg-wrap regis">
+                <a class="sing-log__reg  noLink" href="#">Зарегистрироваться</a>
+            </div>
+            <a class="btn sing-log__btn btn-orange  noLink" href="#">Войти</a>
+        </div>
+    </form>
+</div>

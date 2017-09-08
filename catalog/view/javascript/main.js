@@ -215,7 +215,37 @@ $('document').ready(function(){
 			.siblings()
 			.removeClass('active');
 	});
+	var btn_caption;
+	$('.sing-log__reg').on('click', function () {
+		$('#user-auth .label-email').removeClass('hidden');
+		$('#user-auth .sing-log__reg-wrap.login').removeClass('hidden');
+		$('#user-auth .sing-log__reg-wrap.regis').addClass('hidden');
+		$('#user-auth #auth_type').val('reg');
+        $('#user-auth .btn.sing-log__btn.btn-orange').html('Регистрация');
+        //auth
+    })
+	$('.sing-log__log').on('click', function () {
+		$('#user-auth .label-email').addClass('hidden');
+        $('#user-auth .sing-log__reg-wrap.login').addClass('hidden');
+        $('#user-auth .sing-log__reg-wrap.regis').removeClass('hidden');
+		$('#user-auth #auth_type').val('auth');
+        $('#user-auth .btn.sing-log__btn.btn-orange').html('Войти');
+        //auth
+    })
 
+    $('#user-auth .btn.sing-log__btn.btn-orange').on('click',function () {
+        $('#user-auth').submit();
+    });
+    $('#user-auth').submit(function () {
+        e.preventDefault();
+		console.log('submit');
+    });
+
+
+	$('a.noLink').on('click',function (e) {
+        e.preventDefault();
+        return false;
+    })
 
 
 

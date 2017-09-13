@@ -35,6 +35,8 @@ var Product = {
 			$('.ingredients-popup__item-size').html('('+size+')');
 			var price = $(this).find('.card-price__num').html();
 			$('.ingredients-popup__item-price').html(price);
+
+
 		});
 	},
 	addIdigrientToPizza: function () {
@@ -88,9 +90,15 @@ var Product = {
 		$('#add_product_with_attr').on('click', function(e){
 			e.stopPropagation();
 			e.preventDefault();
+			var magnificPopup = $.magnificPopup.instance;
+
+			magnificPopup.close();
 			cart.add(self.product_id,1, $(".option").serialize(), $('.igredient_input').serialize());
+
 		});
 	},
+
+
 	init : function(){
 		this.bindIndigrientsInPopUp();
 

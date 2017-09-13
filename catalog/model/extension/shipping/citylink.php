@@ -1,17 +1,17 @@
 <?php
 class ModelExtensionShippingCitylink extends Model {
-	function getQuote($address) {
+	function getQuote() {
 		$this->load->language('extension/shipping/citylink');
 
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('shipping_citylink_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		//$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('shipping_citylink_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 
-		if (!$this->config->get('shipping_citylink_geo_zone_id')) {
+		//if (!$this->config->get('shipping_citylink_geo_zone_id')) {
 			$status = true;
-		} elseif ($query->num_rows) {
-			$status = true;
-		} else {
-			$status = false;
-		}
+		//} elseif ($query->num_rows) {
+		//	$status = true;
+		//} else {
+		//	$status = false;
+		//}
 
 		$method_data = array();
 
@@ -35,7 +35,7 @@ class ModelExtensionShippingCitylink extends Model {
 
 			$quote_data = array();
 
-			if ((float)$cost) {
+			//if ((float)$cost) {
 				$quote_data['citylink'] = array(
 					'code'         => 'citylink.citylink',
 					'title'        => $this->language->get('text_title') . '  (' . $this->language->get('text_weight') . ' ' . $this->weight->format($weight, $this->config->get('config_weight_class_id')) . ')',
@@ -51,7 +51,7 @@ class ModelExtensionShippingCitylink extends Model {
 					'sort_order' => $this->config->get('shipping_citylink_sort_order'),
 					'error'      => false
 				);
-			}
+			//}
 		}
 
 		return $method_data;

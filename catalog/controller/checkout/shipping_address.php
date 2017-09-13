@@ -53,8 +53,8 @@ class ControllerCheckoutShippingAddress extends Controller {
 		} else {
 			$data['shipping_address_custom_field'] = array();
 		}
-		
-		$this->response->setOutput($this->load->view('checkout/shipping_address', $data));
+
+		return $this->load->view('checkout/shipping_address', $data);
 	}
 
 	public function save() {

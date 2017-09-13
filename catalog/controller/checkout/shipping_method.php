@@ -3,7 +3,7 @@ class ControllerCheckoutShippingMethod extends Controller {
 	public function index() {
 		$this->load->language('checkout/checkout');
 
-		if (isset($this->session->data['shipping_address'])) {
+		//if (isset($this->session->data['shipping_address'])) {
 			// Shipping Methods
 			$method_data = array();
 
@@ -15,7 +15,7 @@ class ControllerCheckoutShippingMethod extends Controller {
 				if ($this->config->get('shipping_' . $result['code'] . '_status')) {
 					$this->load->model('extension/shipping/' . $result['code']);
 
-					$quote = $this->{'model_extension_shipping_' . $result['code']}->getQuote($this->session->data['shipping_address']);
+					$quote = $this->{'model_extension_shipping_' . $result['code']}->getQuote();
 
 					if ($quote) {
 						$method_data[$result['code']] = array(
@@ -27,7 +27,6 @@ class ControllerCheckoutShippingMethod extends Controller {
 					}
 				}
 			}
-
 			$sort_order = array();
 
 			foreach ($method_data as $key => $value) {
@@ -37,7 +36,7 @@ class ControllerCheckoutShippingMethod extends Controller {
 			array_multisort($sort_order, SORT_ASC, $method_data);
 
 			$this->session->data['shipping_methods'] = $method_data;
-		}
+		//}
 
 		if (empty($this->session->data['shipping_methods'])) {
 			$data['error_warning'] = sprintf($this->language->get('error_no_shipping'), $this->url->link('information/contact'));
@@ -63,7 +62,7 @@ class ControllerCheckoutShippingMethod extends Controller {
 			$data['comment'] = '';
 		}
 		
-		$this->response->setOutput($this->load->view('checkout/shipping_method', $data));
+		return $this->load->view('checkout/shipping_method', $data);
 	}
 
 	public function save() {

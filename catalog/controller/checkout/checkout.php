@@ -1,9 +1,16 @@
 <?php
 class ControllerCheckoutCheckout extends Controller {
 	public function index() {
+
+
+		$this->response->setOutput($this->checkout());
+	}
+
+
+	public function checkout(){
 		// Validate cart has products and has stock.
 		if ((!$this->cart->hasProducts() && empty($this->session->data['vouchers'])) || (!$this->cart->hasStock() && !$this->config->get('config_stock_checkout'))) {
-			$this->response->redirect($this->url->link('checkout/cart'));
+			//$this->response->redirect($this->url->link('checkout/cart'));
 		}
 
 		// Validate minimum quantity requirements.
@@ -19,22 +26,21 @@ class ControllerCheckoutCheckout extends Controller {
 			}
 
 			if ($product['minimum'] > $product_total) {
-				$this->response->redirect($this->url->link('checkout/cart'));
+				//$this->response->redirect($this->url->link('checkout/cart'));
 			}
 		}
-
 		$this->load->language('checkout/checkout');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
-		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js');
-		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js');
-		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
-		$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+		//$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js');
+		//$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js');
+		//$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+		//$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
 
 		// Required by klarna
 		if ($this->config->get('payment_klarna_account') || $this->config->get('payment_klarna_invoice')) {
-			$this->document->addScript('http://cdn.klarna.com/public/kitt/toc/v1.0/js/klarna.terms.min.js');
+			//$this->document->addScript('http://cdn.klarna.com/public/kitt/toc/v1.0/js/klarna.terms.min.js');
 		}
 
 		$data['breadcrumbs'] = array();
@@ -59,13 +65,16 @@ class ControllerCheckoutCheckout extends Controller {
 		$data['text_checkout_payment_address'] = sprintf($this->language->get('text_checkout_payment_address'), 2);
 		$data['text_checkout_shipping_address'] = sprintf($this->language->get('text_checkout_shipping_address'), 3);
 		$data['text_checkout_shipping_method'] = sprintf($this->language->get('text_checkout_shipping_method'), 4);
-		
+
+		$data['shipping_method'] = $this->load->controller('checkout/shipping_method');
+		$data['payment_method'] = $this->load->controller('checkout/payment_method');
+		$data['shipping_adresses'] = $this->load->controller('checkout/shipping_address');
 		if ($this->cart->hasShipping()) {
 			$data['text_checkout_payment_method'] = sprintf($this->language->get('text_checkout_payment_method'), 5);
 			$data['text_checkout_confirm'] = sprintf($this->language->get('text_checkout_confirm'), 6);
 		} else {
 			$data['text_checkout_payment_method'] = sprintf($this->language->get('text_checkout_payment_method'), 3);
-			$data['text_checkout_confirm'] = sprintf($this->language->get('text_checkout_confirm'), 4);	
+			$data['text_checkout_confirm'] = sprintf($this->language->get('text_checkout_confirm'), 4);
 		}
 
 		if (isset($this->session->data['error'])) {
@@ -85,14 +94,14 @@ class ControllerCheckoutCheckout extends Controller {
 
 		$data['shipping_required'] = $this->cart->hasShipping();
 
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['column_right'] = $this->load->controller('common/column_right');
-		$data['content_top'] = $this->load->controller('common/content_top');
-		$data['content_bottom'] = $this->load->controller('common/content_bottom');
-		$data['footer'] = $this->load->controller('common/footer');
-		$data['header'] = $this->load->controller('common/header');
+		//$data['column_left'] = $this->load->controller('common/column_left');
+		//$data['column_right'] = $this->load->controller('common/column_right');
+		//$data['content_top'] = $this->load->controller('common/content_top');
+		//$data['content_bottom'] = $this->load->controller('common/content_bottom');
+		//$data['footer'] = $this->load->controller('common/footer');
+		//$data['header'] = $this->load->controller('common/header');
 
-		$this->response->setOutput($this->load->view('checkout/checkout', $data));
+		return $this->load->view('checkout/checkout', $data);
 	}
 
 	public function country() {
@@ -116,6 +125,26 @@ class ControllerCheckoutCheckout extends Controller {
 				'status'            => $country_info['status']
 			);
 		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
+
+	public function save(){
+
+		$this->session->data['shipping_address']['nas_punkt'] = $this->request->post['nas_punkt'];
+		$this->session->data['shipping_address']['street'] = $this->request->post['street'];
+		$this->session->data['shipping_address']['house'] = $this->request->post['house'];
+		$this->session->data['shipping_address']['paradnya'] = $this->request->post['paradnya'];
+		$this->session->data['shipping_address']['floor'] = $this->request->post['floor'];
+		$this->session->data['shipping_address']['flat'] = $this->request->post['flat'];
+		$this->session->data['shipping_address']['code_door'] = $this->request->post['code_door'];
+		$this->session->data['comment'] = $this->request->post['comment'];
+		$this->session->data['payment_method']['code'] = $this->request->post['payment_method'];
+		$json = ['success' => 1];
+
+
 
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));

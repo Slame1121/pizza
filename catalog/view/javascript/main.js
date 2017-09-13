@@ -194,27 +194,7 @@ $('document').ready(function(){
 // });
 
 
-	$('.basket-log__btn').click(function(e) {
-		e.preventDefault();
-
-		var box = $(this).closest('.basket-log__box');
-
-		box.next()
-			.addClass('active')
-			.siblings()
-			.removeClass('active');
-	});
-
-	$('.basket-log__top-btn--left').click(function(e) {
-		e.preventDefault();
-
-		var box = $(this).closest('.basket-log__box');
-
-		box.prev()
-			.addClass('active')
-			.siblings()
-			.removeClass('active');
-	});
+	
 
 	var loginValid = valid;
 	var btn_caption;

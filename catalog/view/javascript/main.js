@@ -324,7 +324,15 @@ $('document').ready(function(){
         return false;
     })
 
+    $('body').on('click', '.add-product-cart', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var id_p = $(this).attr('data-prodId');
+        var i_key = $(this).attr('data-key');
+        cart.add(id_p,1, $(".option"+id_p+"_"+i_key).serialize());
 
+        return false;
+    })
 
 
 

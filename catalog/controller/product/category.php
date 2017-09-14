@@ -193,6 +193,7 @@ class ControllerProductCategory extends Controller {
 				}
 
 				$options = [];
+                $opt_val=[];
 				foreach ($this->model_catalog_product->getProductOptions($result['product_id']) as $option) {
 					$product_option_value_data = array();
 
@@ -212,6 +213,7 @@ class ControllerProductCategory extends Controller {
 								'price'                   => $price,
 								'price_prefix'            => $option_value['price_prefix']
 							);
+                            $opt_val[] = array('prod_val'=>$option_value['product_option_value_id'],'opt_val'=>$option['product_option_id']);
 						}
 					}
 
@@ -225,11 +227,29 @@ class ControllerProductCategory extends Controller {
 						'required'             => $option['required']
 					);
 				}
+                $indigrients_groups = $this->model_catalog_product->getProductAttributes($result['product_id']);
+                $sostav = '';
+                if($indigrients_groups){
+                    foreach ($indigrients_groups as $s){
+                        if(isset($s["attribute"])){
+                            foreach ($s["attribute"] as $it){
+                                if($sostav == ''){
+                                    $sostav = $it["name"];
+                                }else{
+                                    $sostav .= ', '.$it["name"];
+                                }
+                            }
+                        }
+
+                    }
+                }
 
 				$products_template[] = array(
 					'product_id'  => $result['product_id'],
 					'thumb'       => $image,
 					'options'     => $options,
+                    'optV'        => $opt_val,
+                    'sostav'      => $sostav,
 					'name'        => $result['name'],
 					'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
 					'price'       => $price,

@@ -3,11 +3,7 @@
     <a class="hit-item__box mode-hit" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="Хит">
         <span class="hit-item__name">{{ product.name }}</span>
         <span class="hit-item__text">
-            {% for group_key, attribute_group in product.attribute_groups %}
-                {% for attr_key, attribute in attribute_group.attribute %}
-                    {{ attribute.name }}{% if group_key + 1 == product.attribute_groups|length and  attr_key + 1 == attribute_group.attribute|length %} {% else %} ,{% endif %}
-                {% endfor %}
-            {% endfor %}
+            {{ product.sostav }}
         </span>
         <span class="hit-item__info">
             {% for option in product.options %}
@@ -16,7 +12,10 @@
                         <span class="hit-item__info-block">
                             <span class="hit-item__info-size">{{ value.name }}<span>500 ± 50 гр</span></span>
                             <span class="hit-item__info-price">{{ value.price }}</span>
-                        </span><span class="btn hit-item__btn">Заказать</span>
+                        </span>
+                        <span class="btn hit-item__btn add-product-cart" data-prodId="{{ product.product_id }}" data-key="{{ key }}">Заказать</span>
+                        <input style="display: none;" class="option{{ product.product_id }}_{{ key }}" value="{{ product.optV[key]['prod_val'] }}" name="option[{{  product.optV[key]['opt_val'] }}]" type="checkbox" name="card-price" checked>
+
                     </span>
                 {% endfor %}
             {% endfor %}

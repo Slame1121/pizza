@@ -537,4 +537,53 @@ class ModelCatalogProduct extends Model {
 			return 0;
 		}
 	}
+
+    public function getRandProducts($cat_id,$limit,$notPr = 0) {
+        $_product = [];
+	    $product_data = false;//$this->cache->get('product.random.' . (int)$this->config->get('config_language_id') . '.' . (int)$this->config->get('config_store_id') . '.' . $this->config->get('config_customer_group_id') . '.' . (int)$limit);
+
+        if (!$product_data) {
+            $sql = "SELECT p.product_id 
+                    FROM " . DB_PREFIX . "product p 
+                    LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) 
+                    LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON (p.product_id = p2c.product_id) 
+                    WHERE p.status = '1' AND p.date_available <= NOW()";
+            if($cat_id > 0){
+                $sql .= " AND p2c.category_id = ".(int)$cat_id;
+            }
+
+            $sql .= " AND p2s.store_id = '" . (int)$this->config->get('config_store_id')."'";
+
+            if($notPr > 0){
+                $sql .=  " AND p.product_id != ".(int)$notPr;
+            }
+
+            $sql .= "  ORDER BY p.viewed DESC, p.date_added DESC ";
+
+            $query = $this->db->query($sql);
+
+
+            foreach ($query->rows as $result) {
+                $_product[]=$result['product_id'];
+            }
+
+            if(count($_product)> $limit){
+                $_t = array_rand($_product, (int)$limit);
+                foreach ($_t as $a){
+                    $_prod[] =  $_product[$a];
+                }
+                $product_data = $_prod;
+            }else{
+                $product_data = $_product;
+            }
+
+//            foreach ($tm as $result) {
+//                $product_data[$result] = $result;//$this->getProduct($result);
+//            }
+
+            $this->cache->set('product.random.' . (int)$this->config->get('config_language_id') . '.' . (int)$this->config->get('config_store_id') . '.' . $this->config->get('config_customer_group_id') . '.' . (int)$limit, $product_data);
+        }
+
+        return $product_data;
+    }
 }

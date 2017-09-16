@@ -1,55 +1,43 @@
-{% if not redirect %}
-<div class="table-responsive">
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <td class="text-left">{{ column_name }}</td>
-        <td class="text-left">{{ column_model }}</td>
-        <td class="text-right">{{ column_quantity }}</td>
-        <td class="text-right">{{ column_price }}</td>
-        <td class="text-right">{{ column_total }}</td>
-      </tr>
-    </thead>
-    <tbody>
-    
-    {% for product in products %}
-    <tr>
-      <td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a> {% for option in product.option %} <br />
-        &nbsp;<small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}
-        {% if product.recurring %} <br />
-        <span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small> {% endif %}</td>
-      <td class="text-left">{{ product.model }}</td>
-      <td class="text-right">{{ product.quantity }}</td>
-      <td class="text-right">{{ product.price }}</td>
-      <td class="text-right">{{ product.total }}</td>
-    </tr>
-    {% endfor %}
-    {% for voucher in vouchers %}
-    <tr>
-      <td class="text-left">{{ voucher.description }}</td>
-      <td class="text-left"></td>
-      <td class="text-right">1</td>
-      <td class="text-right">{{ voucher.amount }}</td>
-      <td class="text-right">{{ voucher.amount }}</td>
-    </tr>
-    {% endfor %}
-      </tbody>
-    
-    <tfoot>
-    
-    {% for total in totals %}
-    <tr>
-      <td colspan="4" class="text-right"><strong>{{ total.title }}:</strong></td>
-      <td class="text-right">{{ total.text }}</td>
-    </tr>
-    {% endfor %}
-      </tfoot>
-    
-  </table>
+<div class="basket-log__top">
+    <div class="basket-log__title">Подтверждение заказа</div><a class="basket-log__top-btn basket-log__top-btn--left" href="#">← Назад</a><a class="basket-log__close" href="#"></a>
 </div>
-{{ payment }}
-{% else %} 
-<script type="text/javascript"><!--
-location = '{{ redirect }}';
-//--></script> 
-{% endif %} 
+<div class="basket-log__content">
+    {% for product in products %}
+    <div class="basket-log__item basket-log__item--center" style="background-image: url({{ product.image }});">
+        <div class="basket-log__item-box"><a class="basket-log__item-name" href="{{ product.href }}">{{ product.name }}</a>
+            <div class="basket-log__item-price">{{ product.total }}</div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="basket-log__info">
+        <div class="basket-log__info-line">
+            <div class="basket-log__info-name">Населенный пункт:</div>
+            <div class="basket-log__info-value">{{ nas_punkt }}</div>
+        </div>
+        <div class="basket-log__info-line">
+            <div class="basket-log__info-name">Улица:</div>
+            <div class="basket-log__info-value">{{ street }}, {{ house }}</div>
+        </div>
+        <div class="basket-log__info-line">
+            <div class="basket-log__info-name">Телефон:</div>
+            <div class="basket-log__info-value">8 920 219 76 72</div>
+        </div>
+        <div class="basket-log__info-line">
+            <div class="basket-log__info-name">E-mail:</div>
+            <div class="basket-log__info-value">d.klinchuk@mil.ru</div>
+        </div>
+        <div class="basket-log__info-line">
+            <div class="basket-log__info-name">Количество бонусов:</div>
+            <div class="basket-log__info-value">0</div>
+        </div>
+        <div class="basket-log__info-line">
+            <div class="basket-log__info-name">Метод оплаты:</div>
+            <div class="basket-log__info-value">{{ payment_method }}</div>
+        </div>
+        <div class="basket-log__info-line basket-log__info-line--all">
+            <div class="basket-log__info-name">Всего:</div>
+            <div class="basket-log__info-value">436 грн</div>
+        </div>
+    </div>
+</div>
+<div class="basket-log__bottom basket-log__bottom--center"><a class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a></div>

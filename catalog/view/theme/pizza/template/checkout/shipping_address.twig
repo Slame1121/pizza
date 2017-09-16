@@ -1,22 +1,24 @@
 {% if addresses %}
-<div class="basket-log__form-box">
+<div class="basket-log__form-box" >
+    <div class="basket-log__form-box-address">
+        <a id="cart_adress_button" data-type="{% if addresses %}saved{% else %}new{% endif %}" href="#" ><i class="fa fa-plus"></i> Добавить адресс</a>
+    </div>
+</div>
+<div class="basket-log__form-box" id="cart-adress-saved">
     <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Сохраненные адреса</span>
         <select class="basket-log__form-value">
             {% for address in addresses %}
                 {% if address.address_id == address_id %}
-                    <option value="{{ address.address_id }}" selected="selected">{{ address.firstname }} {{ address.lastname }}, {{ address.address_1 }}, {{ address.city }}, {{ address.zone }}, {{ address.country }}</option>
+                    <option value="{{ address.address_id }}" selected="selected">{{ address.nas_punkt }}, {{ address.street }} {{ address.house }}</option>
                 {% else %}
-                    <option value="{{ address.address_id }}">{{ address.firstname }} {{ address.lastname }}, {{ address.address_1 }}, {{ address.city }}, {{ address.zone }}, {{ address.country }}</option>
+                    <option value="{{ address.address_id }}">{{ address.nas_punkt }}, {{ address.street }} {{ address.house }}</option>
                 {% endif %}
             {% endfor %}
         </select>
     </label>
 </div>
 {% endif %}
-<div class="basket-log__form-box">
-    <label class="basket-log__form-label"><span class="basket-log__form-name">Улица<span>*</span></span>
-        <input class="basket-log__form-value" type="text" name="street">
-    </label>
+<div class="basket-log__form-box {% if addresses %}hidden{% endif %}" id="cart-adress-new">
     <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
         <select name="nas_punkt" class="basket-log__form-value">
             <option>Новобирючево</option>
@@ -26,6 +28,9 @@
             <option>Мали</option>
             <option>Оскол</option>
         </select>
+    </label>
+    <label class="basket-log__form-label"><span class="basket-log__form-name">Улица<span>*</span></span>
+        <input class="basket-log__form-value" type="text" name="street">
     </label>
     <div class="basket-log__form-multi">
         <label class="basket-log__form-label"><span class="basket-log__form-name">Дом<span>*</span></span>

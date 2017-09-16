@@ -76,6 +76,10 @@ class ControllerAccountAccount extends Controller {
 		} else {
 			$data['affiliate'] = $this->url->link('account/affiliate/edit', '', true);
 		}
+
+
+			$data['form_action'] = $this->url->link('account/account/save', '', true);
+
 		
 		if ($affiliate_info) {		
 			$data['tracking'] = $this->url->link('account/tracking', '', true);
@@ -91,6 +95,18 @@ class ControllerAccountAccount extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 		
 		$this->response->setOutput($this->load->view('account/account', $data));
+	}
+
+	public function save(){
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+
+
+			$this->load->model('account/address');
+			$this->model_account_address->addAddress($this->customer->getId(), $this->request->post);
+
+			$this->index();
+		}
+
 	}
 
 	public function country() {
@@ -117,5 +133,10 @@ class ControllerAccountAccount extends Controller {
 
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
+	}
+
+	private function validateForm()
+	{
+		return true;
 	}
 }

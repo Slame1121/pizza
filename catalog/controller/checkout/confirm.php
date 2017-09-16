@@ -125,20 +125,14 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['email'] = $customer_info['email'];
 				$order_data['telephone'] = $customer_info['telephone'];
 				$order_data['custom_field'] = json_decode($customer_info['custom_field'], true);
-			} else{//if (isset($this->session->data['guest'])) {
+			} elseif(isset($this->session->data['guest'])) {
 				$order_data['customer_id'] = 0;
-				$order_data['customer_group_id'] = 0;
-				$order_data['firstname'] = '';
-				$order_data['lastname'] ='';
-				$order_data['email'] ='';
-				$order_data['telephone'] = '';
-				$order_data['custom_field'] = '';
-				//$order_data['customer_group_id'] = $this->session->data['guest']['customer_group_id'];
-				//$order_data['firstname'] = $this->session->data['guest']['firstname'];
-				//$order_data['lastname'] = $this->session->data['guest']['lastname'];
-				//$order_data['email'] = $this->session->data['guest']['email'];
-				//$order_data['telephone'] = $this->session->data['guest']['telephone'];
-				//$order_data['custom_field'] = $this->session->data['guest']['custom_field'];
+				$order_data['customer_group_id'] = $this->session->data['guest']['customer_group_id'];
+				$order_data['firstname'] = $this->session->data['guest']['firstname'];
+				$order_data['lastname'] = $this->session->data['guest']['lastname'];
+				$order_data['email'] = $this->session->data['guest']['email'];
+				$order_data['telephone'] = $this->session->data['guest']['telephone'];
+				$order_data['custom_field'] = $this->session->data['guest']['custom_field'];
 			}
 
 			$order_data['payment_firstname'] = '';
@@ -384,6 +378,13 @@ class ControllerCheckoutConfirm extends Controller {
 					}
 				}
 
+				$this->load->model('tool/image');
+
+				if ($product['image']) {
+					$image = $this->model_tool_image->resize($product['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_cart_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_cart_height'));
+				} else {
+					$image = '';
+				}
 				$data['products'][] = array(
 					'cart_id'    => $product['cart_id'],
 					'product_id' => $product['product_id'],
@@ -391,6 +392,7 @@ class ControllerCheckoutConfirm extends Controller {
 					'model'      => $product['model'],
 					'option'     => $option_data,
 					'recurring'  => $recurring,
+					'image'      => $image,
 					'quantity'   => $product['quantity'],
 					'subtract'   => $product['subtract'],
 					'price'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']),
@@ -398,7 +400,14 @@ class ControllerCheckoutConfirm extends Controller {
 					'href'       => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 				);
 			}
-
+			$data['street'] = $this->session->data['shipping_address']['street'];
+			$data['nas_punkt'] = $this->session->data['shipping_address']['nas_punkt'];
+			$data['house'] = $this->session->data['shipping_address']['house'];
+			$data['paradnya'] = $this->session->data['shipping_address']['paradnya'];
+			$data['floor'] = $this->session->data['shipping_address']['floor'];
+			$data['flat'] = $this->session->data['shipping_address']['flat'];
+			$data['code_door'] = $this->session->data['shipping_address']['code_door'];
+			$data['payment_method'] = $order_data['payment_method'];
 			// Gift Voucher
 			$data['vouchers'] = array();
 

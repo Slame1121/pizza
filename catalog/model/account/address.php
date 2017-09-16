@@ -1,7 +1,7 @@
 <?php
 class ModelAccountAddress extends Model {
 	public function addAddress($customer_id, $data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "address SET customer_id = '" . (int)$customer_id . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['lastname']) . "', company = '" . $this->db->escape($data['company']) . "', address_1 = '" . $this->db->escape($data['address_1']) . "', address_2 = '" . $this->db->escape($data['address_2']) . "', postcode = '" . $this->db->escape($data['postcode']) . "', city = '" . $this->db->escape($data['city']) . "', zone_id = '" . (int)$data['zone_id'] . "', country_id = '" . (int)$data['country_id'] . "', custom_field = '" . $this->db->escape(isset($data['custom_field']['address']) ? json_encode($data['custom_field']['address']) : '') . "'");
+		$this->db->query("INSERT INTO " . DB_PREFIX . "address SET customer_id = '" . (int)$customer_id . "', nas_punkt = '" . $data['nas_punkt'] ."', street= '" . $data['street'] . "', house= '" . $data['house'] . "', paradnya= '" . $data['paradnya'] . "', floor= '" . $data['floor']. "', flat = '" . $data['flat']. "', code_door = '" . $data['code_door'] . "'");
 
 		$address_id = $this->db->getLastId();
 
@@ -69,7 +69,14 @@ class ModelAccountAddress extends Model {
 				'iso_code_2'     => $iso_code_2,
 				'iso_code_3'     => $iso_code_3,
 				'address_format' => $address_format,
-				'custom_field'   => json_decode($address_query->row['custom_field'], true)
+				'custom_field'   => json_decode($address_query->row['custom_field'], true),
+				'nas_punkt'      => $address_query->row['nas_punkt'],
+				'street'      => $address_query->row['street'],
+				'house'      => $address_query->row['house'],
+				'paradnya'      => $address_query->row['paradnya'],
+				'floor'      => $address_query->row['floor'],
+				'flat'      => $address_query->row['flat'],
+				'code_door'      => $address_query->row['code_door']
 			);
 
 			return $address_data;
@@ -125,8 +132,14 @@ class ModelAccountAddress extends Model {
 				'iso_code_2'     => $iso_code_2,
 				'iso_code_3'     => $iso_code_3,
 				'address_format' => $address_format,
-				'custom_field'   => json_decode($result['custom_field'], true)
-
+				'custom_field'   => json_decode($result['custom_field'], true),
+				'nas_punkt'      => $result['nas_punkt'],
+				'street'      => $result['street'],
+				'house'      => $result['house'],
+				'paradnya'      => $result['paradnya'],
+				'floor'      => $result['floor'],
+				'flat'      => $result['flat'],
+				'code_door'      => $result['code_door']
 			);
 		}
 

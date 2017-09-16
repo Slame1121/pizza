@@ -8,16 +8,13 @@
 
         <div class="basket-log__form-box">
             <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Телефон<span>*</span></span>
-                <select class="basket-log__form-value">
+                <select name="telephone" class="basket-log__form-value">
                     <option>8 923 312 22 11</option>
                     <option>7 232 234 23 12</option>
                 </select>
             </label>
-            <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">E-mail<span>*</span></span>
-                <select class="basket-log__form-value">
-                    <option>emailone@mail.il</option>
-                    <option>emailtwo@mail.il</option>
-                </select>
+            <label class="basket-log__form-label basket-log__form-label--email"><span class="basket-log__form-name">E-mail<span>*</span></span>
+                <input class="basket-log__form-value" type="text" value="{{ email }}" name="email">
             </label>
         </div>
         <div class="basket-log__form-box">
@@ -33,11 +30,13 @@
         {{ payment_method }}
         <div class="basket-log__form-box">
             <div class="basket-log__form-summa">
-                <div class="basket-log__form-name">Цена с купоном</div>
-                <div class="basket-log__form-num">436 грн</div>
+                <div class="basket-log__form-name">Цена</div>
+                <div class="basket-log__form-num">{{ total_cart_price }} грн</div>
             </div>
         </div>
-        <div class="basket-log__form-text">Вы получите 178.58 гривен на бонусный счет за этот заказ, <br>если сейчас присоединитесь к семье <a href="#">Pizza Famiglia</a></div>
+        {%  if not logged %}
+            <div class="basket-log__form-text">Вы получите 178.58 гривен на бонусный счет за этот заказ, <br>если сейчас присоединитесь к семье <a href="#">Pizza Famiglia</a></div>
+        {%  endif %}
     </form>
 </div>
 <div class="basket-log__bottom basket-log__bottom--center"><a data-type="checkout" class="btn basket-log__btn btn-orange" href="#">Далее</a></div>

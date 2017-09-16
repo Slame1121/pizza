@@ -13,7 +13,8 @@ var Checkout = {
 						url: "/index.php?route=checkout/confirm",
 						dataType: "html",
 						success: function(html) {
-
+							$('.basket-log__box').removeClass('active');
+							$('#checkout-confirm').empty().addClass('active').append(html);
 						},
 						error: function() {
 							alert('error handing here');
@@ -79,8 +80,32 @@ var Checkout = {
 		}
 
 	},
+	bindAddAddress: function () {
+		$('body').on('click', '#cart_adress_button', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+
+			var type = $(this).attr('data-type');
+			if(type == 'saved'){
+				$('#cart-adress-new').removeClass('hidden');
+				$('#cart-adress-saved').addClass('hidden');
+				$(this).attr('data-type', 'new');
+				$(this).html('Выбрать из сохранённых');
+			}else{
+				$('#cart-adress-new').addClass('hidden');
+				$('#cart-adress-saved').removeClass('hidden');
+				$(this).attr('data-type', 'saved');
+				$(this).html('+ Добавить адресс');
+			}
+
+
+
+		})
+	},
 	init: function(){
 		this.bindCheckoutButtons();
+
+		this.bindAddAddress();
 	}
 };
 

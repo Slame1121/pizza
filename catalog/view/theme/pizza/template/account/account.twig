@@ -1,62 +1,293 @@
 {{ header }}
-<div id="account-account" class="container">
-  <ul class="breadcrumb">
-    {% for breadcrumb in breadcrumbs %}
-    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
-    {% endfor %}
-  </ul>
-  {% if success %}
-  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>
-  {% endif %}
-  <div class="row">{{ column_left }}
-    {% if column_left and column_right %}
-    {% set class = 'col-sm-6' %}
-    {% elseif column_left or column_right %}
-    {% set class = 'col-sm-9' %}
-    {% else %}
-    {% set class = 'col-sm-12' %}
-    {% endif %}
-    <div id="content" class="{{ class }}">{{ content_top }}
-      <h2>{{ text_my_account }}</h2>
-      <ul class="list-unstyled">
-        <li><a href="{{ edit }}">{{ text_edit }}</a></li>
-        <li><a href="{{ password }}">{{ text_password }}</a></li>
-        <li><a href="{{ address }}">{{ text_address }}</a></li>
-        <li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>
-      </ul>
-      {% if credit_cards %}
-      <h2>{{ text_credit_card }}</h2>
-      <ul class="list-unstyled">
-        {% for credit_card in credit_cards %}
-        <li><a href="{{ credit_card.href }}">{{ credit_card.name }}</a></li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-      <h2>{{ text_my_orders }}</h2>
-      <ul class="list-unstyled">
-        <li><a href="{{ order }}">{{ text_order }}</a></li>
-        <li><a href="{{ download }}">{{ text_download }}</a></li>
-        {% if reward %}
-        <li><a href="{{ reward }}">{{ text_reward }}</a></li>
-        {% endif %}
-        <li><a href="{{ return }}">{{ text_return }}</a></li>
-        <li><a href="{{ transaction }}">{{ text_transaction }}</a></li>
-        <li><a href="{{ recurring }}">{{ text_recurring }}</a></li>
-      </ul>
-      <h2>{{ text_my_affiliate }}</h2>
-      <ul class="list-unstyled">
-        {% if not tracking %}
-        <li><a href="{{ affiliate }}">{{ text_affiliate_add }}</a></li>
-        {% else %}
-        <li><a href="{{ affiliate }}">{{ text_affiliate_edit }}</a></li>
-        <li><a href="{{ tracking }}">{{ text_tracking }}</a></li>
-        {% endif %}
-      </ul>
-      <h2>{{ text_my_newsletter }}</h2>
-      <ul class="list-unstyled">
-        <li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>
-      </ul>
-      {{ content_bottom }}</div>
-    {{ column_right }}</div>
+<section class="profile page">
+    <div class="container">
+        <div class="profile__content">
+            <h2>Здравствуйте, Алексей!</h2>
+            <div class="profile__title">У вас на счету <a class="for-popup" href="#bonus-popup">238 бонусов.</a></div>
+            <div class="profile-history">
+                <div class="profile__title">Ваша история заказов:</div>
+                <div class="profile-history__content">
+                    <div class="profile-history__item">
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Адрес:</div>
+                            <div class="profile-history__line-value">Бульвар победы, 41</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Телефон:</div>
+                            <div class="profile-history__line-value">920 219 76 72</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Заказ:</div>
+                            <div class="profile-history__line-value"> <span>Итальянская, 40 см</span><span>Четыре сыра, 30 см</span><span>Салат, 120 гр</span></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">ВСЕГО:</div>
+                            <div class="profile-history__line-value"> <b>585 грн</b></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name"></div>
+                            <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="card.html">Повторить заказ</a></div>
+                        </div>
+                    </div>
+                    <div class="profile-history__item">
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Адрес:</div>
+                            <div class="profile-history__line-value">Бульвар победы, 41</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Телефон:</div>
+                            <div class="profile-history__line-value">920 219 76 72</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Заказ:</div>
+                            <div class="profile-history__line-value"> <span>Итальянская, 40 см</span><span>Четыре сыра, 30 см</span><span>Салат, 120 гр</span></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">ВСЕГО:</div>
+                            <div class="profile-history__line-value"> <b>585 грн</b></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name"></div>
+                            <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="card.html">Повторить заказ</a></div>
+                        </div>
+                    </div>
+                    <div class="profile-history__item">
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Адрес:</div>
+                            <div class="profile-history__line-value">Бульвар победы, 41</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Телефон:</div>
+                            <div class="profile-history__line-value">920 219 76 72</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Заказ:</div>
+                            <div class="profile-history__line-value"> <span>Итальянская, 40 см</span><span>Четыре сыра, 30 см</span><span>Салат, 120 гр</span></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">ВСЕГО:</div>
+                            <div class="profile-history__line-value"> <b>585 грн</b></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name"></div>
+                            <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="card.html">Повторить заказ</a></div>
+                        </div>
+                    </div>
+                    <div class="profile-history__item">
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Адрес:</div>
+                            <div class="profile-history__line-value">Бульвар победы, 41</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Телефон:</div>
+                            <div class="profile-history__line-value">920 219 76 72</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Заказ:</div>
+                            <div class="profile-history__line-value"> <span>Итальянская, 40 см</span><span>Четыре сыра, 30 см</span><span>Салат, 120 гр</span></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">ВСЕГО:</div>
+                            <div class="profile-history__line-value"> <b>585 грн</b></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name"></div>
+                            <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="card.html">Повторить заказ</a></div>
+                        </div>
+                    </div>
+                    <div class="profile-history__item">
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Адрес:</div>
+                            <div class="profile-history__line-value">Бульвар победы, 41</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Телефон:</div>
+                            <div class="profile-history__line-value">920 219 76 72</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Заказ:</div>
+                            <div class="profile-history__line-value"> <span>Итальянская, 40 см</span><span>Четыре сыра, 30 см</span><span>Салат, 120 гр</span></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">ВСЕГО:</div>
+                            <div class="profile-history__line-value"> <b>585 грн</b></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name"></div>
+                            <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="card.html">Повторить заказ</a></div>
+                        </div>
+                    </div>
+                    <div class="profile-history__item">
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Адрес:</div>
+                            <div class="profile-history__line-value">Бульвар победы, 41</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Телефон:</div>
+                            <div class="profile-history__line-value">920 219 76 72</div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">Заказ:</div>
+                            <div class="profile-history__line-value"> <span>Итальянская, 40 см</span><span>Четыре сыра, 30 см</span><span>Салат, 120 гр</span></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name">ВСЕГО:</div>
+                            <div class="profile-history__line-value"> <b>585 грн</b></div>
+                        </div>
+                        <div class="profile-history__line">
+                            <div class="profile-history__line-name"></div>
+                            <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="card.html">Повторить заказ</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-history__conrols"><a href="#">Показать ещё</a></div>
+            </div>
+            <div class="profile__title">Вы можете отредактировать свои персональные данные</div>
+            <form class="profile-form" method="post" action="{{ form_action }}">
+                <div class="profile-form__content">
+                    <div class="profile-form__box">
+                        <label class="profile-form__label"><span class="profile-form__box-name">Адрес</span>
+                            <input type="text" name="box">
+                        </label>
+                        <div class="profile-form__add-label"><a href="#">+ Добавить адрес</a></div>
+                        <div class="profile-form__drop">
+                            <label class="profile-form__label"><span class="profile-form__box-name">Населённый пункт</span>
+                                <select name="nas_punkt" class="basket-log__form-value">
+                                    <option>Вишневое</option>
+                                    <option>Софиевская Борщаговка</option>
+                                    <option>Петропавловская Борщаговка</option>
+                                    <option>Святопетровское</option>
+                                    <option>Киев</option>
+                                </select>
+                            </label>
+                            <label class="profile-form__label"><span class="profile-form__box-name">Улица</span>
+                                <input type="text" name="street">
+                            </label>
+                            <div class="profile-form__drop-box">
+                                <div class="profile-form__drop-item">
+                                    <label class="profile-form__label"><span class="profile-form__box-name">Дом</span>
+                                        <input type="text" name="house">
+                                    </label>
+                                </div>
+                                <div class="profile-form__drop-item">
+                                    <label class="profile-form__label"><span class="profile-form__box-name">Парадная</span>
+                                        <input type="text" name="paradnya">
+                                    </label>
+                                </div>
+                                <div class="profile-form__drop-item">
+                                    <label class="profile-form__label"><span class="profile-form__box-name">Этаж</span>
+                                        <input type="text" name="floor">
+                                    </label>
+                                </div>
+                                <div class="profile-form__drop-item">
+                                    <label class="profile-form__label"><span class="profile-form__box-name">Квартира</span>
+                                        <input type="text" name="flat">
+                                    </label>
+                                </div>
+                                <div class="profile-form__drop-item">
+                                    <label class="profile-form__label"><span class="profile-form__box-name">Код двери</span>
+                                        <input type="text" name="code_door">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="profile-form__label"><span class="profile-form__box-name">Телефон</span>
+                            <input type="tel" name="tel">
+                        </label>
+                        <label class="profile-form__label"><span class="profile-form__box-name">E-mail</span>
+                            <input type="email" name="email">
+                        </label>
+                    </div>
+                    <div class="profile-form__box">
+                        <label class="profile-form__label"><span class="profile-form__box-name">Новый пароль</span>
+                            <input type="password" name="password">
+                        </label>
+                        <label class="profile-form__label"><span class="profile-form__box-name">Повторите новый пароль</span>
+                            <input type="password" name="password">
+                        </label>
+                    </div>
+                </div>
+                <div class="profile-form__controls"><input type="submit" class="btn profile-form__btn btn-orange" value="Сохранить"></div>
+            </form>
+        </div>
+    </div>
+</section>
+<div class="hidden">
+    <div class="bonus-popup container" id="bonus-popup">
+        <div class="bonus-popup__top">
+            <div class="bonus-popup__line">
+                <div class="bonus-popup__line-name">Бонусов доступно:</div>
+                <div class="bonus-popup__line-value">50,00</div>
+            </div>
+            <div class="bonus-popup__line">
+                <div class="bonus-popup__line-name">Бонусов потрачено:</div>
+                <div class="bonus-popup__line-value">310,56</div>
+            </div>
+            <div class="bonus-popup__line">
+                <div class="bonus-popup__line-name">Начислено бонусов:</div>
+                <div class="bonus-popup__line-value">25,85</div>
+            </div>
+            <div class="bonus-popup__line">
+                <div class="bonus-popup__line-name">Бонусов потеряно:</div>
+                <div class="bonus-popup__line-value">268,25</div>
+            </div>
+        </div>
+        <div class="bonus-popup__table">
+            <div class="bonus-popup__table-top">
+                <div class="bonus-popup__table-line--wrap">
+                    <div class="bonus-popup__table-line">
+                        <div class="bonus-popup__table-date" data-info="Дата заказа">Дата заказа</div>
+                        <div class="bonus-popup__table-phone" data-info="Телефон">Телефон</div>
+                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">Сумма заказа</div>
+                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">Начислено бонусов</div>
+                        <div class="bonus-popup__table-num" data-info="Потрачено из них">Потрачено из них</div>
+                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">Дата сгорания бонусов</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bonus-popup__table-content">
+                <div class="bonus-popup__table-line--wrap">
+                    <div class="bonus-popup__table-line">
+                        <div class="bonus-popup__table-date" data-info="Дата заказа">16.06.2019</div>
+                        <div class="bonus-popup__table-phone" data-info="Телефон">920 219 76 72</div>
+                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">586 грн</div>
+                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">50</div>
+                        <div class="bonus-popup__table-num" data-info="Потрачено из них">20</div>
+                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">25.10.2018</div>
+                    </div>
+                </div>
+                <div class="bonus-popup__table-line--wrap">
+                    <div class="bonus-popup__table-line">
+                        <div class="bonus-popup__table-date" data-info="Дата заказа">16.06.2019</div>
+                        <div class="bonus-popup__table-phone" data-info="Телефон">920 219 76 72</div>
+                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">586 грн</div>
+                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">50</div>
+                        <div class="bonus-popup__table-num" data-info="Потрачено из них">20</div>
+                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">25.10.2018</div>
+                    </div>
+                </div>
+                <div class="bonus-popup__table-line--wrap">
+                    <div class="bonus-popup__table-line">
+                        <div class="bonus-popup__table-date" data-info="Дата заказа">16.06.2019</div>
+                        <div class="bonus-popup__table-phone" data-info="Телефон">920 219 76 72</div>
+                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">586 грн</div>
+                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">50</div>
+                        <div class="bonus-popup__table-num" data-info="Потрачено из них">20</div>
+                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">25.10.2018</div>
+                    </div>
+                </div>
+                <div class="bonus-popup__table-line--wrap">
+                    <div class="bonus-popup__table-line">
+                        <div class="bonus-popup__table-date" data-info="Дата заказа">16.06.2019</div>
+                        <div class="bonus-popup__table-phone" data-info="Телефон">920 219 76 72</div>
+                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">586 грн</div>
+                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">50</div>
+                        <div class="bonus-popup__table-num" data-info="Потрачено из них">20</div>
+                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">25.10.2018</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {{ footer }}

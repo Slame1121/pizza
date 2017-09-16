@@ -60,6 +60,8 @@ class ControllerCheckoutCheckout extends Controller {
 			'href' => $this->url->link('checkout/checkout', '', true)
 		);
 
+		$data['total_cart_price'] = $this->cart->getTotal();
+
 		$data['text_checkout_option'] = sprintf($this->language->get('text_checkout_option'), 1);
 		$data['text_checkout_account'] = sprintf($this->language->get('text_checkout_account'), 2);
 		$data['text_checkout_payment_address'] = sprintf($this->language->get('text_checkout_payment_address'), 2);
@@ -93,6 +95,17 @@ class ControllerCheckoutCheckout extends Controller {
 		}
 
 		$data['shipping_required'] = $this->cart->hasShipping();
+
+		if(isset($this->session->data['guest']['email'])){
+			$data['email'] = $this->session->data['guest']['email'];
+		}else{
+			if($this->customer->isLogged()){
+				$data['email'] = $this->customer->getEmail();
+			}else{
+				$data['email'] = '';
+			}
+
+		}
 
 		//$data['column_left'] = $this->load->controller('common/column_left');
 		//$data['column_right'] = $this->load->controller('common/column_right');
@@ -133,6 +146,19 @@ class ControllerCheckoutCheckout extends Controller {
 
 	public function save(){
 
+		$this->session->data['account'] = 'guest';
+		if (isset($this->request->post['customer_group_id']) && is_array($this->config->get('config_customer_group_display')) && in_array($this->request->post['customer_group_id'], $this->config->get('config_customer_group_display'))) {
+			$customer_group_id = $this->request->post['customer_group_id'];
+		} else {
+			$customer_group_id = $this->config->get('config_customer_group_id');
+		}
+		$this->session->data['guest']['customer_group_id'] = $customer_group_id;
+		//$this->session->data['guest']['firstname'] = $this->request->post['firstname'];
+		//$this->session->data['guest']['lastname'] = $this->request->post['lastname'];
+		$this->session->data['guest']['email'] = $this->request->post['email'];
+		$this->session->data['guest']['telephone'] = $this->request->post['telephone'];
+
+
 		$this->session->data['shipping_address']['nas_punkt'] = $this->request->post['nas_punkt'];
 		$this->session->data['shipping_address']['street'] = $this->request->post['street'];
 		$this->session->data['shipping_address']['house'] = $this->request->post['house'];
@@ -142,6 +168,12 @@ class ControllerCheckoutCheckout extends Controller {
 		$this->session->data['shipping_address']['code_door'] = $this->request->post['code_door'];
 		$this->session->data['comment'] = $this->request->post['comment'];
 		$this->session->data['payment_method']['code'] = $this->request->post['payment_method'];
+		if(isset($this->session->data['payment_methods'][$this->request->post['payment_method']])){
+			$payment_method_title = $this->session->data['payment_methods'][$this->request->post['payment_method']]['title'];
+		}else{
+			$payment_method_title = '';
+		}
+		$this->session->data['payment_method']['title'] = $payment_method_title;
 		$json = ['success' => 1];
 
 

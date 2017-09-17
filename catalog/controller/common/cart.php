@@ -53,7 +53,9 @@ class ControllerCommonCart extends Controller {
 		$this->load->model('tool/upload');
 
 		$data['products'] = array();
+		$this->load->model('catalog/catalog');
 
+		$all_attrs = $this->model_catalog_catalog->getAllAtributes();
 		foreach ($this->cart->getProducts() as $product) {
 			if ($product['image']) {
 				$image = $this->model_tool_image->resize($product['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_cart_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_cart_height'));
@@ -94,9 +96,7 @@ class ControllerCommonCart extends Controller {
 				$total = false;
 			}
 
-			$this->load->model('catalog/catalog');
 
-			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
 
 
 			$attributes = [];
@@ -140,8 +140,8 @@ class ControllerCommonCart extends Controller {
 
 		foreach ($totals as $total) {
 			$data['totals'][] = array(
-				'title' => $total['title'],
-				'text'  => $this->currency->format($total['value'], $this->session->data['currency']),
+				//'title' => $total['title'],
+				//'text'  => $this->currency->format($total['value'], $this->session->data['currency']),
 			);
 		}
 

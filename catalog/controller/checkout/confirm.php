@@ -129,10 +129,10 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['customer_id'] = 0;
 				$order_data['customer_group_id'] = $this->session->data['guest']['customer_group_id'];
 				$order_data['firstname'] = $this->session->data['guest']['firstname'];
-				$order_data['lastname'] = $this->session->data['guest']['lastname'];
+				$order_data['lastname'] = '';//$this->session->data['guest']['lastname'];
 				$order_data['email'] = $this->session->data['guest']['email'];
 				$order_data['telephone'] = $this->session->data['guest']['telephone'];
-				$order_data['custom_field'] = $this->session->data['guest']['custom_field'];
+				$order_data['custom_field'] = '';//$this->session->data['guest']['custom_field'];
 			}
 
 			$order_data['payment_firstname'] = '';
@@ -161,7 +161,7 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['payment_code'] = '';
 			}
 
-			if ($this->cart->hasShipping()) {
+			//if ($this->cart->hasShipping()) {
 
 				$order_data['nas_punkt'] = $this->session->data['shipping_address']['nas_punkt'];
 				$order_data['street'] = $this->session->data['shipping_address']['street'];
@@ -195,7 +195,7 @@ class ControllerCheckoutConfirm extends Controller {
 				} else {
 					$order_data['shipping_code'] = '';
 				}
-			} else {
+			/*} else {
 				$order_data['shipping_firstname'] = '';
 				$order_data['shipping_lastname'] = '';
 				$order_data['shipping_company'] = '';
@@ -212,7 +212,7 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['shipping_method'] = '';
 				$order_data['shipping_code'] = '';
 			}
-
+*/
 			$order_data['products'] = array();
 
 			foreach ($this->cart->getProducts() as $product) {
@@ -229,6 +229,7 @@ class ControllerCheckoutConfirm extends Controller {
 						'type'                    => $option['type']
 					);
 				}
+
 
 				$order_data['products'][] = array(
 					'product_id' => $product['product_id'],
@@ -327,13 +328,13 @@ class ControllerCheckoutConfirm extends Controller {
 			}
 
 			$this->load->model('checkout/order');
-
 			$this->session->data['order_id'] = $this->model_checkout_order->addOrder($order_data);
 
 			$this->load->model('tool/upload');
 
 			$data['products'] = array();
-
+			$this->load->model('catalog/catalog');
+			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
 			foreach ($this->cart->getProducts() as $product) {
 				$option_data = array();
 
@@ -385,6 +386,18 @@ class ControllerCheckoutConfirm extends Controller {
 				} else {
 					$image = '';
 				}
+
+				$attributes = [];
+
+				foreach($product['attrs'] as $igredient_id => $count){
+					$attributes[] = [
+						'id' => $igredient_id,
+						'name' => $all_attrs[$igredient_id]['name'],
+						'count' => $count
+					];
+				}
+
+
 				$data['products'][] = array(
 					'cart_id'    => $product['cart_id'],
 					'product_id' => $product['product_id'],
@@ -392,6 +405,7 @@ class ControllerCheckoutConfirm extends Controller {
 					'model'      => $product['model'],
 					'option'     => $option_data,
 					'recurring'  => $recurring,
+					'attrs'      => $attributes,
 					'image'      => $image,
 					'quantity'   => $product['quantity'],
 					'subtract'   => $product['subtract'],
@@ -400,14 +414,18 @@ class ControllerCheckoutConfirm extends Controller {
 					'href'       => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 				);
 			}
-			$data['street'] = $this->session->data['shipping_address']['street'];
-			$data['nas_punkt'] = $this->session->data['shipping_address']['nas_punkt'];
-			$data['house'] = $this->session->data['shipping_address']['house'];
-			$data['paradnya'] = $this->session->data['shipping_address']['paradnya'];
-			$data['floor'] = $this->session->data['shipping_address']['floor'];
-			$data['flat'] = $this->session->data['shipping_address']['flat'];
-			$data['code_door'] = $this->session->data['shipping_address']['code_door'];
+			$data['street'] = $order_data['street'];
+			$data['nas_punkt'] = $order_data['nas_punkt'];
+			$data['house'] = $order_data['house'];
+			$data['paradnya'] = $order_data['paradnya'];
+			$data['floor'] = $order_data['floor'];
+			$data['flat'] = $order_data['flat'];
+			$data['code_door'] = $order_data['code_door'];
 			$data['payment_method'] = $order_data['payment_method'];
+
+
+			$data['firstname'] = $order_data['firstname'];
+			$data['email'] = $order_data['email'];
 			// Gift Voucher
 			$data['vouchers'] = array();
 

@@ -63,13 +63,22 @@
       display: flex;
       align-items: center;
       padding: 20px 65px 20px 105px;
+	  flex-direction: column;
       .basket-log__item-box {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+		&__attrs{
+			font-size:14px;
+		}
         .basket-log__item-name {
-          margin-bottom: 0; } } }
+          margin-bottom: 0; }
+	  	span{
+		  font-size:14px;
+		}
+	  } }
     &-price {
       margin-left: 30px;
       font-size: 18px;
@@ -216,6 +225,10 @@
       font-weight: 300;
       text-align: right;
       padding-top: 8px;
+
+	  &.error{
+		color:red;
+	  }
       span {
         color: #e51a4c; }
       &--bonus {
@@ -229,7 +242,12 @@
       border-radius: 2px;
       border: 1px solid #bababa;
       padding: 0 15px;
-      font-size: 14px; }
+      font-size: 14px;
+
+	  &.error{
+		border-color:red;
+	  }
+	}
     &-multi {
       display: flex;
       flex-wrap: wrap;

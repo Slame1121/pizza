@@ -5,11 +5,11 @@ class ModelExtensionTotalShipping extends Model {
 			$total['totals'][] = array(
 				'code'       => 'shipping',
 				'title'      => $this->session->data['shipping_method']['title'],
-				'value'      => $this->session->data['shipping_method']['cost'],
+				'value'      => 0,//$this->session->data['shipping_method']['cost'],
 				'sort_order' => $this->config->get('total_shipping_sort_order')
 			);
 
-			if ($this->session->data['shipping_method']['tax_class_id']) {
+			/*if ($this->session->data['shipping_method']['tax_class_id']) {
 				$tax_rates = $this->tax->getRates($this->session->data['shipping_method']['cost'], $this->session->data['shipping_method']['tax_class_id']);
 
 				foreach ($tax_rates as $tax_rate) {
@@ -20,8 +20,9 @@ class ModelExtensionTotalShipping extends Model {
 					}
 				}
 			}
+			*/
 
-			$total['total'] += $this->session->data['shipping_method']['cost'];
+			$total['total'] += 0;//$this->session->data['shipping_method']['cost'];
 		}
 	}
 }

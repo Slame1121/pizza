@@ -4,12 +4,36 @@
 <div class="basket-log__content">
     {% for product in products %}
     <div class="basket-log__item basket-log__item--center" style="background-image: url({{ product.image }});">
-        <div class="basket-log__item-box"><a class="basket-log__item-name" href="{{ product.href }}">{{ product.name }}</a>
+        <div class="basket-log__item-box">
+            <a class="basket-log__item-name" href="{{ product.href }}">{{ product.name }}</a> <span>({% for option in product.option %}{{ option.name }} : {{ option.value }}{% endfor %})</span>
             <div class="basket-log__item-price">{{ product.total }}</div>
+        </div>
+        <div class="basket-log__item-box">
+            <div class="basket-log__item-box__attrs">
+                {% if product.attrs %}(
+                    {% for attr in product.attrs %}
+                       {{ attr.name }} x {{ attr.count }}
+                        {% if loop.index != loop.last %},
+                    {% endif %}
+                    {% endfor %}
+                    ){% endif %}
+            </div>
         </div>
     </div>
     {% endfor %}
     <div class="basket-log__info">
+        <div class="basket-log__info-line">
+            <div class="basket-log__info-name">Имя:</div>
+            <div class="basket-log__info-value">{{ firstname }}</div>
+        </div>
+        <div class="basket-log__info-line">
+            <div class="basket-log__info-name">Телефон:</div>
+            <div class="basket-log__info-value">8 920 219 76 72</div>
+        </div>
+        <div class="basket-log__info-line">
+            <div class="basket-log__info-name">E-mail:</div>
+            <div class="basket-log__info-value">{{ email }}</div>
+        </div>
         <div class="basket-log__info-line">
             <div class="basket-log__info-name">Населенный пункт:</div>
             <div class="basket-log__info-value">{{ nas_punkt }}</div>
@@ -18,14 +42,7 @@
             <div class="basket-log__info-name">Улица:</div>
             <div class="basket-log__info-value">{{ street }}, {{ house }}</div>
         </div>
-        <div class="basket-log__info-line">
-            <div class="basket-log__info-name">Телефон:</div>
-            <div class="basket-log__info-value">8 920 219 76 72</div>
-        </div>
-        <div class="basket-log__info-line">
-            <div class="basket-log__info-name">E-mail:</div>
-            <div class="basket-log__info-value">d.klinchuk@mil.ru</div>
-        </div>
+
         <div class="basket-log__info-line">
             <div class="basket-log__info-name">Количество бонусов:</div>
             <div class="basket-log__info-value">0</div>
@@ -40,4 +57,4 @@
         </div>
     </div>
 </div>
-<div class="basket-log__bottom basket-log__bottom--center"><a class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a></div>
+{{ payment }}

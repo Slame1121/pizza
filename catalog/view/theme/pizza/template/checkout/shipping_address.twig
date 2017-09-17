@@ -1,5 +1,5 @@
 {% if addresses %}
-<div class="basket-log__form-box" >
+<div class="basket-log__form-box"  id="change_adress_button_container">
     <div class="basket-log__form-box-address">
         <a id="cart_adress_button" data-type="{% if addresses %}saved{% else %}new{% endif %}" href="#" ><i class="fa fa-plus"></i> Добавить адресс</a>
     </div>
@@ -18,6 +18,19 @@
     </label>
 </div>
 {% endif %}
+<div id="cart-pickup" class="basket-log__form-box hidden">
+    <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
+        <select name="nas_punkt" class="basket-log__form-value">
+            <option>с.Софиевская Борщаговка</option>
+        </select>
+    </label>
+    <label class="basket-log__form-label"><span class="basket-log__form-name">Улица<span>*</span></span>
+        <input class="basket-log__form-value" readonly="readonly" type="text" value="Боголюбова"  name="street">
+    </label>
+    <label class="basket-log__form-label"><span class="basket-log__form-name">Дом<span>*</span></span>
+        <input class="basket-log__form-value" type="text" value="12" readonly="readonly" name="house">
+    </label>
+</div>
 <div class="basket-log__form-box {% if addresses %}hidden{% endif %}" id="cart-adress-new">
     <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
         <select name="nas_punkt" class="basket-log__form-value">
@@ -30,13 +43,13 @@
         </select>
     </label>
     <label class="basket-log__form-label"><span class="basket-log__form-name">Улица<span>*</span></span>
-        <input class="basket-log__form-value" type="text" name="street">
+        <input required class="basket-log__form-value" type="text" name="street">
     </label>
     <div class="basket-log__form-multi">
         <label class="basket-log__form-label"><span class="basket-log__form-name">Дом<span>*</span></span>
-            <input class="basket-log__form-value" type="text" name="house">
+            <input required class="basket-log__form-value" type="text" name="house">
         </label>
-        <label class="basket-log__form-label"><span class="basket-log__form-name">Парадня</span>
+        <label class="basket-log__form-label"><span class="basket-log__form-name">Парадное</span>
             <input class="basket-log__form-value" type="text" name="paradnya">
         </label>
         <label class="basket-log__form-label"><span class="basket-log__form-name">Этаж</span>

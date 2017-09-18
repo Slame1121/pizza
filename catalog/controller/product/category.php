@@ -142,9 +142,12 @@ class ControllerProductCategory extends Controller {
 				);
 			}
 
+			$data['products'] = '';
+			for($i=1; $i <= $page; $i++){
+				$this->request->get['page'] = $i;
+				$data['products'] .= $this->productslist($category_id);
+			}
 
-
-			$data['products'] = $this->productslist($category_id);
 
 			$this->load->model('catalog/catalog');
 			$data['attributes'] = $this->model_catalog_catalog->getAttributes();

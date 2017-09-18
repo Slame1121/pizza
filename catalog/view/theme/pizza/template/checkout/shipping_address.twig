@@ -1,10 +1,10 @@
 {% if addresses %}
-<div class="basket-log__form-box"  id="change_adress_button_container">
+<div class="basket-log__form-box {% if code == 'pickup' %}hidden{% endif %}"  id="change_adress_button_container">
     <div class="basket-log__form-box-address">
         <a id="cart_adress_button" data-type="{% if addresses %}saved{% else %}new{% endif %}" href="#" ><i class="fa fa-plus"></i> Добавить адресс</a>
     </div>
 </div>
-<div class="basket-log__form-box" id="cart-adress-saved">
+<div class="basket-log__form-box {% if code == 'pickup' %}hidden{% endif %}" id="cart-adress-saved">
     <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Сохраненные адреса</span>
         <select class="basket-log__form-value">
             {% for address in addresses %}
@@ -18,7 +18,7 @@
     </label>
 </div>
 {% endif %}
-<div id="cart-pickup" class="basket-log__form-box hidden">
+<div id="cart-pickup" class="basket-log__form-box {% if code != 'pickup' %}hidden{% endif %}">
     <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
         <select name="nas_punkt" class="basket-log__form-value">
             <option>с.Софиевская Борщаговка</option>
@@ -31,7 +31,7 @@
         <input class="basket-log__form-value" type="text" value="12" readonly="readonly" name="house">
     </label>
 </div>
-<div class="basket-log__form-box {% if addresses %}hidden{% endif %}" id="cart-adress-new">
+<div class="basket-log__form-box {% if addresses or  code == 'pickup' %}hidden{% endif %}" id="cart-adress-new">
     <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
         <select name="nas_punkt" class="basket-log__form-value">
             <option>Новобирючево</option>

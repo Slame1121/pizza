@@ -56,6 +56,7 @@ var Checkout = {
 							success: function(html) {
 								$('.basket-log__box').removeClass('active');
 								$('#checkout-confirm').empty().addClass('active').append(html);
+								$('.basket-log__top-btn--left').attr('data-type', 'confirm');
 							},
 							error: function() {
 								alert('error handing here');
@@ -89,17 +90,19 @@ var Checkout = {
 			}
 
 
-		});
-
-		$('.basket-log__top-btn--left').click(function(e) {
+		}).on('click','.basket-log__top-btn--left',function(e) {
 			e.preventDefault();
 
-			var box = $(this).closest('.basket-log__box');
-
-			box.prev()
-				.addClass('active')
-				.siblings()
-				.removeClass('active');
+			var type = $(this).attr('data-type');
+			switch(type){
+				case 'checkout':
+					$('.basket-log__box').removeClass('active');
+					$('#checkout-cart').addClass('active');
+					break;
+				case 'confirm':
+					self.getOrder();
+					break;
+			}
 		});
 	},
 
@@ -111,6 +114,7 @@ var Checkout = {
 				success: function(html) {
 					$('.basket-log__box').removeClass('active');
 					$('#checkout-checkout').empty().addClass('active').append(html);
+					$('.basket-log__top-btn--left').attr('data-type', 'checkout');
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

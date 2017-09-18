@@ -51,7 +51,7 @@ class ControllerCheckoutShippingMethod extends Controller {
 		}
 
 		if (isset($this->session->data['shipping_method']['code'])) {
-			$data['code'] = $this->session->data['shipping_method']['code'];
+			$data['code'] = $this->session->data['shipping_method']['code'].'.'.$this->session->data['shipping_method']['code'];
 		} else {
 			$data['code'] = '';
 		}

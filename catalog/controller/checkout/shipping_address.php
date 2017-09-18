@@ -53,6 +53,8 @@ class ControllerCheckoutShippingAddress extends Controller {
 			$data['shipping_address_custom_field'] = array();
 		}
 
+		$data['code'] = isset($this->session->data['shipping_method']['code']) ? $this->session->data['shipping_method']['code'] : '';
+
 		return $this->load->view('checkout/shipping_address', $data);
 	}
 

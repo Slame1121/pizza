@@ -201,6 +201,7 @@ $('document').ready(function(){
 
 	loginValid.init('form.user-auth');
 	$('.sing-log__reg').on('click', function () {
+        $('form.user-auth .error').removeClass('error');
 		var action = $('form.user-auth input.auth_registr').val();
         $('form.user-auth').prop('action', action);
 		$('form.user-auth .label-email').removeClass('hidden');
@@ -219,6 +220,7 @@ $('document').ready(function(){
         //auth
     })
 	$('.sing-log__log').on('click', function () {
+        $('form.user-auth .error').removeClass('error');
         var action = $('form.user-auth input.auth_login').val();
         $('form.user-auth').prop('action', action);
 		$('form.user-auth .label-email').addClass('hidden');
@@ -237,6 +239,7 @@ $('document').ready(function(){
         //auth
     })
 	$('.auth-forgot').on('click', function () {
+        $('form.user-auth .error').removeClass('error');
         var action = $('form.user-auth input.auth_forgots').val();
         $('form.user-auth').prop('action', action);
 

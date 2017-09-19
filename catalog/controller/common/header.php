@@ -30,8 +30,7 @@ class ControllerCommonHeader extends Controller {
 		$data['description'] = $this->document->getDescription();
 		$data['keywords'] = $this->document->getKeywords();
 		$data['links'] = $this->document->getLinks();
-		$data['styles'] = $this->document->getStyles();
-		$data['scripts'] = $this->document->getScripts('header');
+
 		$data['lang'] = $this->language->get('code');
 		$data['direction'] = $this->language->get('direction');
 
@@ -55,11 +54,20 @@ class ControllerCommonHeader extends Controller {
 		} else {
 			$data['text_wishlist'] = sprintf($this->language->get('text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
 		}
+        //Form Login
+        $this->load->model('setting/module');
+        $setting_info = $this->model_setting_module->getModule('40');
+        $data['form_login_action'] = '';
+        if($setting_info['status']){
+            $data['form_login_ulogin'] = $this->load->controller('extension/module/ulogin', $setting_info);
+        }
+
 
 		$data['text_logged'] = sprintf($this->language->get('text_logged'), $this->url->link('account/account', '', true), $this->customer->getFirstName(), $this->url->link('account/logout', '', true));
         $data['form_login_action'] = $this->url->link('account/login/logins', '', true);
         $data['form_register_action'] = $this->url->link('account/register/registr', '', true);
         $data['form_forgot_action'] = $this->url->link('account/forgotten/forgot', '', true);
+
 		$data['form_login'] = $this->load->view('account/form_login', $data);
 
 		$data['home'] = $this->url->link('common/home');
@@ -85,6 +93,8 @@ class ControllerCommonHeader extends Controller {
 		$data['menu'] = $this->load->controller('common/menu');
 
 		$data['checkout'] = $this->load->controller('checkout/checkout/checkout');
+        $data['styles'] = $this->document->getStyles();
+        $data['scripts'] = $this->document->getScripts('header');
 
 		return $this->load->view('common/header', $data);
 	}

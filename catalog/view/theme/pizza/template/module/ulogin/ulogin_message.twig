@@ -1,0 +1,11 @@
+<div id="ulogin-message-box">
+    <div class="ulogin-message-success alert alert-success" {% if ulogin_success %}style="display: none"{% endif %}>
+        <i class="fa fa-check-circle"></i>
+        <span class="ulogin-message">{% if (not)ulogin_success %}{{ ulogin_success }}{% endif %}</span>
+    </div>
+
+    <div class="ulogin-message-warning alert alert-warning" {% if ulogin_error_warning %}style="display: none"{% endif %}>
+        <i class="fa fa-exclamation-circle"></i>
+        <span class="ulogin-message">{% if (not)ulogin_error_warning %}{{ ulogin_error_warning }}{% endif %}</span>
+    </div>
+</div>

@@ -244,8 +244,12 @@ class ControllerAccountRegister extends Controller {
             if (isset($this->error['password'])) {
                 $json['error'][] = ['inp' => "input[name='password']" , 'text' => $this->error['password']];
             }
-        }
+            if (isset($this->error['warning'])) {
+                $json['error'][] = ['inp' => "input[name='email']" , 'text' => $this->error['warning']];
+            }
 
+        }
+        //var_dump($this->error);die;
         if (!isset($json['error'])) {
             $json['success'] = $data;
         }else{

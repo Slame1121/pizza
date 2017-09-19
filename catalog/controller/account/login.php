@@ -193,10 +193,12 @@ class ControllerAccountLogin extends Controller {
 		// Check if customer has been approved.
 		$customer_info = $this->model_account_customer->getCustomerByTel($this->request->post['tel']);
 
-		if ($customer_info && !$customer_info['status']) {
-			$this->error['warning'] = $this->language->get('error_approved');
-		}
-
+        if (isset($customer_info['status']) && !$customer_info['status']) {
+            $this->error['warning'] = $this->language->get('error_approved');
+        }
+        if(!isset($customer_info['email'])){
+            $this->error['error_tel'] = $this->language->get('error_tel');
+        }
 		if (!$this->error) {
 			if (!$this->customer->login($customer_info['email'], $this->request->post['password'])) {
 				$this->error['warning'] = $this->language->get('error_login');
@@ -303,8 +305,15 @@ class ControllerAccountLogin extends Controller {
             if (isset($this->error['password'])) {
                 $json['error'][] = ['inp' => "input[name='password']" , 'text' => $this->error['password']];
             }
+            if (isset($this->error['warning'])) {
+                $json['warning'][] = ['inp' => "input[name='password']" , 'text' => $this->error['warning']];
+            }
+            if (isset($this->error['error_tel'])) {
+                $json['error'][] = ['inp' => "input[name='tel']" , 'text' => $this->error['error_tel']];
+            }
         }
 
+       //var_dump($login_info,$customer_info,$this->error,$customer_info && !isset($customer_info['email']));die;
 
         if (!isset($json['error'])) {
             $json['success'] = $data;

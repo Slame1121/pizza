@@ -82,7 +82,7 @@ var valid = {
         if(vals.length == 0){
             this.addErr(inp,valid.error_txt.no_data);
         }else {
-            if (/[^[0-9]/.test(vals)) {
+            if (/^[0-9]/.test(vals)) {
                 this.addErr(inp, valid.error_txt.no_val);
             } else {
                 if (vals.length < 3) {

@@ -82,6 +82,7 @@ class ControllerProductCategory extends Controller {
 		} else {
 			$category_id = 0;
 		}
+		$this->document->addScript('/catalog/view/javascript/pages/catalog.js');
 
 		$category_info = $this->model_catalog_category->getCategory($category_id);
 		if ($category_info) {
@@ -268,7 +269,7 @@ class ControllerProductCategory extends Controller {
 			$data['sort'] = $sort;
 			$data['order'] = $order;
 			$data['limit'] = $limit;
-
+			$data['path'] = $this->request->get['path'];
 			$data['continue'] = $this->url->link('common/home');
 
 			$data['column_left'] = $this->load->controller('common/column_left');
@@ -383,6 +384,9 @@ class ControllerProductCategory extends Controller {
 			'start'              => ($page - 1) * $limit,
 			'limit'              => $limit
 		);
+		if(isset($this->request->post['attributes']) && $this->request->post['attributes']){
+			$filter_data['filter_attrs_id'] = $this->request->post['attributes'];
+		}
 
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
@@ -535,5 +539,9 @@ class ControllerProductCategory extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($product_total) ? (($page - 1) * $limit) + 1 : 0, ((($page - 1) * $limit) > ($product_total - $limit)) ? $product_total : ((($page - 1) * $limit) + $limit), $product_total, ceil($product_total / $limit));
 
 		return $data['products'];
+	}
+
+	public function filter_data(){
+		$this->response->setOutput($this->productslist());
 	}
 }

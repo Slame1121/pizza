@@ -74,9 +74,7 @@ class ModelCatalogProduct extends Model {
 		} else {
 			$sql .= " FROM " . DB_PREFIX . "product p";
 		}
-		if(!empty($data['filter_attrs_id'])){
-			$sql .= " LEFT JOIN " . DB_PREFIX . "product_attribute AS pa ON pa.product_id =  p.product_id ";
-		}
+
 
 		$sql .= " LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'";
 
@@ -99,6 +97,12 @@ class ModelCatalogProduct extends Model {
 				$sql .= " AND pf.filter_id IN (" . implode(',', $implode) . ")";
 			}
 		}
+		if(isset($data['filter_attrs_id']) && $data['filter_attrs_id']){
+			foreach($data['filter_attrs_id'] as $needed_id){
+				//$sql .= ' AND '.$needed_id . ' in (SELECT * FROM ' . DB_PREFIX . 'product_attribute WHERE product_id =  p.product_id) ';
+			}
+		}
+
 
 		if (!empty($data['filter_name']) || !empty($data['filter_tag'])) {
 			$sql .= " AND (";
@@ -152,9 +156,6 @@ class ModelCatalogProduct extends Model {
 			$sql .= ")";
 		}
 
-		if(!empty($data['filter_attrs_id'])){
-			$sql .= " AND pa.attribute_id in  (" . implode(", ", $data['filter_attrs_id']) . ")";
-		}
 
 		if (!empty($data['filter_manufacturer_id'])) {
 			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
@@ -199,15 +200,41 @@ class ModelCatalogProduct extends Model {
 				$data['limit'] = 20;
 			}
 
-			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
+			//$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
 
 		$product_data = array();
 
 		$query = $this->db->query($sql);
 
-		foreach ($query->rows as $result) {
-			$product_data[$result['product_id']] = $this->getProduct($result['product_id']);
+		foreach ($query->rows as $key => $result) {
+			$missed = false;
+			if(isset($data['filter_attrs_id']) && $data['filter_attrs_id']){
+				$attr_groups = $this->model_catalog_product->getProductAttributes($result['product_id']);
+				$attrs_id = [];
+				if($attr_groups){
+					foreach ($attr_groups as $group){
+						if(isset($group["attribute"])){
+							foreach ($group["attribute"] as $attr){
+								$attrs_id[] = $attr['attribute_id'];
+							}
+						}
+
+					}
+				}
+				foreach($data['filter_attrs_id'] as $needed_attr){
+					if(!in_array($needed_attr, $attrs_id)){
+						$missed = true;
+					}
+				}
+			}
+			if(!$missed && $key+1 >= (int)$data['start'] && $key+1 <= (int)$data['limit']){
+				$product_data[$result['product_id']] = $this->getProduct($result['product_id']);
+			}else{
+				if($missed){
+					$data['limit']++;
+				}
+			}
 		}
 
 		return $product_data;
@@ -442,6 +469,9 @@ class ModelCatalogProduct extends Model {
 
 		$sql .= " LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'";
 
+
+
+
 		if (!empty($data['filter_category_id'])) {
 			if (!empty($data['filter_sub_category'])) {
 				$sql .= " AND cp.path_id = '" . (int)$data['filter_category_id'] . "'";
@@ -513,6 +543,7 @@ class ModelCatalogProduct extends Model {
 
 			$sql .= ")";
 		}
+
 
 		if (!empty($data['filter_manufacturer_id'])) {
 			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";

@@ -84,7 +84,17 @@ class ControllerCheckoutConfirm extends Controller {
 					$this->load->model('extension/total/' . $result['code']);
 
 					// We have to put the totals in an array so that they pass by reference.
-					$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+					if(isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup'){
+						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data, $total_data['total'] * 0.1);
+						foreach($total_data['totals'] as $key => $total_value){
+							if($total_value['code'] == 'total'){
+								$total_data['totals'][$key]['value'] = $total_data['total'] - $total_data['total'] * 0.1;
+							}
+						}
+					}else{
+						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+					}
+
 				}
 			}
 
@@ -266,7 +276,21 @@ class ControllerCheckoutConfirm extends Controller {
 			}
 
 			$order_data['comment'] = $this->session->data['comment'];
-			$order_data['total'] = $total_data['total'];
+
+			//Если это самовывоз 10% скидка
+			if($this->session->data['shipping_method']['code'] == 'pickup'){
+				$order_data['total'] = $total_data['total'] - $total_data['total'] * 0.1;
+			}else{
+				$order_data['total'] = $total_data['total'];
+			}
+
+
+			if($this->customer->isLogged()){
+				//Зарезервированные бонусы, если юзер залогинен
+				$order_data['reserved_points'] = $order_data['total'] * 0.05;
+			}
+
+
 
 			if (isset($this->request->cookie['tracking'])) {
 				$order_data['tracking'] = $this->request->cookie['tracking'];

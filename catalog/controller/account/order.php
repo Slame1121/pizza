@@ -48,18 +48,31 @@ class ControllerAccountOrder extends Controller {
 
 		$results = $this->model_account_order->getOrders(($page - 1) * 10, 10);
 
+
+
 		foreach ($results as $result) {
-			$product_total = $this->model_account_order->getTotalOrderProductsByOrderId($result['order_id']);
-			$voucher_total = $this->model_account_order->getTotalOrderVouchersByOrderId($result['order_id']);
+			$products = $this->model_account_order->getOrderProducts($result['order_id']);
+			$order_products_arr = [];
+			$url = 'order_id=' . $result['order_id'] ;
+			foreach($products as $product){
+
+				$product_options = $this->model_account_order->getOrderOptions($result['order_id'], $product['order_product_id']);
+				$order_products_arr[] = '<span>'.$product['name'].', '.$product_options[0]['value'].'</span>';
+				$url .= ('&order_product_id[]='.$product['order_product_id']);
+			}
 
 			$data['orders'][] = array(
 				'order_id'   => $result['order_id'],
 				'name'       => $result['firstname'] . ' ' . $result['lastname'],
 				'status'     => $result['status'],
+				'telephone'  => $result['telephone'],
 				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-				'products'   => ($product_total + $voucher_total),
+				'products'   => implode('', $order_products_arr),
 				'total'      => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
 				'view'       => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], true),
+				'got_bonuses' => $result['got_points'],
+				'reserved_bonuses' => $result['reserved_points'],
+				'reorder'    => $this->url->link('account/order/reorder', $url, true),
 			);
 		}
 
@@ -82,7 +95,7 @@ class ControllerAccountOrder extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
-		$this->response->setOutput($this->load->view('account/order_list', $data));
+		return $this->load->view('account/order_list', $data);
 	}
 
 	public function info() {
@@ -101,7 +114,6 @@ class ControllerAccountOrder extends Controller {
 		}
 
 		$this->load->model('account/order');
-
 		$order_info = $this->model_account_order->getOrder($order_id);
 
 		if ($order_info) {
@@ -352,50 +364,49 @@ class ControllerAccountOrder extends Controller {
 		$order_info = $this->model_account_order->getOrder($order_id);
 
 		if ($order_info) {
-			if (isset($this->request->get['order_product_id'])) {
-				$order_product_id = $this->request->get['order_product_id'];
-			} else {
-				$order_product_id = 0;
-			}
+			if (isset($this->request->get['order_product_id']) && $this->request->get['order_product_id']) {
+				foreach($this->request->get['order_product_id'] as $order_product_id){
+					$order_product_info = $this->model_account_order->getOrderProduct($order_id, $order_product_id);
+					if ($order_product_info) {
+						$this->load->model('catalog/product');
 
-			$order_product_info = $this->model_account_order->getOrderProduct($order_id, $order_product_id);
+						$product_info = $this->model_catalog_product->getProduct($order_product_info['product_id']);
 
-			if ($order_product_info) {
-				$this->load->model('catalog/product');
+						if ($product_info) {
+							$option_data = array();
 
-				$product_info = $this->model_catalog_product->getProduct($order_product_info['product_id']);
+							$order_options = $this->model_account_order->getOrderOptions($order_product_info['order_id'], $order_product_id);
 
-				if ($product_info) {
-					$option_data = array();
+							foreach ($order_options as $order_option) {
+								if ($order_option['type'] == 'select' || $order_option['type'] == 'radio' || $order_option['type'] == 'image') {
+									$option_data[$order_option['product_option_id']] = $order_option['product_option_value_id'];
+								} elseif ($order_option['type'] == 'checkbox') {
+									$option_data[$order_option['product_option_id']][] = $order_option['product_option_value_id'];
+								} elseif ($order_option['type'] == 'text' || $order_option['type'] == 'textarea' || $order_option['type'] == 'date' || $order_option['type'] == 'datetime' || $order_option['type'] == 'time') {
+									$option_data[$order_option['product_option_id']] = $order_option['value'];
+								} elseif ($order_option['type'] == 'file') {
+									$option_data[$order_option['product_option_id']] = $this->encryption->encrypt($this->config->get('config_encryption'), $order_option['value']);
+								}
+							}
 
-					$order_options = $this->model_account_order->getOrderOptions($order_product_info['order_id'], $order_product_id);
+							$this->cart->add($order_product_info['product_id'], $order_product_info['quantity'], $option_data);
 
-					foreach ($order_options as $order_option) {
-						if ($order_option['type'] == 'select' || $order_option['type'] == 'radio' || $order_option['type'] == 'image') {
-							$option_data[$order_option['product_option_id']] = $order_option['product_option_value_id'];
-						} elseif ($order_option['type'] == 'checkbox') {
-							$option_data[$order_option['product_option_id']][] = $order_option['product_option_value_id'];
-						} elseif ($order_option['type'] == 'text' || $order_option['type'] == 'textarea' || $order_option['type'] == 'date' || $order_option['type'] == 'datetime' || $order_option['type'] == 'time') {
-							$option_data[$order_option['product_option_id']] = $order_option['value'];
-						} elseif ($order_option['type'] == 'file') {
-							$option_data[$order_option['product_option_id']] = $this->encryption->encrypt($this->config->get('config_encryption'), $order_option['value']);
+							$this->session->data['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $product_info['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
+
+							unset($this->session->data['shipping_method']);
+							unset($this->session->data['shipping_methods']);
+							unset($this->session->data['payment_method']);
+							unset($this->session->data['payment_methods']);
+						} else {
+							$this->session->data['error'] = sprintf($this->language->get('error_reorder'), $order_product_info['name']);
 						}
 					}
-
-					$this->cart->add($order_product_info['product_id'], $order_product_info['quantity'], $option_data);
-
-					$this->session->data['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $product_info['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
-
-					unset($this->session->data['shipping_method']);
-					unset($this->session->data['shipping_methods']);
-					unset($this->session->data['payment_method']);
-					unset($this->session->data['payment_methods']);
-				} else {
-					$this->session->data['error'] = sprintf($this->language->get('error_reorder'), $order_product_info['name']);
 				}
+			} else {
+
 			}
 		}
 
-		$this->response->redirect($this->url->link('account/order/info', 'order_id=' . $order_id));
+		//$this->response->redirect($this->url->link('account/order/info', 'order_id=' . $order_id));
 	}
 }

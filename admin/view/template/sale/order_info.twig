@@ -71,7 +71,34 @@
         </div>
       </div>
       <div class="col-md-4">
-        <div class="panel panel-default">
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h3 class="panel-title"><i class="fa fa-cog"></i> Бонусные балы</h3>
+              </div>
+              <table class="table">
+                  <tbody>
+                  <tr>
+                      <td>Зарезервированные бонусы</td>
+                      <td>{{ bonus_reserved }}</td>
+
+                  </tr>
+                  <tr>
+                      <td>Начисленные бонусы</td>
+                      <td >{{ bonus_gotted }}</td>
+                  </tr>
+                  <tr>
+                      <td >Использованные бонусы</td>
+                      <td >{{ bonus_gotted_spent }}</td>
+                  </tr>
+                  <tr>
+
+                      <td >Сгоревшие бонусы</td>
+                      <td >{{ bonus_lost }}</td>
+                  </tr>
+                  </tbody>
+              </table>
+          </div>
+        <!-- <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title"><i class="fa fa-cog"></i> {{ text_option }}</h3>
           </div>
@@ -118,6 +145,7 @@
             </tbody>
           </table>
         </div>
+        -->
       </div>
     </div>
     <div class="panel panel-default">

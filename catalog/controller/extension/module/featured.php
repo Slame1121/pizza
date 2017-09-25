@@ -192,7 +192,8 @@ class ControllerExtensionModuleFeatured extends Controller {
             }
         }
         $data['cont'] = false;
-       if(@$this->request->get['route'] == "common/home"){
+        //var_dump($_SERVER);die;
+       if(@$this->request->get['route'] == "common/home" || $_SERVER["REQUEST_URI"] == '/'){
            $data['cont'] = true;
        }
         //var_dump($data['products']);die;

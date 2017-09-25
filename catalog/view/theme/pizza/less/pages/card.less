@@ -231,6 +231,8 @@
 
   &.error{
 	border: 1px solid red;
+    background-color: rgba(255, 0, 0, 0.13) !important;
+    color: red;
 	& +.reviews-text-error{
 	  display: flex;
 	  position: relative;
@@ -244,8 +246,15 @@
   }
 }
 .user-auth{
+  & span.error{
+    color: red;
+    border: none;
+    background: inherit;
+    background-color: initial!important;
+  }
   & .error{
     border: 1px solid red;
+    background-color: rgba(255, 0, 0, 0.13) !important;
     & +.reviews-text-error{
       display: flex;
       position: relative;

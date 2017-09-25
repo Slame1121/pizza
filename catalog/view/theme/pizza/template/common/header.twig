@@ -33,6 +33,7 @@
     <script src="/catalog/view/javascript/main.js"></script>
     <script src="/catalog/view/javascript/cart.js"></script>
     <script src="/catalog/view/javascript/checkout.js"></script>
+    <script src="/catalog/view/javascript/jquery.mask.js"></script>
     {% for script in scripts %}
         <script src="{{ script }}" type="text/javascript"></script>
     {% endfor %}
@@ -111,7 +112,10 @@
 
                     </div>
                     {% if logged %}
-                        <a class="header-sing" href="{{ logout }}">{{ text_logout }}</a>
+                        <span class="header-link">
+                            <a class="header-sing" href="{{ account }}" title="Личный Кабинет"></a>|<a class="header-link" href="{{ logout }}">{{ text_logout }}</a>
+                        </span>
+
                     {% else %}
                         <a class="header-sing noLink" href="#">Вход/Регистрация</a>
                         <div class="sing-log">{{ form_login }}</div>

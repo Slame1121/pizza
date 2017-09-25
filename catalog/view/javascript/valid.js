@@ -61,6 +61,7 @@ var valid = {
     resetErr: function (inp) {
         $(inp).removeClass('error').next('.reviews-text-error').remove();
         $(inp).attr('title', '');
+        $(inp).parent().parent().find('.sing-log__label-name').removeClass('error').attr('title','');
     },
     addErr: function (el,txt) {
         pos = $(el).position();
@@ -70,8 +71,9 @@ var valid = {
             $(el).next('.reviews-text-error').html(txt);//.css('left', pos.left+'px');
         }else{
             $(el).next('.reviews-text-error').remove();
-            htm = '<span class="reviews-text-error">'+txt+'</span>';
+            htm = '<span class="reviews-text-error hidden">'+txt+'</span>';
             $(el).addClass('error').after(htm).show();
+            $(el).parent().parent().find('.sing-log__label-name').addClass('error').attr('title',er.text);
             //$(el).next('.reviews-text-error');//.css('left', pos.left+'px');
         }
         $(el).bind('click', {}, function(eventObject){ valid.resetErr(this);} );
@@ -134,9 +136,9 @@ var valid = {
         if(vals.length == 0){
             this.addErr(inp,valid.error_txt.no_data);
         }else {
-            if (/[^[0-9]/.test(vals)) {
-                this.addErr(inp,valid.error_txt.no_val);
-            } else {
+            // if (/[+^[0-9]/.test(vals)) {
+            //     this.addErr(inp,valid.error_txt.no_val);
+            // } else {
                 if (vals.length < 3) {
                     this.addErr(inp, valid.error_txt.min_val_tel);
                 } else {
@@ -146,7 +148,7 @@ var valid = {
                         this.resetErr(inp);
                     }
                 }
-            }
+            //}
         }
     },
     _email: function (inp) {

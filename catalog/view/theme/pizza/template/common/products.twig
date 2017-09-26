@@ -10,7 +10,7 @@
                 {% for key, value in option.product_option_value %}
                     <span class="hit-item__info-box {% if key == 0 %}active{% endif %}">
                         <span class="hit-item__info-block">
-                            <span class="hit-item__info-size">{{ value.name }}<span>500 ± 50 гр</span></span>
+                            <span class="hit-item__info-size">{{ value.name }}{% if value.weight > 0 %}<span>{{ value.weight }}</span>{% endif %}</span>
                             <span class="hit-item__info-price">{{ value.price }}</span>
                         </span>
                         <span class="btn hit-item__btn add-product-cart" data-prodId="{{ product.product_id }}" data-key="{{ key }}">Заказать</span>

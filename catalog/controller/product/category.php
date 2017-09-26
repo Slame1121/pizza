@@ -459,7 +459,8 @@ class ControllerProductCategory extends Controller {
 							'name'                    => $option_value['name'],
 							'image'                   => $this->model_tool_image->resize($option_value['image'], 50, 50),
 							'price'                   => $price,
-							'price_prefix'            => $option_value['price_prefix']
+							'price_prefix'            => $option_value['price_prefix'],
+							'weight'                  => $option_value['weight'],
 						);
 						$opt_val[] = array('prod_val'=>$option_value['product_option_value_id'],'opt_val'=>$option['product_option_id']);
 					}

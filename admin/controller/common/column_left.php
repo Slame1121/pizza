@@ -230,6 +230,14 @@ class ControllerCommonColumnLeft extends Controller {
 					'children' => array()		
 				);
 			}
+
+			if ($this->user->hasPermission('access', 'design/menus')) {
+				$design[] = array(
+					'name'	   =>  'Меню',
+					'href'     => $this->url->link('design/menus', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
 						
 			if ($design) {
 				$data['menus'][] = array(

@@ -359,7 +359,10 @@ $('document').ready(function(){
         cart.add(id_p,1, $(".option"+id_p+"_"+i_key).serialize());
 
         return false;
-    })
+    }).on('click', '.header-box__lang-box',function(){
+		$('#form-language').submit();
+
+	})
 
     $('.auth_tel').mask('+38 000 000 00 00');
 

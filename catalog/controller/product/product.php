@@ -306,7 +306,6 @@ class ControllerProductProduct extends Controller {
 			}
 
 			$data['options'] = array();
-
 			foreach ($this->model_catalog_product->getProductOptions($this->request->get['product_id']) as $option) {
 				$product_option_value_data = array();
 
@@ -325,7 +324,8 @@ class ControllerProductProduct extends Controller {
 							'image'                   => $this->model_tool_image->resize($option_value['image'], 50, 50),
 							'price'                   => $price,
 							'cost'                    => $option_value['price'],
-							'price_prefix'            => $option_value['price_prefix']
+							'price_prefix'            => $option_value['price_prefix'],
+							'weight'                  => $option_value['weight'],
 						);
 					}
 				}
@@ -340,7 +340,6 @@ class ControllerProductProduct extends Controller {
 					'required'             => $option['required']
 				);
 			}
-
 			if ($product_info['minimum']) {
 				$data['minimum'] = $product_info['minimum'];
 			} else {

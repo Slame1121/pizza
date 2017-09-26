@@ -1,0 +1,15 @@
+<div class="reviews-faq">
+    <h2>{{ text_h1 }}</h2>
+    {% if questions_info %}
+    {% for questions in questions_info %}
+        <div class="reviews-faq__box opened">
+            <a class="reviews-faq__link" href="#">{{ questions.title }}</a>
+            <div class="reviews-faq__content">
+                <div class="reviews-faq__content-box">{{ questions.description }}</div>
+            </div>
+        </div>
+    {% endfor %}
+    {% else %}
+        {{ not_questions }}
+    {% endif %}
+</div>

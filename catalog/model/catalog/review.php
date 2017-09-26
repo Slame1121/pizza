@@ -81,14 +81,18 @@ class ModelCatalogReview extends Model {
 	public function getReviewsByCategoryId($category_id,$start = 0, $limit = 20) {
 		if ($start < 0) { $start = 0; }
 		if ($limit < 1) { $limit = 20; }
-
-		$query = $this->db->query("SELECT r.review_id, r.author, r.rating, r.text, p.product_id, pd.name, p.price, p.image, r.date_added 
+        $sql = "SELECT r.review_id, r.author, r.rating, r.text, p.product_id, pd.name, p.price, p.image, r.date_added 
                                     FROM " . DB_PREFIX . "review r 
                                     LEFT JOIN " . DB_PREFIX . "product p ON (r.product_id = p.product_id) 
                                     LEFT JOIN " . DB_PREFIX . "product_to_category pc ON (r.product_id = pc.product_id) 
-                                    LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) 
-                                    WHERE  pc.category_id = ".(int)$category_id." AND p.date_available <= NOW() AND p.status = '1' AND r.status = '1' AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' 
-                                    ORDER BY r.date_added DESC LIMIT " . (int)$start . "," . (int)$limit);
+                                    LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)  WHERE ";
+        if($category_id > 0){
+            $sql .= " pc.category_id = ".(int)$category_id." AND ";
+        }
+        $sql .= "p.date_available <= NOW() AND p.status = '1' AND r.status = '1' AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' 
+                                    ORDER BY r.date_added DESC LIMIT " . (int)$start . "," . (int)$limit;
+
+		$query = $this->db->query($sql);
 
 		return $query->rows;
 	}

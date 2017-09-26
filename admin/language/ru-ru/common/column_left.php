@@ -88,5 +88,6 @@ $_['text_paypal_search']        = 'Поиск транзакции';
 $_['text_complete_status']      = 'Заказы завершенные';
 $_['text_processing_status']    = 'Заказы в процессе';
 $_['text_other_status']         = 'Остальные заказы';
+$_['text_questions']         = 'Вопрос/Ответ';
 
 

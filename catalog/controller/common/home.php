@@ -15,6 +15,9 @@ class ControllerCommonHome extends Controller {
 		$data['content_bottom'] = $this->load->controller('common/content_bottom');
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
+        //Otziv
+        $data['reviews'] = $this->load->controller('product/review');
+        $data['popularQuestions'] = $this->load->controller('common/popular_questions');
 
 		$this->response->setOutput($this->load->view('common/home', $data));
 	}

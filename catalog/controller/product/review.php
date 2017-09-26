@@ -18,6 +18,7 @@ class  ControllerProductReview extends Controller
         } else {
             $product_id = 0;
         }
+
         if($product_id){
             return $this->product($product_id);
         }else{
@@ -43,6 +44,7 @@ class  ControllerProductReview extends Controller
         //Otziv
         $this->load->model('catalog/review');
         $res_review = $this->model_catalog_review->getReviewsByCategoryId($category_id, 0, 4);
+
         foreach ($res_review as $result) {
             $this->data['reviews'][] = array(
                 'product_id' => $result['product_id'],

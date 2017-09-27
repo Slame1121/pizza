@@ -1,5 +1,5 @@
 <?php
-class ControllerCommonMenu extends Controller {
+class ControllerCommonFooterMenu extends Controller {
 	public function index() {
 		$this->load->language('common/menu');
 
@@ -43,10 +43,10 @@ class ControllerCommonMenu extends Controller {
 
 		$this->load->model('design/menu');
 
-		$data['custom_pages'] = $this->model_design_menu->getMenuItems('top');
+		$data['custom_pages'] = $this->model_design_menu->getMenuItems('footer');
 
-		uasort($data['custom_pages'], ['\ControllerCommonMenu','cmp']);
-		return $this->load->view('common/menu', $data);
+		uasort($data['custom_pages'], ['\ControllerCommonFooterMenu','cmp']);
+		return $this->load->view('common/footer_menu', $data);
 	}
 
 	public function cmp($a, $b) {

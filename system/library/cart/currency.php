@@ -44,6 +44,7 @@ class Currency {
 			$string .= $symbol_left;
 		}
 
+			print_r($this->language->get('thousand_point'));
 		$string .= number_format($amount, (int)$decimal_place, $this->language->get('decimal_point'), $this->language->get('thousand_point'));
 
 		if ($symbol_right) {

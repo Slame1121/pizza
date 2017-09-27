@@ -155,6 +155,14 @@
                   <div class="text-danger">{{ error_telephone }}</div>
                   {% endif %} </div>
               </div>
+                <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }} 2</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="config_telephone_2" value="{{ config_telephone_2 }}" placeholder="{{ entry_telephone }}" id="input-telephone-2" class="form-control" />
+                        {% if error_telephone_2 %}
+                            <div class="text-danger">{{ error_telephone_2 }}</div>
+                        {% endif %} </div>
+                </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-fax">{{ entry_fax }}</label>
                 <div class="col-sm-10">

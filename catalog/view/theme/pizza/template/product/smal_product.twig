@@ -4,7 +4,7 @@
     <div class="hit__content">
         {% for product in products %}
             <div class="hit-item">
-                <a class="hit-item__box mode-hit product-feature-dox" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="Хит">
+                <a class="hit-item__box mode-hit product-feature-dox" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="{{ text_hit }}">
                     <span class="hit-item__name">{{ product.name }}</span>
                     <span class="hit-item__text">
                             {{ product.sostav }}

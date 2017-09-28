@@ -1,23 +1,23 @@
 <?php
 // Heading
-$_['heading_title']     = 'Сравнение товаров';
+$_[ 'Heading_title'] = 'Порівняння товарів';
 
 // Text
-$_['text_product']      = 'Описание';
-$_['text_name']         = 'Товар';
-$_['text_image']        = 'Изображение';
-$_['text_price']        = 'Цена';
-$_['text_model']        = 'Модель';
-$_['text_manufacturer'] = 'Производитель';
-$_['text_availability'] = 'Наличие';
-$_['text_instock']      = 'Есть на складе';
-$_['text_rating']       = 'Рейтинг';
-$_['text_reviews']      = 'Всего отзывов: %s';
-$_['text_summary']      = 'Краткое описание';
-$_['text_weight']       = 'Вес';
-$_['text_dimension']    = 'Размеры (Д х Ш х В)';
-$_['text_compare']      = 'Сравнение товаров (%s)';
-$_['text_success']      = 'Товар <a href="%s">%s</a> добавлен в ваш <a href="%s">список сравнения</a>!';
-$_['text_remove']       = 'Удалено из списка сравнений';
-$_['text_empty']        = 'Вы не выбрали ни одного товара для сравнения.';
+$_[ 'Text_product'] = 'Опис';
+$_[ 'Text_name'] = 'Товар';
+$_[ 'Text_image'] = 'Зображення';
+$_[ 'Text_price'] = 'Ціна';
+$_[ 'Text_model'] = 'Модель';
+$_[ 'Text_manufacturer'] = 'Виробник';
+$_[ 'Text_availability'] = 'Наявність';
+$_[ 'Text_instock'] = 'Є на складі';
+$_[ 'Text_rating'] = 'Рейтинг';
+$_[ 'Text_reviews'] = 'Всього відгуків:%s';
+$_[ 'Text_summary'] = 'Короткий опис';
+$_[ 'Text_weight'] = 'Вага';
+$_[ 'Text_dimension'] = 'Розміри (Д х Ш х В)';
+$_[ 'Text_compare'] = 'Порівняння товарів (%s)';
+$_[ 'Text_success'] = 'Товар <a href="%s">% s </a> доданий в ваш <a href="%s"> список порівняння </a>!';
+$_[ 'Text_remove'] = 'Вилучено зі списку порівнянь';
+$_[ 'Text_empty'] = 'Ви не обрали жодного товару для порівняння.';
 

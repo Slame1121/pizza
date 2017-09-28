@@ -1,35 +1,35 @@
 <?php
 // Heading
-$_['heading_title']     = 'Поиск';
-$_['heading_tag']       = 'По тегу - ';
+$_[ 'heading_title'] = 'Пошук';
+$_[ 'heading_tag'] = 'За тегом -';
 
 // Text
-$_['text_search']       = 'Результаты поиска';
-$_['text_keyword']      = 'Ключевые слова';
-$_['text_category']     = 'Все категории';
-$_['text_sub_category'] = 'Поиск в подкатегориях';
-$_['text_empty']        = 'Нет товаров, которые соответствуют критериям поиска.';
-$_['text_quantity']     = 'Количество:';
-$_['text_manufacturer'] = 'Производитель:';
-$_['text_model']        = 'Модель:';
-$_['text_points']       = 'Бонусные баллы:';
-$_['text_price']        = 'Цена:';
-$_['text_tax']          = 'Без НДС:';
-$_['text_reviews']      = 'Всего отзывов: %s';
-$_['text_compare']      = 'Сравнение товаров (%s)';
-$_['text_sort']         = 'Сортировка:';
-$_['text_default']      = 'По умолчанию';
-$_['text_name_asc']     = 'Название (А - Я)';
-$_['text_name_desc']    = 'Название (Я - А)';
-$_['text_price_asc']    = 'Цена (низкая &gt; высокая)';
-$_['text_price_desc']   = 'Цена (высокая &gt; низкая)';
-$_['text_rating_asc']   = 'Рейтинг (начиная с низкого)';
-$_['text_rating_desc']  = 'Рейтинг (начиная с высокого)';
-$_['text_model_asc']    = 'Модель (А - Я)';
-$_['text_model_desc']   = 'Модель (Я - А)';
-$_['text_limit']        = 'Показать:';
+$_[ 'text_search'] = 'Результати пошуку';
+$_[ 'text_keyword'] = 'Ключові слова';
+$_[ 'text_category'] = 'Всі категорії';
+$_[ 'text_sub_category'] = 'Пошук в підкатегоріях';
+$_[ 'text_empty'] = 'Немає товарів, які відповідають критеріям пошуку.';
+$_[ 'text_quantity'] = 'Кількість:';
+$_[ 'text_manufacturer'] = 'Виробник:';
+$_[ 'text_model'] = 'Модель:';
+$_[ 'text_points'] = 'Бонусні бали:';
+$_[ 'text_price'] = 'Ціна:';
+$_[ 'text_tax'] = 'Без ПДВ:';
+$_[ 'text_reviews'] = 'Всього відгуків:%s';
+$_[ 'text_compare'] = 'Порівняння товарів (%s)';
+$_[ 'text_sort'] = 'Сортування:';
+$_[ 'text_default'] = 'За замовчуванням';
+$_[ 'text_name_asc'] = 'Назва (А - Я)';
+$_[ 'text_name_desc'] = 'Назва (Я - А)';
+$_[ 'text_price_asc'] = 'Ціна (низька & gt; висока)';
+$_[ 'text_price_desc'] = 'Ціна (висока & gt; низька)';
+$_[ 'text_rating_asc'] = 'Рейтинг (починаючи з низького)';
+$_[ 'text_rating_desc'] = 'Рейтинг (починаючи з високого)';
+$_[ 'text_model_asc'] = 'Модель (А - Я)';
+$_[ 'text_model_desc'] = 'Модель (Я - А)';
+$_[ 'text_limit'] = 'Показати:';
 
 // Entry
-$_['entry_search']      = 'Поиск:';
-$_['entry_description'] = 'Искать в описании товаров';
+$_[ 'entry_search'] = 'Пошук:';
+$_[ 'entry_description'] = 'Шукати в описі товарів';
 

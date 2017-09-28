@@ -12,3 +12,4 @@ $_['text_tip_tel'] = 'Phone';
 $_['text_tip_email'] = 'E-mail';
 $_['text_tip_area'] = 'Message';
 $_['text_btn_name'] = 'Send';
+$_['date_format_short']             = 'd.m.Y';

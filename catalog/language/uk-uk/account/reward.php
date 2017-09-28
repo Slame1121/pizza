@@ -1,15 +1,15 @@
 <?php
 // Heading
-$_['heading_title']      = 'Бонусные баллы';
+$_['heading_title'] = 'Бонусні бали';
 
 // Column
-$_['column_date_added']  = 'Добавлено';
-$_['column_description'] = 'Описание';
-$_['column_points']      = 'Бонусные баллы';
+$_['column_date_added'] = 'Додано';
+$_['column_description'] = 'Опис';
+$_['column_points'] = 'Бонусні бали';
 
 // Text
-$_['text_account']       = 'Личный Кабинет';
-$_['text_reward']        = 'Бонусные баллы';
-$_['text_total']         = 'Накоплено бонусных баллов';
-$_['text_empty']         = 'У Вас нет бонусных балов!';
+$_['text_account'] = 'Особистий Кабінет';
+$_['text_reward'] = 'Бонусні бали';
+$_['text_total'] = 'Накопичено бонусних балів';
+$_['text_empty'] = 'У Вас немає бонусних балів!';
 

@@ -1,15 +1,15 @@
 <?php
 // Text
-$_['text_success']     = 'Success: Your gift voucher discount has been applied!';
-$_['text_cart']        = 'Success: You have modified your shopping cart!';
-$_['text_for']         = '%s Gift Certificate for %s';
+$_['text_success'] = 'успіх: Ваш подарунок ваучер був застосований!';
+$_['text_cart'] = 'успіх: Ви змінили Ваш кошик!';
+$_['text_for'] = '%s подарунковий сертифікат "%S"';
 
-// Error
-$_['error_permission'] = 'Warning: You do not have permission to access the API!';
-$_['error_voucher']    = 'Warning: Gift Voucher is either invalid or the balance has been used up!';
-$_['error_to_name']    = 'Recipient\'s Name must be between 1 and 64 characters!';
-$_['error_from_name']  = 'Your Name must be between 1 and 64 characters!';
-$_['error_email']      = 'E-Mail Address does not appear to be valid!';
-$_['error_theme']      = 'You must select a theme!';
-$_['error_amount']     = 'Amount must be between %s and %s!';
+// Помилка
+$_['error_permission'] = 'попередження: Ви не маєте дозволу для доступу до API!';
+$_['error_voucher'] = 'попередження: подарунковий сертифікат є недійсним, або баланс був витрачений!';
+$_['error_to_name'] = "\одержувача ім'я повинно бути від 1 до 64 символів!";
+$_['error_from_name'] = "Ваше ім'я має бути від 1 до 64 символів!";
+$_['error_email'] = 'адреса електронної пошти не представляється допустимим!';
+$_['error_theme'] = 'Ви повинні вибрати тему!';
+$_['error_amount'] = 'сума повинна бути між %S та %s!';
 

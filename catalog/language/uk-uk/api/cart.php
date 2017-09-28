@@ -1,11 +1,11 @@
 <?php
 // Text
-$_['text_success']     = 'Success: You have modified your shopping cart!';
+$_['text_success'] = 'успіх: Ви змінили Ваш кошик!';
 
-// Error
-$_['error_permission'] = 'Warning: You do not have permission to access the API!';
-$_['error_stock']      = 'Products marked with *** are not available in the desired quantity or not in stock!';
-$_['error_minimum']    = 'Minimum order amount for %s is %s!';
-$_['error_store']      = 'Product can not be bought from the store you have choosen!';
-$_['error_required']   = '%s required!';
+// Помилка
+$_['error_permission'] = 'попередження: Ви не маєте дозволу для доступу до API!';
+$_['error_stock'] = 'товари, відмічені *** не доступні в потрібній кількості або їх немає на складі!';
+$_['error_minimum'] = 'Мінімальна сума замовлення для %S є %ь!';
+$_['error_store'] = 'товар не може бути куплений з магазину Ви не вибрали!';
+$_['error_required'] = '%S не потрібно!';
 

@@ -12,3 +12,4 @@ $_['text_tip_tel'] = 'Телефон';
 $_['text_tip_email'] = 'E-mail';
 $_['text_tip_area'] = 'Повідомлення';
 $_['text_btn_name'] = 'Відправити';
+$_['date_format_short']             = 'd.m.Y';

@@ -1,34 +1,33 @@
 <?php
 // Heading
-$_['heading_title']        = 'Регистрация';
+$_['heading_title'] = 'Реєстрація';
 
 // Text
-$_['text_account']         = 'Личный Кабинет';
-$_['text_register']        = 'Регистрация';
-$_['text_account_already'] = 'Если Вы уже зарегистрированы, перейдите на страницу <a href="%s">авторизации</a>.';
-$_['text_your_details']    = 'Основные данные';
-$_['text_newsletter']      = 'Рассылка новостей';
-$_['text_your_password']   = 'Ваш пароль';
-$_['text_agree']           = 'Я прочитал <a href="%s" class="agree"><b>%s</b></a> и согласен с <br /> условиями безопасности и обработки персональных данных';
+$_['text_account'] = 'Особистий Кабінет';
+$_['text_register'] = 'Реєстрація';
+$_['text_account_already'] = 'Якщо Ви вже зареєстровані, перейдіть на сторінку <a href="%s">авторизації</a>.';
+$_['text_your_details'] = 'Основні дані';
+$_['text_newsletter'] = 'Розсилка новин';
+$_['text_your_password'] = 'пароль';
+$_['text_agree'] = 'Я прочитав <a href="%s" class="agree"><b>%s</b></a> і згоден з <br /> умовами безпеки та обробки персональних даних';
 
 // Entry
-$_['entry_customer_group'] = 'Направление бизнеса';
-$_['entry_firstname']      = 'Имя';
-$_['entry_lastname']       = 'Фамилия';
-$_['entry_email']          = 'E-Mail';
-$_['entry_telephone']      = 'Телефон';
-$_['entry_newsletter']     = 'Подписка на новости';
-$_['entry_password']       = 'Пароль';
-$_['entry_confirm']        = 'Подтверждение пароля';
+$_['entry_customer_group'] = 'Напрям бізнесу';
+$_['entry_firstname'] = "Ім'я";
+$_['entry_lastname'] = 'Прізвище';
+$_['entry_email'] = 'E-Mail';
+$_['entry_telephone'] = 'Телефон';
+$_['entry_newsletter'] = 'Підписка на новини';
+$_['entry_password'] = 'Пароль';
+$_['entry_confirm'] = 'Підтвердження пароля';
 
 // Error
-$_['error_exists']         = 'Данный E-Mail уже зарегистрирован!';
-$_['error_firstname']      = 'Имя должно быть от 1 до 32 символов!';
-$_['error_lastname']       = 'Фамилия должна быть от 1 до 32 символов!';
-$_['error_email']          = 'E-Mail введен неправильно!';
-$_['error_telephone']      = 'Телефон должен быть от 3 до 32 цифр!';
-$_['error_custom_field']   = '%s обязательно к заполнению!';
-$_['error_password']       = 'В пароле должно быть от 4 до 20 символов!';
-$_['error_confirm']        = 'Пароли и пароль подтверждения не совпадают!';
-$_['error_agree']          = 'Вы должны прочитать и согласится с %s!';
-
+$_['error_exists'] = 'Цей E-Mail вже зареєстрований!';
+$_['error_firstname'] = "Ім'я повинно містити від 1 до 32 символів!";
+$_['error_lastname'] = 'Прізвище повинна бути від 1 до 32 символів!';
+$_['error_email'] = 'E-Mail введено неправильно!';
+$_['error_telephone'] = 'Телефон повинен містити від 3 до 32 цифр!';
+$_['error_custom_field'] = "%s обов'язково до заповнення!";
+$_['error_password'] = 'пароль має бути від 4 до 20 символів!';
+$_['error_confirm'] = 'Паролі і пароль підтвердження не збігаються!';
+$_['error_agree'] = 'Ви повинні прочитати і погодитися з %s!';

@@ -1,5 +1,5 @@
 <?php
 // Text
-$_['text_credit']   = 'Кредит Магазина';
-$_['text_order_id'] = '№ Заказа: %s';
+$_['text_credit'] = 'Кредит Магазину';
+$_['text_order_id'] = '№ Замовлення: %s';
 

@@ -1,19 +1,19 @@
 <?php
 // Text
-$_['text_address']       = 'Success: Shipping address has been set!';
-$_['text_method']        = 'Success: Shipping method has been set!';
+$_['text_address'] = 'успіх: адреса доставки був встановлений!';
+$_['text_method'] = 'успіху: спосіб доставки був встановлений!';
 
-// Error
-$_['error_permission']   = 'Warning: You do not have permission to access the API!';
-$_['error_firstname']    = 'First Name must be between 1 and 32 characters!';
-$_['error_lastname']     = 'Last Name must be between 1 and 32 characters!';
-$_['error_address_1']    = 'Address 1 must be between 3 and 128 characters!';
-$_['error_city']         = 'City must be between 3 and 128 characters!';
-$_['error_postcode']     = 'Postcode must be between 2 and 10 characters for this country!';
-$_['error_country']      = 'Please select a country!';
-$_['error_zone']         = 'Please select a region / state!';
-$_['error_custom_field'] = '%s required!';
-$_['error_address']      = 'Warning: Shipping address required!';
-$_['error_method']       = 'Warning: Shipping method required!';
-$_['error_no_shipping']  = 'Warning: No Shipping options are available!';
+// Помилка
+$_['error_permission'] = 'попередження: Ви не маєте дозволу для доступу до API!';
+$_['error_firstname'] = "ім'я повинно містити від 1 до 32 символів!";
+$_['error_lastname']  = "ім'я повинно містити від 1 до 32 символів!";
+$_['error_address_1'] = 'Адреса 1 повинна містити від 3 до 128 символів!';
+$_['error_city'] = 'Місто повинна бути від 3 до 128 символів!';
+$_['error_postcode'] = 'Поштовий індекс повинен бути між 2 і 10 персонажів для цієї країни!';
+$_['error_country'] = 'будь Ласка, оберіть країну!';
+$_['error_zone'] = 'будь Ласка, оберіть регіон / держава!';
+$_['error_custom_field'] = '%S не потрібно!';
+$_['error_address'] = 'попередження: адреса доставки не потрібно!';
+$_['error_method'] = 'попередження: спосіб доставки не потрібно!';
+$_['error_no_shipping'] = 'попередження: немає варіанти доставки доступні!';
 

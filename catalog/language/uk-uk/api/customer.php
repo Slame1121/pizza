@@ -1,13 +1,12 @@
 <?php
 // Text
-$_['text_success']       = 'You have successfully modified customers';
+$_['text_success'] = 'ви успішно змінено клієнтів';
 
-// Error
-$_['error_permission']   = 'Warning: You do not have permission to access the API!';
-$_['error_customer']     = 'You must select a customer!';
-$_['error_firstname']    = 'First Name must be between 1 and 32 characters!';
-$_['error_lastname']     = 'Last Name must be between 1 and 32 characters!';
-$_['error_email']        = 'E-Mail Address does not appear to be valid!';
-$_['error_telephone']    = 'Telephone must be between 3 and 32 characters!';
-$_['error_custom_field'] = '%s required!';
-
+// Помилка
+$_['error_permission'] = 'попередження: Ви не маєте дозволу для доступу до API!';
+$_['error_customer'] = 'Ви повинні вибрати клієнта!';
+$_['error_firstname'] = "ім'я повинно містити від 1 до 32 символів!";
+$_['error_lastname'] = "ім'я повинно містити від 1 до 32 символів!";
+$_['error_email'] = 'адреса електронної пошти не представляється допустимим!';
+$_['error_telephone'] = 'телефон повинен містити від 3 до 32 символів!';
+$_['error_custom_field'] = '%S не потрібно!';

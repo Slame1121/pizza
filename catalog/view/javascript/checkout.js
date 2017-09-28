@@ -6,6 +6,7 @@ var Checkout = {
 		var method = $('input[name=shipping_method]:checked').val();
 
 		switch(method){
+
 			case 'citylink.citylink':
 				var adress =  $('#cart_adress_button').attr('data-type');
 				if(typeof adress == 'undefined'){
@@ -85,7 +86,23 @@ var Checkout = {
 					self.getOrder();
 					break;
 				case 'checkout':
-					self.cofirmCheckout();
+					$.ajax({
+						type: "POST",
+						data: {'bonuses' : $('input.basket-log__form-value--bonus').val()},
+						url: "/index.php?route=checkout/checkout/checkbonuses",
+						dataType: "html",
+						success: function(html) {
+							if(html == 1){
+								self.cofirmCheckout();
+							}else{
+								$('.basket-log__form-label--bonus').addClass('error');
+							}
+						},
+						error: function() {
+							alert('error handing here');
+						}
+					});
+
 					break;
 			}
 
@@ -148,8 +165,13 @@ var Checkout = {
 	changeShippingMethod: function () {
 		$('#checkout-checkout').on('click', '.basket-log__tabs-box', function(){
 			var method = $(this).find('input').val();
+			var price = 0;
+			var total_container = $('.basket-log__form-num');
 			switch (method){
 				case 'citylink.citylink':
+					price = parseInt(total_container.data('price'));
+					total_container.find('span').text(price);
+
 					$('#cart-pickup').addClass('hidden');
 					if($('#cart_adress_button').length < 1 || $('#cart_adress_button').attr('data-type') == 'new'){
 						$('#cart-adress-new').removeClass('hidden');
@@ -159,6 +181,10 @@ var Checkout = {
 					$('#change_adress_button_container').removeClass('hidden');
 					break;
 				case 'pickup.pickup':
+					price = parseInt(total_container.data('price'));
+					price -= (price * 0.1);
+					total_container.find('span').text(price);
+
 					$('#cart-adress-new').addClass('hidden');
 					$('#cart-pickup').removeClass('hidden');
 					$('#change_adress_button_container').addClass('hidden');
@@ -184,12 +210,23 @@ var Checkout = {
 		$('#cart-products-list').empty();
 		cart.recalcBasketPrices();
 	},
+	bindPaymentMethod: function () {
+		$('#checkout-checkout').on('change', 'select[name=payment_method]', function(){
+				if($(this).find('option:selected').attr('value') == 'cheque'){
+					$('.cheque_price').removeClass('hidden');
+				}else{
+					$('.cheque_price').addClass('hidden');
+				}
+		});
+	},
 	init: function(){
 		this.bindCheckoutButtons();
 
 		this.bindAddAddress();
 
 		this.changeShippingMethod();
+
+		this.bindPaymentMethod();
 	}
 };
 

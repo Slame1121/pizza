@@ -108,6 +108,10 @@ class ControllerCheckoutCheckout extends Controller {
 
 		}
 
+		$data['bonuses'] = isset($this->customer->bonuses) ? isset($this->customer->bonuses) : 0;
+
+		$data['can_get_bonuses'] = $this->cart->getTotal() * 0.05;
+
 		//$data['column_left'] = $this->load->controller('common/column_left');
 		//$data['column_right'] = $this->load->controller('common/column_right');
 		//$data['content_top'] = $this->load->controller('common/content_top');
@@ -116,6 +120,21 @@ class ControllerCheckoutCheckout extends Controller {
 		//$data['header'] = $this->load->controller('common/header');
 
 		return $this->load->view('checkout/checkout', $data);
+	}
+
+	public function checkbonuses(){
+		if(isset($_POST['bonuses'])){
+			$bon = (float)$_POST['bonuses'];
+			if(isset($this->customer->bonuses ) && $this->customer->bonuses > $bon){
+				$this->response->setOutput((1));
+			}else{
+				if(!isset($this->customer->bonuses)){
+					$this->response->setOutput((1));
+				}else{
+					$this->response->setOutput((0));
+				}
+			}
+		}
 	}
 
 	public function country() {

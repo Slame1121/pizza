@@ -1,0 +1,21 @@
+<div class="basket-log__bottom basket-log__bottom--center"><a id="button-confirm" class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a></div>
+<script type="text/javascript"><!--
+$('#button-confirm').on('click', function() {
+	$.ajax({
+		url: 'index.php?route=extension/payment/cheque/confirm',
+		dataType: 'json',
+		beforeSend: function() {
+		},
+		complete: function() {
+		},
+		success: function(json) {
+            Checkout.successOrder();
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+
+});
+//--></script>

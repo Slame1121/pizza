@@ -49,7 +49,7 @@ class ControllerAccountOrder extends Controller {
 		$results = $this->model_account_order->getOrders(($page - 1) * 10, 10);
 
 
-
+		$total_bonuses = 0;
 		foreach ($results as $result) {
 			$products = $this->model_account_order->getOrderProducts($result['order_id']);
 			$order_products_arr = [];
@@ -74,6 +74,8 @@ class ControllerAccountOrder extends Controller {
 				'reserved_bonuses' => $result['reserved_points'],
 				'reorder'    => $this->url->link('account/order/reorder', $url, true),
 			);
+
+			$total_bonuses += $result['got_points'];
 		}
 
 		$pagination = new Pagination();
@@ -87,7 +89,7 @@ class ControllerAccountOrder extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($order_total) ? (($page - 1) * 10) + 1 : 0, ((($page - 1) * 10) > ($order_total - 10)) ? $order_total : ((($page - 1) * 10) + 10), $order_total, ceil($order_total / 10));
 
 		$data['continue'] = $this->url->link('account/account', '', true);
-
+		$data['total_bonuses'] = $total_bonuses;
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
 		$data['content_top'] = $this->load->controller('common/content_top');

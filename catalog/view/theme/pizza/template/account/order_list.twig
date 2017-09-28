@@ -1,34 +1,43 @@
-{% for order in orders %}
-<div class="profile-history__item">
-    <div class="profile-history__line">
-        <div class="profile-history__line-name">Адрес:</div>
-        <div class="profile-history__line-value">Бульвар победы, 41</div>
+<h2>Здравствуйте, Алексей!</h2>
+<div class="profile__title">У вас на счету <a class="for-popup" href="#bonus-popup">{{ total_bonuses }} бонусов.</a></div>
+<div class="profile-history">
+    <div class="profile__title">Ваша история заказов:</div>
+    <div class="profile-history__content">
+
+        {% for order in orders %}
+            <div class="profile-history__item">
+                <div class="profile-history__line">
+                    <div class="profile-history__line-name">Адрес:</div>
+                    <div class="profile-history__line-value">Бульвар победы, 41</div>
+                </div>
+                <div class="profile-history__line">
+                    <div class="profile-history__line-name">Телефон:</div>
+                    <div class="profile-history__line-value">920 219 76 72</div>
+                </div>
+                <div class="profile-history__line">
+                    <div class="profile-history__line-name">Заказ:</div>
+                    <div class="profile-history__line-value"> {{ order.products }}</div>
+                </div>
+                {% if order.reserved_bonuses > 0 %}
+                    <div class="profile-history__line">
+                        <div class="profile-history__line-name"> <span style="font-size:12px;line-height:12px;">Баллы (ожидают одобрения) :</span> </div>
+                        <div class="profile-history__line-value"> {{ order.reserved_bonuses }}</div>
+                    </div>
+                {% endif %}
+                <div class="profile-history__line">
+                    <div class="profile-history__line-name">Баллы:</div>
+                    <div class="profile-history__line-value"> {{ order.got_bonuses }}</div>
+                </div>
+                <div class="profile-history__line">
+                    <div class="profile-history__line-name">ВСЕГО:</div>
+                    <div class="profile-history__line-value"> <b>{{ order.total }}</b></div>
+                </div>
+                <div class="profile-history__line">
+                    <div class="profile-history__line-name"></div>
+                    <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="{{ order.reorder }}">Повторить заказ</a></div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-    <div class="profile-history__line">
-        <div class="profile-history__line-name">Телефон:</div>
-        <div class="profile-history__line-value">920 219 76 72</div>
-    </div>
-    <div class="profile-history__line">
-        <div class="profile-history__line-name">Заказ:</div>
-        <div class="profile-history__line-value"> {{ order.products }}</div>
-    </div>
-    {% if order.reserved_bonuses > 0 %}
-    <div class="profile-history__line">
-        <div class="profile-history__line-name"> <span style="font-size:12px;line-height:12px;">Баллы (ожидают одобрения) :</span> </div>
-        <div class="profile-history__line-value"> {{ order.reserved_bonuses }}</div>
-    </div>
-    {% endif %}
-    <div class="profile-history__line">
-        <div class="profile-history__line-name">Баллы:</div>
-        <div class="profile-history__line-value"> {{ order.got_bonuses }}</div>
-    </div>
-    <div class="profile-history__line">
-        <div class="profile-history__line-name">ВСЕГО:</div>
-        <div class="profile-history__line-value"> <b>{{ order.total }}</b></div>
-    </div>
-    <div class="profile-history__line">
-        <div class="profile-history__line-name"></div>
-        <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="{{ order.reorder }}">Повторить заказ</a></div>
-    </div>
+    <div class="profile-history__conrols"><a href="#">Показать ещё</a></div>
 </div>
-{% endfor %}

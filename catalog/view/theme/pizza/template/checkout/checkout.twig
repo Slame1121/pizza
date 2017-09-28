@@ -26,7 +26,7 @@
             </label>
         </div>
         <div class="basket-log__form-box">
-            <label class="basket-log__form-label basket-log__form-label--bonus"><span class="basket-log__form-name basket-log__form-name--bonus">Количество бонусов<span>Доступно 0</span></span>
+            <label class="basket-log__form-label basket-log__form-label--bonus"><span class="basket-log__form-name basket-log__form-name--bonus">Количество бонусов<span>Доступно {{ bonuses }}</span></span>
                 <input class="basket-log__form-value basket-log__form-value--bonus" type="text" name="box">
             </label>
         </div>
@@ -34,11 +34,11 @@
         <div class="basket-log__form-box">
             <div class="basket-log__form-summa">
                 <div class="basket-log__form-name">Цена</div>
-                <div class="basket-log__form-num">{{ total_cart_price }} грн</div>
+                <div class="basket-log__form-num" data-price="{{ total_cart_price }}"><span>{{ total_cart_price }}</span> грн</div>
             </div>
         </div>
         {%  if not logged %}
-            <div class="basket-log__form-text">Вы получите 178.58 гривен на бонусный счет за этот заказ, <br>если сейчас присоединитесь к семье <a href="#">Pizza Famiglia</a></div>
+            <div class="basket-log__form-text">Вы получите <span>{{ can_get_bonuses }}</span> гривен на бонусный счет за этот заказ, <br>если сейчас присоединитесь к семье <a href="#">Pizza Famiglia</a></div>
         {%  endif %}
     </form>
 </div>

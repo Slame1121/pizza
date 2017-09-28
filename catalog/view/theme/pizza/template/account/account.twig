@@ -2,16 +2,7 @@
 <section class="profile page">
     <div class="container">
         <div class="profile__content">
-            <h2>Здравствуйте, Алексей!</h2>
-            <div class="profile__title">У вас на счету <a class="for-popup" href="#bonus-popup">238 бонусов.</a></div>
-            <div class="profile-history">
-                <div class="profile__title">Ваша история заказов:</div>
-                <div class="profile-history__content">
-                    {{ orders_list }}
-
-                </div>
-                <div class="profile-history__conrols"><a href="#">Показать ещё</a></div>
-            </div>
+            {{ orders_list }}
             <div class="profile__title">Вы можете отредактировать свои персональные данные</div>
             <form class="profile-form" method="post" action="{{ form_action }}">
                 <div class="profile-form__content">

@@ -216,7 +216,23 @@
           border-bottom: 1px solid #bababa;
           border-right: 1px solid #bababa;
           transform: rotate(45deg);
-          z-index: 1; } } }
+          z-index: 1; } }
+	  &--bonus{
+		&.error{
+		  span{
+			span{
+			  color:red;
+			}
+
+		  }
+		  input{
+			color:red;
+			border:1px solid red;
+		  }
+		}
+	  }
+
+	}
     &-name {
       width: 155px;
       min-width: 155px;
@@ -233,6 +249,7 @@
         color: #e51a4c; }
       &--bonus {
         padding-top: 1px;
+
         span {
           display: block;
           color: #e9ae4a; } } }

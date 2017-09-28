@@ -48,17 +48,17 @@
             <div class="header__content">
                 <div class="header-box">
                     <div class="header-box__top">
-                        <div class="header-box__info">Доставим за 60 минут <br>или пицца БЕСПЛАТНО!</div>
+                        <div class="header-box__info">{{ header_slogan }}</div>
                         <div class="header-box__phone">
                             <div class="phone">
                                 <div class="phone__item">{{ telephone }}</div>
                                 <div class="phone__item">{{ telephone2 }}</div>
-                                <div class="phone__text">11:00 - 23:00 Без выходных</div>
+                                <div class="phone__text">11:00 - 23:00 {{ text_titles }}</div>
                                 <div class="phone__text phone__text--small">с 11 до 23:00</div>
                             </div>
                         </div>
                         <div class="header-box__ctrls">
-                            <div class="header-box__shipping">Бесплатная<span>доставка пиццы!</span></div>
+                            <div class="header-box__shipping">{{ text_title_txt }}</div>
                             <div class="header-box__block">
                                 {{ language }}
                                 <div class="header-box__card">
@@ -85,13 +85,13 @@
                             <div class="basket-log">
                                 <div id="checkout-cart" class="basket-log__box active">
                                     <div class="basket-log__top">
-                                        <div class="basket-log__title">Ваша корзина</div><a class="basket-log__top-btn basket-log__top-btn--right" id="clear_basket" href="#">Очистить заказ</a><a class="basket-log__close" href="#"></a>
+                                        <div class="basket-log__title">{{ text_shopping_cart }}</div><a class="basket-log__top-btn basket-log__top-btn--right" id="clear_basket" href="#">{{ text_clear_cart }}</a><a class="basket-log__close" href="#"></a>
                                     </div>
                                     <div class="basket-log__content" id="cart-products-list">
                                         {{ cart }}
                                     </div>
                                     <div class="basket-log__bottom basket-log__bottom--right">
-                                        <div class="basket-log__summa">{{ total }} грн</div><a data-type="cart" class="btn basket-log__btn btn-orange" href="#">Оформить заказ</a>
+                                        <div class="basket-log__summa">{{ total }} грн</div><a data-type="cart" class="btn basket-log__btn btn-orange" href="#">{{ text_pay_carts }}</a>
                                     </div>
                                 </div>
                                 <div id="checkout-checkout" class="basket-log__box">
@@ -113,7 +113,7 @@
                         </span>
 
                     {% else %}
-                        <a class="header-sing noLink" href="#">Вход/Регистрация</a>
+                        <a class="header-sing noLink" href="#">{{ text_login_txt }}</a>
                         <div class="sing-log">{{ form_login }}</div>
                     {% endif %}
                 </div>
@@ -135,7 +135,7 @@
                     {% if logged %}
                         <a class="drop-menu__sing-link" href="{{ logout }}">{{ text_logout }}</a>
                     {% else %}
-                        <a class="drop-menu__sing-link noLink" href="#"><span> </span>Вход/Регистрация</a>
+                        <a class="drop-menu__sing-link noLink" href="#"><span> </span>{{ text_login_txt }}</a>
                     {% endif %}
                 </div>
                 <div class="drop-menu__sing-content">

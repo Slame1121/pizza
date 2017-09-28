@@ -33,6 +33,7 @@ $_['text_year'] = 'рік';
 $_['text_hit']                = 'Хіт';
 
 // Entry
+$_['entry_pays'] = 'Замовити';
 $_['entry_qty'] = 'Кількість';
 $_['entry_name'] = "Ваше ім'я:";
 $_['entry_review'] = 'Ваш відгук:';

@@ -97,6 +97,14 @@ class ControllerCommonHeader extends Controller {
         $data['styles'] = $this->document->getStyles();
         $data['scripts'] = $this->document->getScripts('header');
 
+        $this->load->model('setting/module');
+        $setting_info = $this->model_setting_module->getModule(42);
+        $data['header_slogan'] = $this->load->controller('extension/module/html', $setting_info);
+        $data['text_title_txt'] = $this->language->get('text_title_txt');
+        $data['text_titles'] = $this->language->get('text_titles');
+        //var_dump($data['header_slogan']);die;
+        //$data['header_slogan'] = $this->model_catalog_information->getInformation($information_id);
+
 		return $this->load->view('common/header', $data);
 	}
 }

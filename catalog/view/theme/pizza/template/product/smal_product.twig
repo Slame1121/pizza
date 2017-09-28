@@ -17,7 +17,7 @@
                                         <span class="hit-item__info-size">{{ value.name }}<span>500 ± 50 гр</span></span>
                                         <span class="hit-item__info-price">{{ value.price }}</span>
                                     </span>
-                                    <span class="btn hit-item__btn add-product-cart" data-prodId="{{ product.product_id }}" data-key="{{ key }}">Заказать</span>
+                                    <span class="btn hit-item__btn add-product-cart" data-prodId="{{ product.product_id }}" data-key="{{ key }}">{{ entry_pays }}</span>
                                     <input style="display: none;" class="option{{ product.product_id }}_{{ key }}" value="{{ product.optV[key]['prod_val'] }}" name="option[{{  product.optV[key]['opt_val'] }}]" type="checkbox" name="card-price" checked>
                                 </span>
                             {% endfor %}

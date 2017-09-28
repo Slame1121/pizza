@@ -38,7 +38,6 @@ class ModelCatalogInformation extends Model {
 	}
 
 	public function editInformation($information_id, $data) {
-
 		$this->db->query("UPDATE " . DB_PREFIX . "information SET sort_order = '" . (int)$data['sort_order'] . "', bottom = '" . (isset($data['bottom']) ? (int)$data['bottom'] : 0) . "', status = '" . (int)$data['status'] . "' WHERE information_id = '" . (int)$information_id . "'");
 
 		$this->db->query("DELETE FROM " . DB_PREFIX . "information_description WHERE information_id = '" . (int)$information_id . "'");
@@ -74,40 +73,6 @@ class ModelCatalogInformation extends Model {
 				$this->db->query("INSERT INTO `" . DB_PREFIX . "information_to_layout` SET information_id = '" . (int)$information_id . "', store_id = '" . (int)$store_id . "', layout_id = '" . (int)$layout_id . "'");
 			}
 		}
-
-        if (isset($data['map'])) {
-            if(isset($data['map']["status"])){
-                $this->db->query("DELETE FROM `" . DB_PREFIX . "map_metka` WHERE information_id = '" . (int)$information_id . "'");
-
-                $status = isset($data['map']["status"]) ? 1 : 0;
-                $lat = isset($data['map']["pos"]["lat"]) ? (float)$data['map']["pos"]["lat"] : 0;
-                $lng = isset($data['map']["pos"]["lng"]) ? (float)$data['map']["pos"]["lng"] : 0;
-                $zoom = isset($data['map']["pos"]["zoom"]) ? (float)$data['map']["pos"]["zoom"] : 0;
-
-                $this->db->query("INSERT INTO " . DB_PREFIX . "map_metka SET 
-                    information_id = '" . (int)$information_id . "', 
-                    zoom = '" . (int)$zoom . "', 
-                    lat = '" . $lat . "', 
-                    lng = '" . $lng . "', 
-                    sort_order = 1, 
-                    status = '" . (int)$status . "'");
-                $query = $this->db->query("SELECT DISTINCT poligon_id FROM " . DB_PREFIX . "map_metka WHERE information_id = '" . (int)$information_id . "'");
-                $poligon_id = $query->row['poligon_id'];
-
-                foreach ($data['map']["poligon"]["lat"] as $key => $val) {
-                    $lngs = (float)$data['map']["poligon"]["lng"][$key];
-                    $lats = (float)$val;
-                    $this->db->query("INSERT INTO " . DB_PREFIX . "map_metka_poligon SET 
-                            information_id = '" . (int)$information_id . "', 
-                            status = 1, 
-                            sort_order = '" . (int)$key . "', 
-                            lat = '" . $this->db->escape($lats) . "',
-                            lng = '" . $this->db->escape($lngs) . "', 
-                            poligon_id = '" . (int)$poligon_id. "'");
-                }
-            }
-        }
-
 
 		$this->cache->delete('information');
 	}
@@ -207,22 +172,6 @@ class ModelCatalogInformation extends Model {
 		}
 
 		return $information_store_data;
-	}
-
-	public function getInformationMap($information_id) {
-		$map_data = array();
-
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "map_metka WHERE information_id = '" . (int)$information_id . "'");
-        if($query->rows){
-            $map_data = $query->rows[0];
-            $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "map_metka_poligon WHERE information_id = '" . (int)$information_id . "'");
-
-            foreach ($query->rows as $result) {
-                $map_data['poligon'][] = $result;
-            }
-        }
-
-		return $map_data;
 	}
 
 	public function getInformationSeoUrls($information_id) {

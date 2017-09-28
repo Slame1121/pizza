@@ -15,3 +15,4 @@ $_['text_order'] = 'Історія замовлень';
 $_['text_wishlist'] = 'Закладки';
 $_['text_newsletter'] = 'Розсилка';
 $_['text_powered'] = 'Працює на <a href="http://opencart-russia.ru">OpenCart "Російська збірка"</a><br /> %s &copy; %s';
+$_['text_titles'] = 'Без вихідних';

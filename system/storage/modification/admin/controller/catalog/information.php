@@ -13,6 +13,7 @@ class ControllerCatalogInformation extends Controller {
 	}
 
 	public function add() {
+
 		$this->load->language('catalog/information');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -52,7 +53,6 @@ class ControllerCatalogInformation extends Controller {
 		$this->load->model('catalog/information');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-
 			$this->model_catalog_information->editInformation($this->request->get['information_id'], $this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
@@ -247,21 +247,7 @@ class ControllerCatalogInformation extends Controller {
 	}
 
 	protected function getForm() {
-        $this->load->language('catalog/information');
 		$data['text_form'] = !isset($this->request->get['information_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
-        $data['map_txt'] = $this->language->get('map_txt');
-        $data['map_data_txt'] = $this->language->get('map_data_txt');
-        $data['poligon_txt'] = $this->language->get('poligon_txt');
-        $data['add_txt'] = $this->language->get('add_txt');
-        $data['del_txt'] = $this->language->get('del_txt');
-
-        $data['map_data_position'] = $this->language->get('map_data_position');
-        $data['map_data_pos_lat'] = $this->language->get('map_data_pos_lat');
-        $data['map_data_pos_lng'] = $this->language->get('map_data_pos_lng');
-        $data['map_data_pos_zoom'] = $this->language->get('map_data_pos_zoom');
-        $data['map_data_enabl'] = $this->language->get('map_data_enabl');
-
-
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -409,14 +395,6 @@ class ControllerCatalogInformation extends Controller {
 			$data['information_layout'] = $this->model_catalog_information->getInformationLayouts($this->request->get['information_id']);
 		} else {
 			$data['information_layout'] = array();
-		}
-
-		if (isset($this->request->post['map'])) {
-			$data['map'] = $this->request->post['map'];
-		} elseif (isset($this->request->get['information_id'])) {
-			$data['map'] = $this->model_catalog_information->getInformationMap($this->request->get['information_id']);
-		} else {
-			$data['map'] = array();
 		}
 
 		$this->load->model('design/layout');

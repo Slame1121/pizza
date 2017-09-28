@@ -4,12 +4,14 @@
     <div class="owl-carousel" id="slider{{ module }}">
         {% for banner in banners %}
         <div class="slider-item" style="background-image: url('{{ banner.image }}');"><img src="{{ banner.image }}" alt="{{ banner.title }}" />
-           <!-- <div class="slider-item__wrap">
+            <div class="slider-item__wrap">
                 <div class="container">
-                    <div class="slider-item__title">Попробуйте новую<span>Скандинавскую De Luxe</span></div><a class="btn slider-item__btn" href="card.html">Заказать</a>
+                    <div class="slider-item__title">
+                        {{ banner.title }}<span>{{ banner.title2 }}</span>
+                    </div>
+                    <a class="btn slider-item__btn" href="{{ banner.link }}">{{ banner.link_title }}</a>
                 </div>
             </div>
-            -->
         </div>
         {% endfor %}
 

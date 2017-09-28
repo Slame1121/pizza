@@ -14,4 +14,10 @@ $_['text_logout']        = 'Выход';
 $_['text_checkout']      = 'Оформление заказа';
 $_['text_search']        = 'Поиск';
 $_['text_all']           = 'Смотреть Все';
+$_['text_login_txt']           = 'Вход/Регистрация';
+$_['text_title_txt']           = 'Бесплатная<span>доставка пиццы!</span>';
+$_['text_titles']           = 'Без выходных';
+$_['text_clear_cart']           = 'Очистить заказ';
+$_['text_pay_carts']           = 'Оформить заказ';
+
 

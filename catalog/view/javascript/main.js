@@ -216,7 +216,8 @@ $('document').ready(function(){
 		$('form.user-auth .auth_email').prop('required', true);
         $('form.user-auth .auth_tel').prop('required', true);
         $('form.user-auth .auth_pass').prop('required', true);
-        $('form.user-auth .btn.sing-log__btn.btn-orange').html('Регистрация');
+        var txt = $('form.user-auth .btn.sing-log__btn.btn-orange').attr('data-regis');
+        $('form.user-auth .btn.sing-log__btn.btn-orange').html(txt);//'Регистрация'
         //auth
     })
 	$('.sing-log__log').on('click', function () {
@@ -235,7 +236,8 @@ $('document').ready(function(){
         $('form.user-auth .auth_email').prop('required', false);
         $('form.user-auth .auth_tel').prop('required', true);
         $('form.user-auth .auth_pass').prop('required', true);
-        $('form.user-auth .btn.sing-log__btn.btn-orange').html('Войти');
+        var txt = $('form.user-auth .btn.sing-log__btn.btn-orange').attr('data-auth');
+        $('form.user-auth .btn.sing-log__btn.btn-orange').html(txt);//'Войти'
         //auth
     })
 	$('.auth-forgot').on('click', function () {
@@ -255,8 +257,8 @@ $('document').ready(function(){
         $('form.user-auth .sing-log__reg-wrap.regis').addClass('hidden');
         $('form.user-auth .sing-log__reg-wrap.login').removeClass('hidden');
 		$('form.user-auth .auth_type').val('forgot');
-
-        $('form.user-auth .btn.sing-log__btn.btn-orange').html('Отправить');
+		var txt = $('form.user-auth .btn.sing-log__btn.btn-orange').attr('data-send');
+        $('form.user-auth .btn.sing-log__btn.btn-orange').html(txt);//'Отправить'
         //auth
     })
 

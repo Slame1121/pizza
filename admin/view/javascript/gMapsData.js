@@ -1,8 +1,5 @@
 var triangleCoords = [
-    {lat: 25.774, lng: -80.190},
-    {lat: 18.466, lng: -66.118},
-    {lat: 32.321, lng: -64.757},
-    {lat: 25.774, lng: -80.190}
+
 ];
 // Construct the polygon.
 var markerTriangle = new google.maps.Polygon({
@@ -41,10 +38,10 @@ $(document).ready(function() {
                 console.log('Zoom: ' + map.getZoom());
             }
         });
-        markerTriangle.setMap(map);
+        refreshMap();
     }
 
-    $('.refreshMap.btn').on('click', function () {
+    function refreshMap() {
         var item = $('.poligons-data-item');
         triangleCoords = [];
         $.each(item, function ( index, value ) {
@@ -64,6 +61,10 @@ $(document).ready(function() {
             fillOpacity: 0.35
         });
         markerTriangle.setMap(map);
+    }
+
+    $('.refreshMap.btn').on('click', function () {
+        refreshMap();
     })
 
     if($('#tab-map').length){

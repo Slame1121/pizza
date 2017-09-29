@@ -68,6 +68,18 @@ class ControllerCommonHeader extends Controller {
         $data['form_register_action'] = $this->url->link('account/register/registr', '', true);
         $data['form_forgot_action'] = $this->url->link('account/forgotten/forgot', '', true);
 
+        $data['text_auth_phon'] = $this->language->get('text_auth_phon');
+         $data['text_auth_phon_smal'] = $this->language->get('text_auth_phon_smal');
+         $data['text_auth_pass'] = $this->language->get('text_auth_pass');
+         $data['text_auth_pass_smal'] = $this->language->get('text_auth_pass_smal');
+         $data['text_auth_chek'] = $this->language->get('text_auth_chek');
+         $data['text_auth_pass_new'] = $this->language->get('text_auth_pass_new');
+         $data['text_auth_for'] = $this->language->get('text_auth_for');
+         $data['text_auth_logins'] = $this->language->get('text_auth_logins');
+         $data['text_auth_regist'] = $this->language->get('text_auth_regist');
+         $data['text_auth_login'] = $this->language->get('text_auth_login');
+         $data['text_auth_send'] = $this->language->get('text_auth_send');
+
 		$data['form_login'] = $this->load->view('account/form_login', $data);
 
 		$data['home'] = $this->url->link('common/home');

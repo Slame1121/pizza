@@ -20,4 +20,16 @@ $_['text_titles']           = 'Без выходных';
 $_['text_clear_cart']           = 'Очистить заказ';
 $_['text_pay_carts']           = 'Оформить заказ';
 
+$_['text_auth_phon']           = 'Телефон';
+$_['text_auth_phon_smal']           = 'телефон';
+$_['text_auth_pass']           = 'Пароль';
+$_['text_auth_pass_smal']           = 'пароль';
+$_['text_auth_chek']           = 'Запомнить меня';
+$_['text_auth_pass_new']           = 'Забыли пароль?';
+$_['text_auth_for']           = 'Войти с помощью:';
+$_['text_auth_logins']           = 'Авторизироваться';
+$_['text_auth_regist']           = 'Зарегистрироваться';
+$_['text_auth_login']           = 'Войти';
+$_['text_auth_send']           = 'Отправить';
+
 

@@ -3,6 +3,7 @@ class ControllerProductProduct extends Controller {
 	private $error = array();
 
 	public function index() {
+		$this->load->language('product/category');
 		$this->load->language('product/product');
 
 		$data['breadcrumbs'] = array();
@@ -157,7 +158,7 @@ class ControllerProductProduct extends Controller {
 		$this->load->model('catalog/product');
 
 		$product_info = $this->model_catalog_product->getProduct($product_id);
-
+        //var_dump($product_info);die;
 		if ($product_info) {
 			$url = '';
 
@@ -241,6 +242,9 @@ class ControllerProductProduct extends Controller {
 			$data['model'] = $product_info['model'];
 			$data['reward'] = $product_info['reward'];
 			$data['points'] = $product_info['points'];
+			$data['prod_type'] = (int)$product_info['prod_type'];
+			$data['label_text'] = $this->language->get('text_hit'.(int)$product_info['prod_type']);
+
 			$data['description'] = html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8');
 
 			if ($product_info['quantity'] <= 0) {
@@ -424,6 +428,8 @@ class ControllerProductProduct extends Controller {
 					'price'       => $price,
 					'special'     => $special,
 					'tax'         => $tax,
+                    'prod_type'   => (int)$result['prod_type'],
+                    'label_text'  => $this->language->get('text_hit'.(int)$result['prod_type']),
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $rating,
 					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'])

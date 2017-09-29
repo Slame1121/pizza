@@ -17,10 +17,14 @@ class ControllerInformationInformation extends Controller {
 		} else {
 			$information_id = 0;
 		}
+        $this->document->addScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyCK3xtmeK2iryeOTK_g8i7LM7FTx60HgZ0');
 
 		$information_info = $this->model_catalog_information->getInformation($information_id);
 
 		if ($information_info) {
+            $map = $this->model_catalog_information->getInformationMap($information_id);
+
+            $data['map'] = $this->load->view('information/map', $map);
 			$this->document->setTitle($information_info['meta_title']);
 			$this->document->setDescription($information_info['meta_description']);
 			$this->document->setKeywords($information_info['meta_keyword']);

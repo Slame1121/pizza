@@ -4,7 +4,7 @@
     <div class="hit__content">
         {% for product in products %}
             <div class="hit-item">
-                <a class="hit-item__box mode-hit product-feature-dox" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="{{ text_hit }}">
+                <a class="hit-item__box {% if product.prod_type > 0 %} mode-hit {% endif %} product-feature-dox" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="{{ product.label_text }}">
                     <span class="hit-item__name">{{ product.name }}</span>
                     <span class="hit-item__text">
                             {{ product.sostav }}

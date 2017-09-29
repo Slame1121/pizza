@@ -1,6 +1,6 @@
 {% for product in products %}
 <div class="hit-item">
-    <a class="hit-item__box mode-hit" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="Хит">
+    <a class="hit-item__box {% if product.prod_type > 0 %} mode-hit {% endif %}" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="{{ product.label_text }}">
         <span class="hit-item__name">{{ product.name }}</span>
         <span class="hit-item__text">
             {{ product.sostav }}
@@ -13,7 +13,7 @@
                             <span class="hit-item__info-size">{{ value.name }}{% if value.weight > 0 %}<span>{{ value.weight }}</span>{% endif %}</span>
                             <span class="hit-item__info-price">{{ value.price }}</span>
                         </span>
-                        <span class="btn hit-item__btn add-product-cart" data-prodId="{{ product.product_id }}" data-key="{{ key }}">Заказать</span>
+                        <span class="btn hit-item__btn add-product-cart" data-prodId="{{ product.product_id }}" data-key="{{ key }}">{{ text_to_card }}</span>
                         <input style="display: none;" class="option{{ product.product_id }}_{{ key }}" value="{{ product.optV[key]['prod_val'] }}" name="option[{{  product.optV[key]['opt_val'] }}]" type="checkbox" name="card-price" checked>
 
                     </span>

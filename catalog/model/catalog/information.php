@@ -21,4 +21,19 @@ class ModelCatalogInformation extends Model {
 			return 0;
 		}
 	}
+    public function getInformationMap($information_id) {
+        $map_data = array();
+
+        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "map_metka WHERE information_id = '" . (int)$information_id . "'");
+        if($query->rows){
+            $map_data = $query->rows[0];
+            $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "map_metka_poligon WHERE information_id = '" . (int)$information_id . "'");
+
+            foreach ($query->rows as $result) {
+                $map_data['poligon'][] = $result;
+            }
+        }
+
+        return $map_data;
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 class ControllerExtensionModuleFeatured extends Controller {
 	public function _index($setting) {
+
 		$this->load->language('extension/module/featured');
 
 		$this->load->model('catalog/product');
@@ -17,6 +18,7 @@ class ControllerExtensionModuleFeatured extends Controller {
 			$products = array_slice($setting['product'], 0, (int)$setting['limit']);
 
 			foreach ($products as $product_id) {
+
 				$product_info = $this->model_catalog_product->getProduct($product_id);
 
 				if ($product_info) {
@@ -57,6 +59,8 @@ class ControllerExtensionModuleFeatured extends Controller {
 						'description' => utf8_substr(strip_tags(html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
 						'price'       => $price,
 						'special'     => $special,
+                        'prod_type'   => (int)$product_info['prod_type'],
+                        'label_text'  => $this->language->get('text_hit'.(int)$product_info['prod_type']),
 						'tax'         => $tax,
 						'rating'      => $rating,
 						'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
@@ -71,6 +75,7 @@ class ControllerExtensionModuleFeatured extends Controller {
 	}
 
 	public function index($setting){
+        $this->load->language('product/category');
         $this->load->language('extension/module/featured');
 
         $this->load->model('catalog/product');
@@ -181,6 +186,8 @@ class ControllerExtensionModuleFeatured extends Controller {
                         'indegrients' => $indigrients_groups,
                         'sostav'      => $sostav,
                         'name'        => $product_info['name'],
+                        'prod_type'   => (int)$product_info['prod_type'],
+                        'label_text'  => $this->language->get('text_hit'.(int)$product_info['prod_type']),
                         'description' => utf8_substr(strip_tags(html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
                         'price'       => $price,
                         'special'     => $special,

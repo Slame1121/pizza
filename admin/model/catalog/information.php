@@ -31,7 +31,38 @@ class ModelCatalogInformation extends Model {
 				$this->db->query("INSERT INTO " . DB_PREFIX . "information_to_layout SET information_id = '" . (int)$information_id . "', store_id = '" . (int)$store_id . "', layout_id = '" . (int)$layout_id . "'");
 			}
 		}
+        if (isset($data['map'])) {
+            if(isset($data['map']["status"])){
+                $this->db->query("DELETE FROM `" . DB_PREFIX . "map_metka` WHERE information_id = '" . (int)$information_id . "'");
 
+                $status = isset($data['map']["status"]) ? 1 : 0;
+                $lat = isset($data['map']["pos"]["lat"]) ? (float)$data['map']["pos"]["lat"] : 0;
+                $lng = isset($data['map']["pos"]["lng"]) ? (float)$data['map']["pos"]["lng"] : 0;
+                $zoom = isset($data['map']["pos"]["zoom"]) ? (float)$data['map']["pos"]["zoom"] : 0;
+
+                $this->db->query("INSERT INTO " . DB_PREFIX . "map_metka SET 
+                    information_id = '" . (int)$information_id . "', 
+                    zoom = '" . (int)$zoom . "', 
+                    lat = '" . $lat . "', 
+                    lng = '" . $lng . "', 
+                    sort_order = 1, 
+                    status = '" . (int)$status . "'");
+                $query = $this->db->query("SELECT DISTINCT poligon_id FROM " . DB_PREFIX . "map_metka WHERE information_id = '" . (int)$information_id . "'");
+                $poligon_id = $query->row['poligon_id'];
+
+                foreach ($data['map']["poligon"]["lat"] as $key => $val) {
+                    $lngs = (float)$data['map']["poligon"]["lng"][$key];
+                    $lats = (float)$val;
+                    $this->db->query("INSERT INTO " . DB_PREFIX . "map_metka_poligon SET 
+                            information_id = '" . (int)$information_id . "', 
+                            status = 1, 
+                            sort_order = '" . (int)$key . "', 
+                            lat = '" . $this->db->escape($lats) . "',
+                            lng = '" . $this->db->escape($lngs) . "', 
+                            poligon_id = '" . (int)$poligon_id. "'");
+                }
+            }
+        }
 		$this->cache->delete('information');
 
 		return $information_id;

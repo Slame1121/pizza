@@ -19,3 +19,15 @@ $_['text_title_txt'] = 'Безкоштовна<span>доставка піци!</
 $_['text_titles'] = 'Без вихідних';
 $_['text_clear_cart'] = 'Очистити замовлення';
 $_['text_pay_carts'] = 'Оформити замовлення';
+
+$_['text_auth_phon'] = 'Телефон';
+$_['text_auth_phon_smal'] = 'телефон';
+$_['text_auth_pass'] = 'Пароль';
+$_['text_auth_pass_smal'] = 'пароль';
+$_['text_auth_chek'] = "Запам'ятати мене";
+$_['text_auth_pass_new'] = 'Забули пароль?';
+$_['text_auth_for'] = 'Увійти за допомогою:';
+$_['text_auth_logins'] = 'Авторизуватися';
+$_['text_auth_regist'] = 'Зареєструватися';
+$_['text_auth_login'] = 'Ввійти';
+$_['text_auth_send'] = 'Відправити';

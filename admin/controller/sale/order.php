@@ -514,7 +514,7 @@ class ControllerSaleOrder extends Controller {
 			$data['order_products'] = array();
 
 			$products = $this->model_sale_order->getOrderProducts($this->request->get['order_id']);
-
+           
 			foreach ($products as $product) {
 				$data['order_products'][] = array(
 					'product_id' => $product['product_id'],

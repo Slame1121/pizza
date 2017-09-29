@@ -36,7 +36,7 @@ class ControllerCheckoutConfirm extends Controller {
 
 		// Validate minimum quantity requirements.
 		$products = $this->cart->getProducts();
-
+        //var_dump($products);die;
 		foreach ($products as $product) {
 			$product_total = 0;
 
@@ -226,8 +226,8 @@ class ControllerCheckoutConfirm extends Controller {
 			$order_data['products'] = array();
 
 			foreach ($this->cart->getProducts() as $product) {
-				$option_data = array();
 
+				$option_data = array();
 				foreach ($product['option'] as $option) {
 					$option_data[] = array(
 						'product_option_id'       => $option['product_option_id'],
@@ -246,6 +246,7 @@ class ControllerCheckoutConfirm extends Controller {
 					'name'       => $product['name'],
 					'model'      => $product['model'],
 					'option'     => $option_data,
+					'attr'       => $product["attrs"],
 					'download'   => $product['download'],
 					'quantity'   => $product['quantity'],
 					'subtract'   => $product['subtract'],
@@ -255,7 +256,7 @@ class ControllerCheckoutConfirm extends Controller {
 					'reward'     => $product['reward']
 				);
 			}
-
+            //var_dump($order_data['products']);die;
 			// Gift Voucher
 			$order_data['vouchers'] = array();
 

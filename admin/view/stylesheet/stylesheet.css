@@ -627,13 +627,13 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 	opacity: 1;
 }
  @media screen and (min-width: 992px) and (max-width: 1199px) {
-#extension-list .extension-preview {
-	min-height: 123px;
-}
-#extension-list .extension-preview .extension-description {
-	font-size: 12.5px;
-	padding: 6px;
-}
+	#extension-list .extension-preview {
+		min-height: 123px;
+	}
+	#extension-list .extension-preview .extension-description {
+		font-size: 12.5px;
+		padding: 6px;
+	}
 }
 #extension-list .extension-preview img {
 	margin: 0 auto;
@@ -660,9 +660,9 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 	margin-top: 0;
 }
  @media screen and (min-width: 992px) and (max-width: 1199px) {
-#extension-list .extension-name + div > .row {
-	font-size: 14px;
-}
+	#extension-list .extension-name + div > .row {
+		font-size: 14px;
+	}
 }
 #extension-list i {
 	color: #10b4e9;
@@ -671,7 +671,7 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 	font-weight: 600;
 }
 
-}
+
 #marketplace-extension-info #banner img {
 	margin-left: auto;
 	margin-right: auto;
@@ -801,4 +801,12 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 }
 .opencart-icon-cart-mini:before {
 	content: "\e91c";
+}
+div#mapsMarker { min-height: 400px;height: 400px;  }
+.refreshMap.btn {
+	display: block;
+	width: 200px;
+	box-shadow: 0px 0px 3px black;
+	text-align: center;
+	cursor: pointer;
 }

@@ -13,36 +13,36 @@
         </div>
     </label>
     <label class="sing-log__label  label-tel">
-        <span class="sing-log__label-name">Телефон</span>
+        <span class="sing-log__label-name">{{ text_auth_phon }}</span>
         <div>
-            <input class="auth_tel" type="tel" name="tel" placeholder="телефон" data-mask="+38 000 000 00 00" required>
+            <input class="auth_tel" type="tel" name="tel" placeholder="{{ text_auth_phon_smal }}" data-mask="+38 000 000 00 00" required>
         </div>
     </label>
     <label class="sing-log__label  label-password">
-        <span class="sing-log__label-name">Пароль</span>
+        <span class="sing-log__label-name">{{ text_auth_pass }}</span>
         <div>
-            <input class="auth_pass" type="password" name="password" placeholder="пароль" required>
+            <input class="auth_pass" type="password" name="password" placeholder="{{ text_auth_pass_smal }}" required>
         </div>
     </label>
     <div class="sing-log__box label-confirm">
         <label class="sing-log__box-label">
             <input class="auth_confirm" type="checkbox" name="checkbox"><span class="sing-log__box-check"></span>
-            <span class="sing-log__box-name">Запомнить меня</span>
+            <span class="sing-log__box-name">{{ text_auth_chek }}</span>
         </label>
-        <a class="sing-log__box-link auth-forgot noLink" href="#">Забыли пароль?</a>
+        <a class="sing-log__box-link auth-forgot noLink" href="#">{{ text_auth_pass_new }}</a>
     </div>
     <div class="sing-log__enter">
-        <div class="sing-log__enter-title">Войти с помощью:</div>
+        <div class="sing-log__enter-title">{{ text_auth_for }}</div>
         {{ form_login_ulogin }}
         <a class="sing-log__enter-item sing-log__enter-item-facebook  noLink" href="#"></a>
     </div>
     <div class="sing-log__controls">
         <div class="sing-log__reg-wrap login hidden">
-            <a class="sing-log__log  noLink" href="#">Авторизироваться</a>
+            <a class="sing-log__log  noLink" href="#">{{ text_auth_logins }}</a>
         </div>
         <div class="sing-log__reg-wrap regis">
-            <a class="sing-log__reg  noLink" href="#">Зарегистрироваться</a>
+            <a class="sing-log__reg  noLink" href="#">{{ text_auth_regist }}</a>
         </div>
-        <a class="btn sing-log__btn btn-orange  noLink" href="#">Войти</a>
+        <a class="btn sing-log__btn btn-orange  noLink" href="#" data-auth="{{ text_auth_login }}" data-regis="{{ text_register }}" data-send="{{ text_auth_send }}">{{ text_auth_login }}</a>
     </div>
 </form>

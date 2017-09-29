@@ -609,6 +609,14 @@ class ControllerCatalogProduct extends Controller {
 			$data['sku'] = '';
 		}
 
+		if (isset($this->request->post['prod_type'])) {
+			$data['prod_type'] = $this->request->post['prod_type'];
+		} elseif (!empty($product_info)) {
+			$data['prod_type'] = $product_info['prod_type'];
+		} else {
+			$data['prod_type'] = '';
+		}
+
 		if (isset($this->request->post['upc'])) {
 			$data['upc'] = $this->request->post['upc'];
 		} elseif (!empty($product_info)) {

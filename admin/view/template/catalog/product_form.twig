@@ -40,6 +40,18 @@
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab-general">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-prod_type">Наклейка</label>
+                <div class="col-sm-10">
+                  <select name="prod_type" id="input-prod_type" class="form-control">
+                    <option value="0" {% if prod_type == 0 %} selected {% endif %}> --- Не выбрано --- </option>
+                    <option value="1" {% if prod_type == 1 %} selected {% endif %}>ХИТ</option>
+                    <option value="2" {% if prod_type == 2 %} selected {% endif %}>ОСТРАЯ</option>
+                    <option value="3" {% if prod_type == 3 %} selected {% endif %}>НОВИНКА</option>
+                  </select>
+                </div>
+              </div>
+
               <ul class="nav nav-tabs" id="language">
                 {% for language in languages %}
                 <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>

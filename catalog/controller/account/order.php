@@ -50,6 +50,8 @@ class ControllerAccountOrder extends Controller {
 
 
 		$total_bonuses = 0;
+		$bonuses_spent = 0;
+		$lost_points =  0;
 		foreach ($results as $result) {
 			$products = $this->model_account_order->getOrderProducts($result['order_id']);
 			$order_products_arr = [];
@@ -60,22 +62,26 @@ class ControllerAccountOrder extends Controller {
 				$order_products_arr[] = '<span>'.$product['name'].', '.$product_options[0]['value'].'</span>';
 				$url .= ('&order_product_id[]='.$product['order_product_id']);
 			}
-
 			$data['orders'][] = array(
 				'order_id'   => $result['order_id'],
-				'name'       => $result['firstname'] . ' ' . $result['lastname'],
+				'name'       => $result['firstname'] ,
 				'status'     => $result['status'],
 				'telephone'  => $result['telephone'],
 				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+				'bonus_null' => date($this->language->get('date_format_short'), strtotime($result['date_added']) + 60*60*24*31),
 				'products'   => implode('', $order_products_arr),
 				'total'      => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
 				'view'       => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], true),
 				'got_bonuses' => $result['got_points'],
+				'spent_bonuses' => $result['spent_points'],
 				'reserved_bonuses' => $result['reserved_points'],
 				'reorder'    => $this->url->link('account/order/reorder', $url, true),
+				'shipping'   => $result['shipping_nas_punkt'] . ', ' . $result['shipping_street']. ' ' . $result['shipping_house']
 			);
 
-			$total_bonuses += $result['got_points'];
+			$total_bonuses +=($result['got_points'] - $result['lost_points'] - $result['spent_points']);
+			$bonuses_spent += $result['spent_points'];
+			$lost_points += $result['lost_points'];
 		}
 
 		$pagination = new Pagination();
@@ -90,6 +96,8 @@ class ControllerAccountOrder extends Controller {
 
 		$data['continue'] = $this->url->link('account/account', '', true);
 		$data['total_bonuses'] = $total_bonuses;
+		$data['spent_bonuses'] = $bonuses_spent;
+		$data['lost_bonuses'] = $lost_points;
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
 		$data['content_top'] = $this->load->controller('common/content_top');
@@ -367,6 +375,7 @@ class ControllerAccountOrder extends Controller {
 
 		if ($order_info) {
 			if (isset($this->request->get['order_product_id']) && $this->request->get['order_product_id']) {
+				$this->cart->clear();
 				foreach($this->request->get['order_product_id'] as $order_product_id){
 					$order_product_info = $this->model_account_order->getOrderProduct($order_id, $order_product_id);
 					if ($order_product_info) {

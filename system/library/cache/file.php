@@ -1,5 +1,7 @@
 <?php
 namespace Cache;
+use Squareup\Exception;
+
 class File {
 	private $expire;
 
@@ -64,8 +66,13 @@ class File {
 
 		if ($files) {
 			foreach ($files as $file) {
-				if (file_exists($file)) {
-					unlink($file);
+				if (file_exists($file) && is_file($file)) {
+					try{
+						unlink($file);
+					}catch(Exception $e){
+
+					}
+
 				}
 			}
 		}

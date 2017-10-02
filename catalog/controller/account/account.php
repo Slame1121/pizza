@@ -7,6 +7,8 @@ class ControllerAccountAccount extends Controller {
 			$this->response->redirect($this->url->link('account/login', '', true));
 		}
 
+		$this->document->addScript('/catalog/view/javascript/pages/account.js');
+
 		$this->load->language('account/account');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -34,7 +36,8 @@ class ControllerAccountAccount extends Controller {
 		$data['edit'] = $this->url->link('account/edit', '', true);
 		$data['password'] = $this->url->link('account/password', '', true);
 		$data['address'] = $this->url->link('account/address', '', true);
-		
+		$this->load->model('account/address');
+		$data['addresses'] = $this->model_account_address->getAddresses();
 		$data['credit_cards'] = array();
 		
 		$files = glob(DIR_APPLICATION . 'controller/extension/credit_card/*.php');
@@ -86,7 +89,10 @@ class ControllerAccountAccount extends Controller {
 		} else {
 			$data['tracking'] = '';
 		}
-		
+
+		$data['email'] = $this->customer->getEmail();
+		$data['telephone'] = $this->customer->getTelephone();
+		$data['firstname'] = $this->customer->getFirstName();
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
 		$data['content_top'] = $this->load->controller('common/content_top');
@@ -103,9 +109,20 @@ class ControllerAccountAccount extends Controller {
 
 
 			$this->load->model('account/address');
-			$this->model_account_address->addAddress($this->customer->getId(), $this->request->post);
+			$this->load->model('account/customer');
+			if(isset($this->request->post['nas_punkt'])){
+				$this->model_account_address->addAddress($this->customer->getId(), $this->request->post);
+			}
 
-			$this->index();
+
+			$customer_info = [
+				'telephone' => $this->request->post['telephone'],
+				'email' => $this->request->post['email'],
+				'firstname' => $this->request->post['firstname'],
+			];
+			$this->model_account_customer->editCustomer($this->customer->getId(), $customer_info);
+
+			$this->response->redirect($this->url->link('account/account', '', true));
 		}
 
 	}

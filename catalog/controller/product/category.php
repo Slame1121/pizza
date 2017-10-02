@@ -389,7 +389,6 @@ class ControllerProductCategory extends Controller {
 		}
 
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
-
 		$results = $this->model_catalog_product->getProducts($filter_data);
 		foreach ($results as $result) {
 			if ($result['image']) {

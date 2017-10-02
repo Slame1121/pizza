@@ -34,19 +34,23 @@ class ControllerApiShipping extends Controller {
 				}
 
 				if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {
-					$json['error']['firstname'] = $this->language->get('error_firstname');
+					//$json['error']['firstname'] = $this->language->get('error_firstname');
 				}
 
 				if ((utf8_strlen(trim($this->request->post['lastname'])) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 32)) {
-					$json['error']['lastname'] = $this->language->get('error_lastname');
+					//$json['error']['lastname'] = $this->language->get('error_lastname');
 				}
 
 				if ((utf8_strlen(trim($this->request->post['address_1'])) < 3) || (utf8_strlen(trim($this->request->post['address_1'])) > 128)) {
-					$json['error']['address_1'] = $this->language->get('error_address_1');
+					//$json['error']['address_1'] = $this->language->get('error_address_1');
 				}
 
-				if ((utf8_strlen($this->request->post['city']) < 2) || (utf8_strlen($this->request->post['city']) > 32)) {
-					$json['error']['city'] = $this->language->get('error_city');
+				if ((utf8_strlen($this->request->post['street']) < 2)) {
+					$json['error']['street'] = 'Введите улицу';
+				}
+
+				if ((utf8_strlen($this->request->post['house']) < 1)) {
+					$json['error']['house'] = 'Введите номер дома';
 				}
 
 				$this->load->model('localisation/country');
@@ -54,15 +58,15 @@ class ControllerApiShipping extends Controller {
 				$country_info = $this->model_localisation_country->getCountry($this->request->post['country_id']);
 
 				if ($country_info && $country_info['postcode_required'] && (utf8_strlen(trim($this->request->post['postcode'])) < 2 || utf8_strlen(trim($this->request->post['postcode'])) > 10)) {
-					$json['error']['postcode'] = $this->language->get('error_postcode');
+					//$json['error']['postcode'] = $this->language->get('error_postcode');
 				}
 
 				if ($this->request->post['country_id'] == '') {
-					$json['error']['country'] = $this->language->get('error_country');
+					//$json['error']['country'] = $this->language->get('error_country');
 				}
 
 				if (!isset($this->request->post['zone_id']) || $this->request->post['zone_id'] == '') {
-					$json['error']['zone'] = $this->language->get('error_zone');
+					//$json['error']['zone'] = $this->language->get('error_zone');
 				}
 
 				// Custom field validation
@@ -118,6 +122,13 @@ class ControllerApiShipping extends Controller {
 						'postcode'       => $this->request->post['postcode'],
 						'city'           => $this->request->post['city'],
 						'zone_id'        => $this->request->post['zone_id'],
+						'nas_punkt'      => $this->request->post['nas_punkt'],
+						'street'         => $this->request->post['street'],
+						'house'          => $this->request->post['house'],
+						'paradnya'       => $this->request->post['paradnya'],
+						'floor'          => $this->request->post['floor'],
+						'flat'           => $this->request->post['flat'],
+						'code_door'      => $this->request->post['code_door'],
 						'zone'           => $zone,
 						'zone_code'      => $zone_code,
 						'country_id'     => $this->request->post['country_id'],
@@ -127,7 +138,6 @@ class ControllerApiShipping extends Controller {
 						'address_format' => $address_format,
 						'custom_field'   => isset($this->request->post['custom_field']) ? $this->request->post['custom_field'] : array()
 					);
-
 					$json['success'] = $this->language->get('text_address');
 
 					unset($this->session->data['shipping_method']);

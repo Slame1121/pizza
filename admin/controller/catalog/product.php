@@ -882,6 +882,8 @@ class ControllerCatalogProduct extends Controller {
 			$categories = array();
 		}
 
+
+
 		$data['product_categories'] = array();
 
 		foreach ($categories as $category_id) {

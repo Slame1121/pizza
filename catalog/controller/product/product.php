@@ -227,6 +227,14 @@ class ControllerProductProduct extends Controller {
 			//$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
 			//$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
 
+			$categories = $this->model_catalog_product->getProductCategories($product_id);
+			if(in_array(59, $categories)){
+				$data['is_pizza'] = 1;
+			}else{
+				$data['is_pizza'] = 0;
+			}
+
+
 			$data['heading_title'] = $product_info['name'];
 
 			$data['text_minimum'] = sprintf($this->language->get('text_minimum'), $product_info['minimum']);

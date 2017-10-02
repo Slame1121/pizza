@@ -76,13 +76,13 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group ">
                 <label class="col-sm-2 control-label" for="input-firstname">{{ entry_firstname }}</label>
                 <div class="col-sm-10">
                   <input type="text" name="firstname" value="{{ firstname }}" id="input-firstname" class="form-control" />
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group ">
                 <label class="col-sm-2 control-label" for="input-lastname">{{ entry_lastname }}</label>
                 <div class="col-sm-10">
                   <input type="text" name="lastname" value="{{ lastname }}" id="input-lastname" class="form-control" />
@@ -261,7 +261,26 @@
                         {% if option.type == 'text' or option.type == 'textarea' or option.type == 'file' or option.type == 'date' or option.type == 'datetime' or option.type == 'time' %}
                         <input type="hidden" name="product[{{ product_row }}][option][{{ option.product_option_id }}]" value="{{ option.value }}" />
                         {% endif %}
-                        {% endfor %}</td>
+                        {% endfor %}
+
+                          {% if order_product.attrs %}
+                              <input type="hidden" name="product[{{ product_row }}][attrs]" value='{{ order_product.attrs }}' />
+                              <table class="table table-bordered">
+                                  <tr>
+                                      <td>Наименование</td>
+                                      <td>Количество</td>
+                                      <td>Цена</td>
+                                  </tr>
+                                  {% for attr in order_product.ingredients %}
+                                      <tr>
+                                          <td>{{ attr.name }}</td>
+                                          <td>{{ attr.count }}</td>
+                                          <td>{{ attr.total }} грн</td>
+                                      </tr>
+                                  {% endfor %}
+                              </table>
+                          {% endif %}
+                      </td>
                       <td class="text-left">{{ order_product.model }}</td>
                       <td class="text-right">{{ order_product.quantity }}
                         <input type="hidden" name="product[{{ product_row }}][quantity]" value="{{ order_product.quantity }}" /></td>
@@ -323,6 +342,30 @@
                       </div>
                     </div>
                     <div id="option"></div>
+                      <div id="attrs">
+                          <fieldset>
+                              <legend>Ингредиенты</legend>
+                          <table class="table table-bordered">
+                              <thead>
+                              <tr>
+                                  <td>Наименование</td>
+                                  <td>Количество</td>
+                                  <td></td>
+                              </tr>
+                              </thead>
+                            <tbody>
+
+                            </tbody>
+                              <tfoot>
+                              <tr>
+                                  <td class="text-right" colspan="3">
+                                      <button type="button" id="add-new-product-attrs" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Добавить"><i class="fa fa-plus-circle"></i></button>
+                                  </td>
+                              </tr>
+                              </tfoot>
+                          </table>
+                              </fieldset>
+                      </div>
                   </fieldset>
                   <div class="text-right">
                     <button type="button" id="button-product-add" data-loading-text="{{ text_loading }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> {{ button_product_add }}</button>
@@ -405,13 +448,13 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group ">
                 <label class="col-sm-2 control-label" for="input-payment-firstname">{{ entry_firstname }}</label>
                 <div class="col-sm-10">
                   <input type="text" name="firstname" value="{{ payment_firstname }}" id="input-payment-firstname" class="form-control" />
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group ">
                 <label class="col-sm-2 control-label" for="input-payment-lastname">{{ entry_lastname }}</label>
                 <div class="col-sm-10">
                   <input type="text" name="lastname" value="{{ payment_lastname }}" id="input-payment-lastname" class="form-control" />
@@ -423,7 +466,7 @@
                   <input type="text" name="company" value="{{ payment_company }}" id="input-payment-company" class="form-control" />
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group ">
                 <label class="col-sm-2 control-label" for="input-payment-address-1">{{ entry_address_1 }}</label>
                 <div class="col-sm-10">
                   <input type="text" name="address_1" value="{{ payment_address_1 }}" id="input-payment-address-1" class="form-control" />
@@ -435,19 +478,19 @@
                   <input type="text" name="address_2" value="{{ payment_address_2 }}" id="input-payment-address-2" class="form-control" />
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group ">
                 <label class="col-sm-2 control-label" for="input-payment-city">{{ entry_city }}</label>
                 <div class="col-sm-10">
                   <input type="text" name="city" value="{{ payment_city }}" id="input-payment-city" class="form-control" />
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group ">
                 <label class="col-sm-2 control-label" for="input-payment-postcode">{{ entry_postcode }}</label>
                 <div class="col-sm-10">
                   <input type="text" name="postcode" value="{{ payment_postcode }}" id="input-payment-postcode" class="form-control" />
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group ">
                 <label class="col-sm-2 control-label" for="input-payment-country">{{ entry_country }}</label>
                 <div class="col-sm-10">
                   <select name="country_id" id="input-payment-country" class="form-control">
@@ -462,7 +505,7 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group ">
                 <label class="col-sm-2 control-label" for="input-payment-zone">{{ entry_zone }}</label>
                 <div class="col-sm-10">
                   <select name="zone_id" id="input-payment-zone" class="form-control">
@@ -616,70 +659,64 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group required">
-                <label class="col-sm-2 control-label" for="input-shipping-firstname">{{ entry_firstname }}</label>
-                <div class="col-sm-10">
-                  <input type="text" name="firstname" value="{{ shipping_firstname }}" id="input-shipping-firstname" class="form-control" />
+                <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-shipping-zone">Населённый пункт</label>
+                    <div class="col-sm-10">
+                        <select name="nas_punkt" id="input-shipping-zone" class="form-control">
+                            <option {% if shipping_nas_punkt == 'Вишневое' %}selected{% endif %}>
+                                Вишневое
+                            </option>
+                            <option {% if shipping_nas_punkt == 'Софиевская Борщаговка' %}selected{% endif %}>
+                                Софиевская Борщаговка
+                            </option>
+                            <option {% if shipping_nas_punkt == 'Петропавловская Борщаговка' %}selected{% endif %}>
+                                Петропавловская Борщаговка
+                            </option>
+                            <option {% if shipping_nas_punkt == 'Святопетровское' %}selected{% endif %}>
+                                Святопетровское
+                            </option>
+                            <option {% if shipping_nas_punkt == 'Киев' %}selected{% endif %}>
+                                Киев
+                            </option>
+                        </select>
+                    </div>
                 </div>
-              </div>
-              <div class="form-group required">
-                <label class="col-sm-2 control-label" for="input-shipping-lastname">{{ entry_lastname }}</label>
-                <div class="col-sm-10">
-                  <input type="text" name="lastname" value="{{ shipping_lastname }}" id="input-shipping-lastname" class="form-control" />
+                <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="#input-shipping-street">Улица</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="input-shipping-street" class="form-control" name="street" value="{{ shipping_street }}" />
+                    </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-shipping-company">{{ entry_company }}</label>
-                <div class="col-sm-10">
-                  <input type="text" name="company" value="{{ shipping_company }}" id="input-shipping-company" class="form-control" />
+                <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-shipping-house">Дом</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="input-shipping-house" class="form-control" name="house" value="{{ shipping_house }}" />
+                    </div>
                 </div>
-              </div>
-              <div class="form-group required">
-                <label class="col-sm-2 control-label" for="input-shipping-address-1">{{ entry_address_1 }}</label>
-                <div class="col-sm-10">
-                  <input type="text" name="address_1" value="{{ shipping_address_1 }}" id="input-shipping-address-1" class="form-control" />
+                <div class="form-group ">
+                    <label class="col-sm-2 control-label" for="input-shipping-zone">Парадный вход</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="paradnya" value="{{ shipping_paradnya }}" />
+                    </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-shipping-address-2">{{ entry_address_2 }}</label>
-                <div class="col-sm-10">
-                  <input type="text" name="address_2" value="{{ shipping_address_2 }}" id="input-shipping-address-2" class="form-control" />
+                <div class="form-group ">
+                    <label class="col-sm-2 control-label" for="input-shipping-zone">Этаж</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="floor" value="{{ shipping_floor }}" />
+                    </div>
                 </div>
-              </div>
-              <div class="form-group required">
-                <label class="col-sm-2 control-label" for="input-shipping-city">{{ entry_city }}</label>
-                <div class="col-sm-10">
-                  <input type="text" name="city" value="{{ shipping_city }}" id="input-shipping-city" class="form-control" />
+                <div class="form-group ">
+                    <label class="col-sm-2 control-label" for="input-shipping-zone">Квартира</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="flat" value="{{ shipping_flat }}" />
+                    </div>
                 </div>
-              </div>
-              <div class="form-group required">
-                <label class="col-sm-2 control-label" for="input-shipping-postcode">{{ entry_postcode }}</label>
-                <div class="col-sm-10">
-                  <input type="text" name="postcode" value="{{ shipping_postcode }}" id="input-shipping-postcode" class="form-control" />
+                <div class="form-group ">
+                    <label class="col-sm-2 control-label" for="input-shipping-zone">Код от домофона:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="code_door" value="{{ shipping_code_door }}" />
+                    </div>
                 </div>
-              </div>
-              <div class="form-group required">
-                <label class="col-sm-2 control-label" for="input-shipping-country">{{ entry_country }}</label>
-                <div class="col-sm-10">
-                  <select name="country_id" id="input-shipping-country" class="form-control">
-                    <option value="">{{ text_select }}</option>
-                    {% for country in countries %}
-                    {% if country.country_id == shipping_country_id %}
-                    <option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
-                    {% else %}
-                    <option value="{{ country.country_id }}">{{ country.name }}</option>
-                    {% endif %}
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
-              <div class="form-group required">
-                <label class="col-sm-2 control-label" for="input-shipping-zone">{{ entry_zone }}</label>
-                <div class="col-sm-10">
-                  <select name="zone_id" id="input-shipping-zone" class="form-control">
-                  </select>
-                </div>
-              </div>
               {% for custom_field in custom_fields %}
               {% if custom_field.location == 'address' %}
               {% if custom_field.type == 'select' %}
@@ -1184,6 +1221,46 @@ $('#button-customer').on('click', function() {
 		}
 	});
 });
+$('body').on('click', '#add-new-product-attrs', function(){
+    $(this).parent().parent().parent().parent().find('tbody').append('<tr>\
+    <td><input data-autocompleate="0" type="text" name="product_attr" class="form-control product_attr_autocompleate" /></td>\
+    <td><input type="text" name="product_attr_count[]" class="form-control product_attr_count" value="1" /><input type="hidden" class="product_attr_id" name="product_attr_id[]" class="form-control" /></td>\
+    <td><button type="button"  class="remove_attr_from_new btn btn-danger" ><i class="fa fa-times"></i></button></td>\
+    </tr>');
+
+} );
+      $('body').on('click', '.remove_attr_from_new', function(){
+          $(this).parent().parent().remove();
+      }).on('click', 'input[name=product_attr]', function(){
+          var self= $(this);
+          if(parseInt(self.data('autocompleate')) != 1){
+              self.autocomplete({
+                  'source': function(request, response) {
+                      $.ajax({
+                          url: 'index.php?route=catalog/attribute/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+                          dataType: 'json',
+                          success: function(json) {
+                              response($.map(json, function(item) {
+                                  return {
+                                      category: item.attribute_group,
+                                      label: item.name,
+                                      value: item.attribute_id
+                                  }
+                              }));
+                          }
+                      });
+                  },
+                  'select': function(item) {
+                      self.parent().parent().find('.product_attr_id').val(item['value']);
+                      self.val(item['label']);
+                      //$('input[name=\'product_attribute[' + attribute_row + '][attribute_id]\']').val(item['value']);
+                  }
+              });
+              self.data('autocompleate', 1);
+          }
+
+      })
+
 
 $('#tab-product input[name=\'product\']').autocomplete({
 	'source': function(request, response) {
@@ -1387,7 +1464,7 @@ $('#button-product-add').on('click', function() {
 	$.ajax({
 		url: '{{ catalog }}index.php?route=api/cart/add&api_token={{ api_token }}&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
 		type: 'post',
-		data: $('#tab-product input[name=\'product_id\'], #tab-product input[name=\'quantity\'], #tab-product input[name^=\'option\'][type=\'text\'], #tab-product input[name^=\'option\'][type=\'hidden\'], #tab-product input[name^=\'option\'][type=\'radio\']:checked, #tab-product input[name^=\'option\'][type=\'checkbox\']:checked, #tab-product select[name^=\'option\'], #tab-product textarea[name^=\'option\']'),
+		data: $('#tab-product input[name=\'product_id\'], #tab-product input[name=\'quantity\'], #tab-product input[name^=\'option\'][type=\'text\'], #tab-product input[name^=\'option\'][type=\'hidden\'], #tab-product input[name^=\'option\'][type=\'radio\']:checked, #tab-product input[name^=\'option\'][type=\'checkbox\']:checked, #tab-product select[name^=\'option\'], #tab-product textarea[name^=\'option\'], #tab-product input.product_attr_id, #tab-product input.product_attr_count'),
 		dataType: 'json',
 		crossDomain: true,
 		beforeSend: function() {
@@ -1864,7 +1941,6 @@ $('#button-shipping-address').on('click', function() {
 
 				for (i in json['error']) {
 					var element = $('#input-shipping-' + i.replace('_', '-'));
-
 					if ($(element).parent().hasClass('input-group')) {
 						$(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
 					} else {
@@ -2369,6 +2445,24 @@ $('#button-refresh').on('click', function() {
 						}
 					}
 
+                    if(product['ingredients'] && product['ingredients'].length > 0){
+                        html +=  "<input type='hidden' name='product["+i+"][attrs]' value='"+ product['attrs'] +"' />\
+                        <table class='table table-bordered'>\
+                                <tr>\
+                                <td>Наименование</td>\
+                                <td>Количество</td>\
+                                <td>Цена</td>\
+                                </tr>";
+                        for(var attr in product['ingredients']){
+                            html +='<tr>\
+                                    <td>'+product['ingredients'][attr].name+'</td>\
+                                    <td>'+product['ingredients'][attr].count+'</td>\
+                                    <td>'+product['ingredients'][attr].total+' грн</td>\
+                                    </tr>';
+                        }
+                        html += '</table>'
+                    }
+
 					html += '</td>';
 					html += '  <td class="text-left">' + product['model'] + '</td>';
 					html += '  <td class="text-right"><div class="input-group btn-block" style="max-width: 200px;"><input type="text" name="product[' + i + '][quantity]" value="' + product['quantity'] + '" class="form-control" /><span class="input-group-btn"><button type="button" data-toggle="tooltip" title="{{ button_refresh }}" data-loading-text="{{ text_loading }}" class="btn btn-primary"><i class="fa fa-refresh"></i></button></span></div></td>';
@@ -2442,6 +2536,24 @@ $('#button-refresh').on('click', function() {
 							html += '  - <small>' + option['name'] + ': ' + option['value'] + '</small><br />';
 						}
 					}
+
+                    if(product['ingredients'] && product['ingredients'].length > 0){
+                        html +=  "<input type='hidden' name='product["+i+"][attrs]' value='"+ product['attrs'] +"' />\
+                        <table class='table table-bordered'>\
+                                <tr>\
+                                <td>Наименование</td>\
+                                <td>Количество</td>\
+                                <td>Цена</td>\
+                                </tr>";
+                        for(var attr in product['ingredients']){
+                            html +='<tr>\
+                                    <td>'+product['ingredients'][attr].name+'</td>\
+                                    <td>'+product['ingredients'][attr].count+'</td>\
+                                    <td>'+product['ingredients'][attr].total+' грн</td>\
+                                    </tr>';
+                        }
+                        html += '</table>'
+                    }
 
 					html += '  </td>';
 					html += '  <td class="text-left">' + product['model'] + '</td>';

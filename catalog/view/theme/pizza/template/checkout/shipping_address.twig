@@ -6,7 +6,7 @@
 </div>
 <div class="basket-log__form-box {% if code == 'pickup' %}hidden{% endif %}" id="cart-adress-saved">
     <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Сохраненные адреса</span>
-        <select class="basket-log__form-value">
+        <select name="address_id" class="basket-log__form-value">
             {% for address in addresses %}
                 {% if address.address_id == address_id %}
                     <option value="{{ address.address_id }}" selected="selected">{{ address.nas_punkt }}, {{ address.street }} {{ address.house }}</option>
@@ -34,12 +34,11 @@
 <div class="basket-log__form-box {% if addresses or  code == 'pickup' %}hidden{% endif %}" id="cart-adress-new">
     <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
         <select name="nas_punkt" class="basket-log__form-value">
-            <option>Новобирючево</option>
-            <option>Мали</option>
-            <option>Оскол</option>
-            <option>Новобирючево</option>
-            <option>Мали</option>
-            <option>Оскол</option>
+            <option>Вишневое</option>
+            <option>Софиевская Борщаговка</option>
+            <option>Петропавловская Борщаговка</option>
+            <option>Святопетровское</option>
+            <option>Киев</option>
         </select>
     </label>
     <label class="basket-log__form-label"><span class="basket-log__form-name">Улица<span>*</span></span>

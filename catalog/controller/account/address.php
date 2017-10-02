@@ -99,24 +99,24 @@ class ControllerAccountAddress extends Controller {
 			$this->response->redirect($this->url->link('account/login', '', true));
 		}
 
+
 		$this->load->language('account/address');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('account/address');
-
-		if (isset($this->request->get['address_id']) && $this->validateDelete()) {
-			$this->model_account_address->deleteAddress($this->request->get['address_id']);
+		if (isset($this->request->post['address_id']) && $this->validateDelete()) {
+			$this->model_account_address->deleteAddress($this->request->post['address_id']);
 
 			// Default Shipping Address
-			if (isset($this->session->data['shipping_address']['address_id']) && ($this->request->get['address_id'] == $this->session->data['shipping_address']['address_id'])) {
+			if (isset($this->session->data['shipping_address']['address_id']) && ($this->request->post['address_id'] == $this->session->data['shipping_address']['address_id'])) {
 				unset($this->session->data['shipping_address']);
 				unset($this->session->data['shipping_method']);
 				unset($this->session->data['shipping_methods']);
 			}
 
 			// Default Payment Address
-			if (isset($this->session->data['payment_address']['address_id']) && ($this->request->get['address_id'] == $this->session->data['payment_address']['address_id'])) {
+			if (isset($this->session->data['payment_address']['address_id']) && ($this->request->post['address_id'] == $this->session->data['payment_address']['address_id'])) {
 				unset($this->session->data['payment_address']);
 				unset($this->session->data['payment_method']);
 				unset($this->session->data['payment_methods']);

@@ -9,7 +9,7 @@ class ModelAccountCustomer extends Model {
 
 		$data['firstname'] = '';
         $data['lastname'] = '';
-        $data['telephone'] = $data['tel'];
+        $data['telephone'] = isset($data['tel']) ? $data['tel'] : '';
 
 		$this->load->model('account/customer_group');
 

@@ -510,12 +510,36 @@ class ControllerSaleOrder extends Controller {
 			$data['shipping_method'] = $order_info['shipping_method'];
 			$data['shipping_code'] = $order_info['shipping_code'];
 
+			$data['shipping_nas_punkt'] = $order_info['shipping_nas_punkt'];
+			$data['shipping_street'] = $order_info['shipping_street'];
+			$data['shipping_house'] = $order_info['shipping_house'];
+			$data['shipping_paradnya'] = $order_info['shipping_paradnya'];
+			$data['shipping_floor'] = $order_info['shipping_floor'];
+			$data['shipping_flat'] = $order_info['shipping_flat'];
+			$data['shipping_code_door'] = $order_info['shipping_code_door'];
 			// Products
 			$data['order_products'] = array();
 
 			$products = $this->model_sale_order->getOrderProducts($this->request->get['order_id']);
-           
+
+
+			$this->load->model('catalog/catalog');
+
+			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
 			foreach ($products as $product) {
+
+
+				$attributes = [];
+
+				if(json_decode($product['attrs'], true)){
+					foreach(json_decode($product['attrs'], true) as $igredient_id => $count){
+						$attributes[] = [
+							'id' => $igredient_id,
+							'name' => $all_attrs[$igredient_id]['name'],
+							'count' => $count
+						];
+					}
+				}
 				$data['order_products'][] = array(
 					'product_id' => $product['product_id'],
 					'name'       => $product['name'],
@@ -524,10 +548,11 @@ class ControllerSaleOrder extends Controller {
 					'quantity'   => $product['quantity'],
 					'price'      => $product['price'],
 					'total'      => $product['total'],
-					'reward'     => $product['reward']
+					'reward'     => $product['reward'],
+					'attrs'      => ($product['attrs']),
+					'ingredients' => $attributes
 				);
 			}
-
 			// Vouchers
 			$data['order_vouchers'] = $this->model_sale_order->getOrderVouchers($this->request->get['order_id']);
 
@@ -718,7 +743,6 @@ class ControllerSaleOrder extends Controller {
 		}
 
 		$order_info = $this->model_sale_order->getOrder($order_id);
-
 		if ($order_info) {
 			$this->load->language('sale/order');
 
@@ -836,7 +860,9 @@ class ControllerSaleOrder extends Controller {
 
 			$data['shipping_method'] = $order_info['shipping_method'];
 			$data['payment_method'] = $order_info['payment_method'];
-
+			if($order_info['payment_code'] == 'cheque'){
+				$data['nominal'] = $order_info['nominal'];
+			}
 			// Payment Address
 			if ($order_info['payment_address_format']) {
 				$format = $order_info['payment_address_format'];
@@ -876,33 +902,24 @@ class ControllerSaleOrder extends Controller {
 			if ($order_info['shipping_address_format']) {
 				$format = $order_info['shipping_address_format'];
 			} else {
-				$format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
+				$format = '{nas_punkt}, {street} {house}, подъезд {paradnya}, этаж {floor}, кв. {flat}';
 			}
 
 			$find = array(
-				'{firstname}',
-				'{lastname}',
-				'{company}',
-				'{address_1}',
-				'{address_2}',
-				'{city}',
-				'{postcode}',
-				'{zone}',
-				'{zone_code}',
-				'{country}'
+				'{nas_punkt}',
+				'{street}',
+				'{house}',
+				'{paradnya}',
+				'{floor}',
+				'{flat}',
 			);
-
 			$replace = array(
-				'firstname' => $order_info['shipping_firstname'],
-				'lastname'  => $order_info['shipping_lastname'],
-				'company'   => $order_info['shipping_company'],
-				'address_1' => $order_info['shipping_address_1'],
-				'address_2' => $order_info['shipping_address_2'],
-				'city'      => $order_info['shipping_city'],
-				'postcode'  => $order_info['shipping_postcode'],
-				'zone'      => $order_info['shipping_zone'],
-				'zone_code' => $order_info['shipping_zone_code'],
-				'country'   => $order_info['shipping_country']
+				'nas_punkt' => $order_info['shipping_nas_punkt'],
+				'street'  	=> $order_info['shipping_street'],
+				'house'   	=> $order_info['shipping_house'],
+				'paradnya' 	=> $order_info['shipping_paradnya'],
+				'floor' 	=> $order_info['shipping_floor'],
+				'flat'      => $order_info['shipping_flat']
 			);
 
 			$data['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
@@ -910,9 +927,13 @@ class ControllerSaleOrder extends Controller {
 			// Uploaded files
 			$this->load->model('tool/upload');
 
+			$this->load->model('catalog/catalog');
+
 			$data['products'] = array();
 
 			$products = $this->model_sale_order->getOrderProducts($this->request->get['order_id']);
+
+			$all_attr = $this->model_catalog_catalog->getAllAtributes();
 
 			foreach ($products as $product) {
 				$option_data = array();
@@ -939,6 +960,18 @@ class ControllerSaleOrder extends Controller {
 						}
 					}
 				}
+				$attrs = json_decode($product['attrs'], true);
+
+				$product_attrs =[];
+				if($attrs && is_array($attrs)){
+					foreach($attrs as $attr_id => $count){
+						$product_attrs[] = [
+							'name' => $all_attr[$attr_id]['name'],
+							'count' => $count,
+							'total' => $all_attr[$attr_id]['price'] * $count
+						];
+					}
+				}
 
 				$data['products'][] = array(
 					'order_product_id' => $product['order_product_id'],
@@ -949,7 +982,8 @@ class ControllerSaleOrder extends Controller {
 					'quantity'		   => $product['quantity'],
 					'price'    		   => $this->currency->format($product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0), $order_info['currency_code'], $order_info['currency_value']),
 					'total'    		   => $this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order_info['currency_code'], $order_info['currency_value']),
-					'href'     		   => $this->url->link('catalog/product/edit', 'user_token=' . $this->session->data['user_token'] . '&product_id=' . $product['product_id'], true)
+					'href'     		   => $this->url->link('catalog/product/edit', 'user_token=' . $this->session->data['user_token'] . '&product_id=' . $product['product_id'], true),
+					'attrs'            => $product_attrs
 				);
 			}
 

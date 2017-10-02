@@ -3,7 +3,7 @@
     <div class="container">
         <div class="card__top">
             <h2>{{ heading_title }}</h2>
-            <div class="card__controls"><a class="card__btn card__prev" href="#">← Четыре сыра</a><a class="card__btn card__next" href="#">Гавайская →</a></div>
+            <div class="card__controls"><a class="card__btn card__prev hidden" href="#">← Четыре сыра</a><a class="card__btn card__next hidden" href="#">Гавайская →</a></div>
         </div>
         <div class="card__content">
             <div class="card__block">
@@ -33,7 +33,8 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                <div class="card-price__controls"><a id="add_product" class="btn card-price__btn btn-orange" href="#">Заказать</a><a class="btn card-price__btn for-popup" href="#ingredients">+ Добавить ингредиенты</a></div>
+                <div class="card-price__controls"><a id="add_product" class="btn card-price__btn btn-orange" href="#">Заказать</a>
+                    {% if is_pizza == 1 %}<a class="btn card-price__btn for-popup" href="#ingredients">+ Добавить ингредиенты</a>{% endif %}</div>
             </div>
         </div>
         <div class="ingredients">

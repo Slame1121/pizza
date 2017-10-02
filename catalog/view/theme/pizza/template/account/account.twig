@@ -2,14 +2,27 @@
 <section class="profile page">
     <div class="container">
         <div class="profile__content">
+            <h2>Здравствуйте{% if firstname and firstname != '' %}, {{ firstname }}{% endif %}!</h2>
             {{ orders_list }}
             <div class="profile__title">Вы можете отредактировать свои персональные данные</div>
             <form class="profile-form" method="post" action="{{ form_action }}">
                 <div class="profile-form__content">
                     <div class="profile-form__box">
-                        <label class="profile-form__label"><span class="profile-form__box-name">Адрес</span>
-                            <input type="text" name="box">
+                        <label class="profile-form__label"><span class="profile-form__box-name">Адреса</span>
+
                         </label>
+                        <div class="profile-form__box-current-adresses">
+                            {% set s = 1 %}
+                            {% for key,address in addresses %}
+                                <div class="profile-form__box-current-adresses-adress-row">
+                                    <span>{{ s }}. {{ address.nas_punkt }}, {{ address.street }} {{ address.house }} {{ address.paradnya }} </span>
+                                    <div class="profile-form__box-current-adresses-adress-row_remove" data-address-id="{{ address.address_id }}">
+
+                                    </div>
+                                     </div>
+                                {% set s= s +1 %}
+                            {% endfor %}
+                        </div>
                         <div class="profile-form__add-label"><a href="#">+ Добавить адрес</a></div>
                         <div class="profile-form__drop">
                             <label class="profile-form__label"><span class="profile-form__box-name">Населённый пункт</span>
@@ -52,103 +65,32 @@
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+
+                    <div class="profile-form__box">
+                        <label class="profile-form__label"><span class="profile-form__box-name">Имя</span>
+                            <input type="text" value="{{ firstname }}" name="firstname">
+                        </label>
                         <label class="profile-form__label"><span class="profile-form__box-name">Телефон</span>
-                            <input type="tel" name="tel">
+                            <input type="tel" value="{{ telephone }}" name="telephone">
                         </label>
                         <label class="profile-form__label"><span class="profile-form__box-name">E-mail</span>
-                            <input type="email" name="email">
+                            <input type="email" value="{{ email }}" name="email">
                         </label>
-                    </div>
-                    <div class="profile-form__box">
                         <label class="profile-form__label"><span class="profile-form__box-name">Новый пароль</span>
-                            <input type="password" name="password">
+                            <input placeholder="Оставляем пустым, если изменять не надо" type="password" name="password">
                         </label>
                         <label class="profile-form__label"><span class="profile-form__box-name">Повторите новый пароль</span>
-                            <input type="password" name="password">
+                            <input placeholder="Оставляем пустым, если изменять не надо" type="password" name="password">
                         </label>
                     </div>
                 </div>
+
                 <div class="profile-form__controls"><input type="submit" class="btn profile-form__btn btn-orange" value="Сохранить"></div>
             </form>
         </div>
     </div>
 </section>
-<div class="hidden">
-    <div class="bonus-popup container" id="bonus-popup">
-        <div class="bonus-popup__top">
-            <div class="bonus-popup__line">
-                <div class="bonus-popup__line-name">Бонусов доступно:</div>
-                <div class="bonus-popup__line-value">50,00</div>
-            </div>
-            <div class="bonus-popup__line">
-                <div class="bonus-popup__line-name">Бонусов потрачено:</div>
-                <div class="bonus-popup__line-value">310,56</div>
-            </div>
-            <div class="bonus-popup__line">
-                <div class="bonus-popup__line-name">Начислено бонусов:</div>
-                <div class="bonus-popup__line-value">25,85</div>
-            </div>
-            <div class="bonus-popup__line">
-                <div class="bonus-popup__line-name">Бонусов потеряно:</div>
-                <div class="bonus-popup__line-value">268,25</div>
-            </div>
-        </div>
-        <div class="bonus-popup__table">
-            <div class="bonus-popup__table-top">
-                <div class="bonus-popup__table-line--wrap">
-                    <div class="bonus-popup__table-line">
-                        <div class="bonus-popup__table-date" data-info="Дата заказа">Дата заказа</div>
-                        <div class="bonus-popup__table-phone" data-info="Телефон">Телефон</div>
-                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">Сумма заказа</div>
-                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">Начислено бонусов</div>
-                        <div class="bonus-popup__table-num" data-info="Потрачено из них">Потрачено из них</div>
-                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">Дата сгорания бонусов</div>
-                    </div>
-                </div>
-            </div>
-            <div class="bonus-popup__table-content">
-                <div class="bonus-popup__table-line--wrap">
-                    <div class="bonus-popup__table-line">
-                        <div class="bonus-popup__table-date" data-info="Дата заказа">16.06.2019</div>
-                        <div class="bonus-popup__table-phone" data-info="Телефон">920 219 76 72</div>
-                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">586 грн</div>
-                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">50</div>
-                        <div class="bonus-popup__table-num" data-info="Потрачено из них">20</div>
-                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">25.10.2018</div>
-                    </div>
-                </div>
-                <div class="bonus-popup__table-line--wrap">
-                    <div class="bonus-popup__table-line">
-                        <div class="bonus-popup__table-date" data-info="Дата заказа">16.06.2019</div>
-                        <div class="bonus-popup__table-phone" data-info="Телефон">920 219 76 72</div>
-                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">586 грн</div>
-                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">50</div>
-                        <div class="bonus-popup__table-num" data-info="Потрачено из них">20</div>
-                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">25.10.2018</div>
-                    </div>
-                </div>
-                <div class="bonus-popup__table-line--wrap">
-                    <div class="bonus-popup__table-line">
-                        <div class="bonus-popup__table-date" data-info="Дата заказа">16.06.2019</div>
-                        <div class="bonus-popup__table-phone" data-info="Телефон">920 219 76 72</div>
-                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">586 грн</div>
-                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">50</div>
-                        <div class="bonus-popup__table-num" data-info="Потрачено из них">20</div>
-                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">25.10.2018</div>
-                    </div>
-                </div>
-                <div class="bonus-popup__table-line--wrap">
-                    <div class="bonus-popup__table-line">
-                        <div class="bonus-popup__table-date" data-info="Дата заказа">16.06.2019</div>
-                        <div class="bonus-popup__table-phone" data-info="Телефон">920 219 76 72</div>
-                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">586 грн</div>
-                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">50</div>
-                        <div class="bonus-popup__table-num" data-info="Потрачено из них">20</div>
-                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">25.10.2018</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 {{ footer }}

@@ -36,9 +36,15 @@ var Checkout = {
 		if(!error){
 			switch(method) {
 				case 'citylink.citylink':
+					if($('#cart-adress-new').hasClass('hidden')){
+						$('#cart-adress-new').remove();
+					}else{
+						$('#cart-adress-saved').remove();
+					}
 					break;
 				case 'pickup.pickup':
 					$('#cart-adress-new').remove();
+					$('#cart-adress-saved').remove();
 					break;
 			}
 			$('#shipping_method_input').val(method);

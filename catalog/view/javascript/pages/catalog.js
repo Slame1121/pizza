@@ -1,12 +1,15 @@
 var Catalog = {
+
+	end : false,
+
 	bindAddNewPage: function () {
 		var pizza_content = $('.hit__content');
 		var form = $('#filter_form');
 		var progress = false;
-		var end = false;
+		var self = this;
 		var path = form.find('input[name=path]').val();
 		$(window).scroll(function() {
-			if($(this).scrollTop() > pizza_content.offset().top + pizza_content.height()- 700 && !progress && !end) {
+			if($(this).scrollTop() > pizza_content.offset().top + pizza_content.height()- 400 && !progress && !self.end) {
 				progress = true;
 				form.find('input[name=page]').val(parseInt(form.find('input[name=page]').val()) + 1);
 				$.ajax( {
@@ -15,7 +18,7 @@ var Catalog = {
 					data: form.serialize(),
 					success: function( response ) {
 						if(response == ''){
-							end = true;
+							self.end = true;
 						}
 						progress = false;
 						$('.hit__content').append(response);
@@ -32,6 +35,7 @@ var Catalog = {
 	getProducts: function () {
 		var form = $('#filter_form');
 		form.find('input[name=page]').val(1);
+		this.end = false;
 		$.ajax( {
 			type: "POST",
 			url: form.attr( 'action' ) + '&page=' + form.find('input[name=page]').val(),

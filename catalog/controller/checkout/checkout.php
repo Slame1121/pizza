@@ -59,9 +59,12 @@ class ControllerCheckoutCheckout extends Controller {
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('checkout/checkout', '', true)
 		);
-
+		$data['total_cart_price_def'] = $this->cart->getTotal();
 		$data['total_cart_price'] = $this->cart->getTotal();
-
+		//10% на самовывоз
+		if (isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup') {
+			$data['total_cart_price'] -= $data['total_cart_price'] * 0.1;
+		}
 		$data['text_checkout_option'] = sprintf($this->language->get('text_checkout_option'), 1);
 		$data['text_checkout_account'] = sprintf($this->language->get('text_checkout_account'), 2);
 		$data['text_checkout_payment_address'] = sprintf($this->language->get('text_checkout_payment_address'), 2);
@@ -108,8 +111,9 @@ class ControllerCheckoutCheckout extends Controller {
 
 		}
 
-		$data['bonuses'] = isset($this->customer->bonuses) ? isset($this->customer->bonuses) : 0;
+		$data['firstname'] = $this->customer->getFirstName();
 
+		$data['bonuses'] = isset($this->customer->bonuses) ? ($this->customer->bonuses) : 0;
 		$data['can_get_bonuses'] = $this->cart->getTotal() * 0.05;
 
 		//$data['column_left'] = $this->load->controller('common/column_left');
@@ -125,7 +129,7 @@ class ControllerCheckoutCheckout extends Controller {
 	public function checkbonuses(){
 		if(isset($_POST['bonuses'])){
 			$bon = (float)$_POST['bonuses'];
-			if(isset($this->customer->bonuses ) && $this->customer->bonuses > $bon){
+			if(isset($this->customer->bonuses ) && $this->customer->bonuses >= $bon){
 				$this->response->setOutput((1));
 			}else{
 				if(!isset($this->customer->bonuses)){
@@ -165,26 +169,40 @@ class ControllerCheckoutCheckout extends Controller {
 
 
 	public function save(){
-			$this->session->data['account'] = 'guest';
-			if (isset($this->request->post['customer_group_id']) && is_array($this->config->get('config_customer_group_display')) && in_array($this->request->post['customer_group_id'], $this->config->get('config_customer_group_display'))) {
-				$customer_group_id = $this->request->post['customer_group_id'];
-			} else {
-				$customer_group_id = $this->config->get('config_customer_group_id');
-			}
-			$this->session->data['guest']['customer_group_id'] = $customer_group_id;
-			$this->session->data['guest']['firstname'] = $this->request->post['firstname'];
-			//$this->session->data['guest']['lastname'] = $this->request->post['lastname'];
-			$this->session->data['guest']['email'] = $this->request->post['email'];
-			$this->session->data['guest']['telephone'] = $this->request->post['telephone'];
+		$this->session->data['account'] = 'guest';
+		if (isset($this->request->post['customer_group_id']) && is_array($this->config->get('config_customer_group_display')) && in_array($this->request->post['customer_group_id'], $this->config->get('config_customer_group_display'))) {
+			$customer_group_id = $this->request->post['customer_group_id'];
+		} else {
+			$customer_group_id = $this->config->get('config_customer_group_id');
+		}
+		$this->session->data['guest']['customer_group_id'] = $customer_group_id;
+		$this->session->data['guest']['firstname'] = $this->request->post['firstname'];
+		$this->session->data['guest']['email'] = $this->request->post['email'];
+		$this->session->data['guest']['nominal'] = isset($this->request->post['nominal']) ? $this->request->post['nominal'] : 0;
+		$this->session->data['guest']['telephone'] = $this->request->post['telephone'];
+		$this->session->data['guest']['used_points'] = isset($this->request->post['used_points']) ? (int)$this->request->post['used_points'] : 0;
+
+		if(isset($this->request->post['address_id'])){
+			$this->load->model('account/address');
+			$adress = $this->model_account_address->getAddress((int)$this->request->post['address_id']);
+			$this->session->data['shipping_address']['nas_punkt'] = $adress['nas_punkt'];
+			$this->session->data['shipping_address']['street'] = $adress['street'];
+			$this->session->data['shipping_address']['house'] = $adress['house'];
+			$this->session->data['shipping_address']['paradnya'] = $adress['paradnya'];
+			$this->session->data['shipping_address']['floor'] = $adress['floor'];
+			$this->session->data['shipping_address']['flat'] = $adress['flat'];
+			$this->session->data['shipping_address']['code_door'] = $adress['code_door'];
+		}else{
+			$this->session->data['shipping_address']['nas_punkt'] = $this->request->post['nas_punkt'];
+			$this->session->data['shipping_address']['street'] = $this->request->post['street'];
+			$this->session->data['shipping_address']['house'] = $this->request->post['house'];
+			$this->session->data['shipping_address']['paradnya'] = isset($this->request->post['paradnya']) ? $this->request->post['paradnya'] : '';
+			$this->session->data['shipping_address']['floor'] = isset($this->request->post['floor']) ? $this->request->post['floor'] : '';
+			$this->session->data['shipping_address']['flat'] = isset($this->request->post['flat']) ? $this->request->post['flat'] : '';
+			$this->session->data['shipping_address']['code_door'] =isset($this->request->post['code_door']) ? $this->request->post['code_door'] : '';
+		}
 
 
-		$this->session->data['shipping_address']['nas_punkt'] = $this->request->post['nas_punkt'];
-		$this->session->data['shipping_address']['street'] = $this->request->post['street'];
-		$this->session->data['shipping_address']['house'] = $this->request->post['house'];
-		$this->session->data['shipping_address']['paradnya'] = isset($this->request->post['paradnya']) ? $this->request->post['paradnya'] : '';
-		$this->session->data['shipping_address']['floor'] = isset($this->request->post['floor']) ? $this->request->post['floor'] : '';
-		$this->session->data['shipping_address']['flat'] = isset($this->request->post['flat']) ? $this->request->post['flat'] : '';
-		$this->session->data['shipping_address']['code_door'] =isset($this->request->post['code_door']) ? $this->request->post['code_door'] : '';
 
 
 		$code = explode('.',$this->request->post['shipping_method'])[0];

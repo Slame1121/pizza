@@ -18,7 +18,14 @@ class ControllerApiCart extends Controller {
 						$option = array();
 					}
 
-					$this->cart->add($product['product_id'], $product['quantity'], $option);
+					if (isset($product['attrs'])) {
+						$attr = json_decode(htmlspecialchars_decode($product['attrs'], ENT_QUOTES), true);
+					} else {
+						$attr = array();
+					}
+
+
+					$this->cart->add($product['product_id'], $product['quantity'], $option,0, $attr);
 				}
 
 				$json['success'] = $this->language->get('text_success');
@@ -44,6 +51,12 @@ class ControllerApiCart extends Controller {
 					} else {
 						$option = array();
 					}
+					$attrs =[];
+					if (isset($this->request->post['product_attr_id']) && $this->request->post['product_attr_id']) {
+						foreach($this->request->post['product_attr_id'] as $key => $attr_id){
+							$attrs[$attr_id] = $this->request->post['product_attr_count'][$key];
+						}
+					}
 
 					$product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
 
@@ -54,7 +67,7 @@ class ControllerApiCart extends Controller {
 					}
 
 					if (!isset($json['error']['option'])) {
-						$this->cart->add($this->request->post['product_id'], $quantity, $option);
+						$this->cart->add($this->request->post['product_id'], $quantity, $option, 0, $attrs);
 
 						$json['success'] = $this->language->get('text_success');
 
@@ -134,7 +147,7 @@ class ControllerApiCart extends Controller {
 		} else {
 			// Stock
 			if (!$this->cart->hasStock() && (!$this->config->get('config_stock_checkout') || $this->config->get('config_stock_warning'))) {
-				$json['error']['stock'] = $this->language->get('error_stock');
+				//$json['error']['stock'] = $this->language->get('error_stock');
 			}
 
 			// Products
@@ -142,6 +155,9 @@ class ControllerApiCart extends Controller {
 
 			$products = $this->cart->getProducts();
 
+			$this->load->model('catalog/catalog');
+
+			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
 			foreach ($products as $product) {
 				$product_total = 0;
 
@@ -166,7 +182,18 @@ class ControllerApiCart extends Controller {
 						'type'                    => $option['type']
 					);
 				}
+				$attributes = [];
 
+				if($product['attrs']){
+					foreach($product['attrs'] as $igredient_id => $count){
+						$attributes[] = [
+							'id' => $igredient_id,
+							'name' => $all_attrs[$igredient_id]['name'],
+							'count' => $count,
+							'total' => $all_attrs[$igredient_id]['price'] * $count
+						];
+					}
+				}
 				$json['products'][] = array(
 					'cart_id'    => $product['cart_id'],
 					'product_id' => $product['product_id'],
@@ -174,11 +201,13 @@ class ControllerApiCart extends Controller {
 					'model'      => $product['model'],
 					'option'     => $option_data,
 					'quantity'   => $product['quantity'],
-					'stock'      => $product['stock'] ? true : !(!$this->config->get('config_stock_checkout') || $this->config->get('config_stock_warning')),
+					'stock'      => true,// $product['stock'] ? true : !(!$this->config->get('config_stock_checkout') || $this->config->get('config_stock_warning')),
 					'shipping'   => $product['shipping'],
 					'price'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']),
 					'total'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']),
-					'reward'     => $product['reward']
+					'reward'     => $product['reward'],
+					'attrs'      => json_encode($product['attrs']),
+					'ingredients'=> $attributes
 				);
 			}
 
@@ -231,7 +260,17 @@ class ControllerApiCart extends Controller {
 					$this->load->model('extension/total/' . $result['code']);
 					
 					// We have to put the totals in an array so that they pass by reference.
-					$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+					if(isset($this->session->data['shipping_method']) && $this->session->data['shipping_method']['code'] == 'pickup.pickup'){
+						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data, $total_data['total'] * 0.1);
+						foreach($total_data['totals'] as $key => $total_value){
+							if($total_value['code'] == 'total'){
+								$total_data['totals'][$key]['value'] = $total_data['total'] - $total_data['total'] * 0.1;
+							}
+						}
+					}else{
+						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+					}
+
 				}
 			}
 

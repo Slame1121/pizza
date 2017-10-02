@@ -135,15 +135,27 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['email'] = $customer_info['email'];
 				$order_data['telephone'] = $customer_info['telephone'];
 				$order_data['custom_field'] = json_decode($customer_info['custom_field'], true);
+
+
+
 			} elseif(isset($this->session->data['guest'])) {
 				$order_data['customer_id'] = 0;
 				$order_data['customer_group_id'] = $this->session->data['guest']['customer_group_id'];
-				$order_data['firstname'] = $this->session->data['guest']['firstname'];
-				$order_data['lastname'] = '';//$this->session->data['guest']['lastname'];
 				$order_data['email'] = $this->session->data['guest']['email'];
-				$order_data['telephone'] = $this->session->data['guest']['telephone'];
 				$order_data['custom_field'] = '';//$this->session->data['guest']['custom_field'];
 			}
+
+			//перезаписываем данные с формы
+			$order_data['firstname'] = $this->session->data['guest']['firstname'];
+			$order_data['email'] = $this->session->data['guest']['email'];
+			$order_data['telephone'] = $this->session->data['guest']['telephone'];
+			$order_data['nominal'] = isset($this->session->data['guest']['nominal']) ? $this->session->data['guest']['nominal'] : 0;
+			$order_data['lastname'] = '';
+			if(isset($this->session->data['guest']['used_points']) && (int)$this->session->data['guest']['used_points'] > 0){
+				$order_data['used_points'] =  (int)$this->session->data['guest']['used_points'];
+			}
+
+
 
 			$order_data['payment_firstname'] = '';
 			$order_data['payment_lastname'] = '';
@@ -173,13 +185,13 @@ class ControllerCheckoutConfirm extends Controller {
 
 			//if ($this->cart->hasShipping()) {
 
-				$order_data['nas_punkt'] = $this->session->data['shipping_address']['nas_punkt'];
-				$order_data['street'] = $this->session->data['shipping_address']['street'];
-				$order_data['house'] = $this->session->data['shipping_address']['house'];
-				$order_data['paradnya'] = $this->session->data['shipping_address']['paradnya'];
-				$order_data['floor'] = $this->session->data['shipping_address']['floor'];
-				$order_data['flat'] = $this->session->data['shipping_address']['flat'];
-				$order_data['code_door'] = $this->session->data['shipping_address']['code_door'];
+				$order_data['shipping_nas_punkt'] = $this->session->data['shipping_address']['nas_punkt'];
+				$order_data['shipping_street'] = $this->session->data['shipping_address']['street'];
+				$order_data['shipping_house'] = $this->session->data['shipping_address']['house'];
+				$order_data['shipping_paradnya'] = $this->session->data['shipping_address']['paradnya'];
+				$order_data['shipping_floor'] = $this->session->data['shipping_address']['floor'];
+				$order_data['shipping_flat'] = $this->session->data['shipping_address']['flat'];
+				$order_data['shipping_code_door'] = $this->session->data['shipping_address']['code_door'];
 				$order_data['shipping_firstname'] = '';
 				$order_data['shipping_lastname'] = '';
 				$order_data['shipping_company'] = '';
@@ -256,6 +268,7 @@ class ControllerCheckoutConfirm extends Controller {
 					'reward'     => $product['reward']
 				);
 			}
+
             //var_dump($order_data['products']);die;
 			// Gift Voucher
 			$order_data['vouchers'] = array();
@@ -352,6 +365,8 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['accept_language'] = '';
 			}
 
+
+
 			$this->load->model('checkout/order');
 			$this->session->data['order_id'] = $this->model_checkout_order->addOrder($order_data);
 
@@ -439,15 +454,22 @@ class ControllerCheckoutConfirm extends Controller {
 					'href'       => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 				);
 			}
-			$data['street'] = $order_data['street'];
-			$data['nas_punkt'] = $order_data['nas_punkt'];
-			$data['house'] = $order_data['house'];
-			$data['paradnya'] = $order_data['paradnya'];
-			$data['floor'] = $order_data['floor'];
-			$data['flat'] = $order_data['flat'];
-			$data['code_door'] = $order_data['code_door'];
-			$data['payment_method'] = $order_data['payment_method'];
 
+			$data['bonuses'] = $this->cart->getTotal() * 0.05;
+			$data['total'] = $this->cart->getTotal();
+			//10% на самовывоз
+			if($order_data['shipping_code'] == 'pickup'){
+				$data['total']  -= $data['total'] * 0.1;
+			}
+			$data['street'] = $order_data['shipping_street'];
+			$data['nas_punkt'] = $order_data['shipping_nas_punkt'];
+			$data['house'] = $order_data['shipping_house'];
+			$data['paradnya'] = $order_data['shipping_paradnya'];
+			$data['floor'] = $order_data['shipping_floor'];
+			$data['flat'] = $order_data['shipping_flat'];
+			$data['code_door'] = $order_data['shipping_code_door'];
+			$data['payment_method'] = $order_data['payment_method'];
+			$data['shipping_method'] = $order_data['shipping_method'];
 
 			$data['firstname'] = $order_data['firstname'];
 			$data['email'] = $order_data['email'];

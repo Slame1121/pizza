@@ -121,6 +121,13 @@ class ModelSaleOrder extends Model {
 				'shipping_custom_field'   => json_decode($order_query->row['shipping_custom_field'], true),
 				'shipping_method'         => $order_query->row['shipping_method'],
 				'shipping_code'           => $order_query->row['shipping_code'],
+				'shipping_nas_punkt'           	  => $order_query->row['shipping_nas_punkt'],
+				'shipping_street'           	  => $order_query->row['shipping_street'],
+				'shipping_house'           	  => $order_query->row['shipping_house'],
+				'shipping_paradnya'           	  => $order_query->row['shipping_paradnya'],
+				'shipping_floor'           	  => $order_query->row['shipping_floor'],
+				'shipping_flat'           	  => $order_query->row['shipping_flat'],
+				'shipping_code_door'           	  => $order_query->row['shipping_code_door'],
 				'comment'                 => $order_query->row['comment'],
 				'total'                   => $order_query->row['total'],
 				'reward'                  => $reward,
@@ -145,6 +152,7 @@ class ModelSaleOrder extends Model {
 				'got_points'              => $order_query->row['got_points'],
 				'spent_points'            => $order_query->row['spent_points'],
 				'lost_points'             => $order_query->row['lost_points'],
+				'nominal'             => $order_query->row['nominal'],
 			);
 		} else {
 			return;

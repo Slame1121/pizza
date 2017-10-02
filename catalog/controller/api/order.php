@@ -71,7 +71,7 @@ class ControllerApiOrder extends Controller {
 
 			// Cart
 			if ((!$this->cart->hasProducts() && empty($this->session->data['vouchers'])) || (!$this->cart->hasStock() && !$this->config->get('config_stock_checkout'))) {
-				$json['error'] = $this->language->get('error_stock');
+				//$json['error'] = $this->language->get('error_stock');
 			}
 
 			// Validate minimum quantity requirements.
@@ -152,6 +152,13 @@ class ControllerApiOrder extends Controller {
 					$order_data['shipping_zone'] = $this->session->data['shipping_address']['zone'];
 					$order_data['shipping_zone_id'] = $this->session->data['shipping_address']['zone_id'];
 					$order_data['shipping_country'] = $this->session->data['shipping_address']['country'];
+					$order_data['shipping_nas_punkt'] = $this->session->data['shipping_address']['nas_punkt'];
+					$order_data['shipping_street'] = $this->session->data['shipping_address']['street'];
+					$order_data['shipping_house'] = $this->session->data['shipping_address']['house'];
+					$order_data['shipping_paradnya'] = $this->session->data['shipping_address']['paradnya'];
+					$order_data['shipping_floor'] = $this->session->data['shipping_address']['floor'];
+					$order_data['shipping_flat'] = $this->session->data['shipping_address']['flat'];
+					$order_data['shipping_code_door'] = $this->session->data['shipping_address']['code_door'];
 					$order_data['shipping_country_id'] = $this->session->data['shipping_address']['country_id'];
 					$order_data['shipping_address_format'] = $this->session->data['shipping_address']['address_format'];
 					$order_data['shipping_custom_field'] = (isset($this->session->data['shipping_address']['custom_field']) ? $this->session->data['shipping_address']['custom_field'] : array());
@@ -184,10 +191,8 @@ class ControllerApiOrder extends Controller {
 					$order_data['shipping_method'] = '';
 					$order_data['shipping_code'] = '';
 				}
-
 				// Products
 				$order_data['products'] = array();
-
 				foreach ($this->cart->getProducts() as $product) {
 					$option_data = array();
 
@@ -202,7 +207,6 @@ class ControllerApiOrder extends Controller {
 							'type'                    => $option['type']
 						);
 					}
-
 					$order_data['products'][] = array(
 						'product_id' => $product['product_id'],
 						'name'       => $product['name'],
@@ -214,7 +218,8 @@ class ControllerApiOrder extends Controller {
 						'price'      => $product['price'],
 						'total'      => $product['total'],
 						'tax'        => $this->tax->getTax($product['price'], $product['tax_class_id']),
-						'reward'     => $product['reward']
+						'reward'     => $product['reward'],
+						'attr'       => ($product['attrs'])
 					);
 				}
 
@@ -266,7 +271,17 @@ class ControllerApiOrder extends Controller {
 						$this->load->model('extension/total/' . $result['code']);
 						
 						// We have to put the totals in an array so that they pass by reference.
-						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+
+						if(isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup.pickup'){
+							$this->{'model_extension_total_' . $result['code']}->getTotal($total_data, $total_data['total'] * 0.1);
+							foreach($total_data['totals'] as $key => $total_value){
+								if($total_value['code'] == 'total'){
+									$total_data['totals'][$key]['value'] = $total_data['total'] - $total_data['total'] * 0.1;
+								}
+							}
+						}else{
+							$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+						}
 					}
 				}
 
@@ -352,7 +367,7 @@ class ControllerApiOrder extends Controller {
 				$this->model_checkout_order->addOrderHistory($json['order_id'], $order_status_id);
 				
 				// clear cart since the order has already been successfully stored.
-				$this->cart->clear();
+				//$this->cart->clear();
 			}
 		}
 
@@ -441,7 +456,7 @@ class ControllerApiOrder extends Controller {
 
 				// Cart
 				if ((!$this->cart->hasProducts() && empty($this->session->data['vouchers'])) || (!$this->cart->hasStock() && !$this->config->get('config_stock_checkout'))) {
-					$json['error'] = $this->language->get('error_stock');
+					//$json['error'] = $this->language->get('error_stock');
 				}
 
 				// Validate minimum quantity requirements.
@@ -509,7 +524,6 @@ class ControllerApiOrder extends Controller {
 					} else {
 						$order_data['payment_code'] = '';
 					}
-
 					// Shipping Details
 					if ($this->cart->hasShipping()) {
 						$order_data['shipping_firstname'] = $this->session->data['shipping_address']['firstname'];
@@ -525,6 +539,13 @@ class ControllerApiOrder extends Controller {
 						$order_data['shipping_country_id'] = $this->session->data['shipping_address']['country_id'];
 						$order_data['shipping_address_format'] = $this->session->data['shipping_address']['address_format'];
 						$order_data['shipping_custom_field'] = $this->session->data['shipping_address']['custom_field'];
+						$order_data['shipping_nas_punkt'] = $this->session->data['shipping_address']['nas_punkt'];
+						$order_data['shipping_street'] = $this->session->data['shipping_address']['street'];
+						$order_data['shipping_house'] = $this->session->data['shipping_address']['house'];
+						$order_data['shipping_paradnya'] = $this->session->data['shipping_address']['paradnya'];
+						$order_data['shipping_floor'] = $this->session->data['shipping_address']['floor'];
+						$order_data['shipping_flat'] = $this->session->data['shipping_address']['flat'];
+						$order_data['shipping_code_door'] = $this->session->data['shipping_address']['code_door'];
 
 						if (isset($this->session->data['shipping_method']['title'])) {
 							$order_data['shipping_method'] = $this->session->data['shipping_method']['title'];
@@ -572,7 +593,6 @@ class ControllerApiOrder extends Controller {
 								'type'                    => $option['type']
 							);
 						}
-
 						$order_data['products'][] = array(
 							'product_id' => $product['product_id'],
 							'name'       => $product['name'],
@@ -584,7 +604,8 @@ class ControllerApiOrder extends Controller {
 							'price'      => $product['price'],
 							'total'      => $product['total'],
 							'tax'        => $this->tax->getTax($product['price'], $product['tax_class_id']),
-							'reward'     => $product['reward']
+							'reward'     => $product['reward'],
+							'attr'       => json_encode($product['attrs'])
 						);
 					}
 
@@ -636,7 +657,16 @@ class ControllerApiOrder extends Controller {
 							$this->load->model('extension/total/' . $result['code']);
 							
 							// We have to put the totals in an array so that they pass by reference.
-							$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+							if(isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup.pickup'){
+								$this->{'model_extension_total_' . $result['code']}->getTotal($total_data, $total_data['total'] * 0.1);
+								foreach($total_data['totals'] as $key => $total_value){
+									if($total_value['code'] == 'total'){
+										$total_data['totals'][$key]['value'] = $total_data['total'] - $total_data['total'] * 0.1;
+									}
+								}
+							}else{
+								$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+							}
 						}
 					}
 
@@ -647,7 +677,6 @@ class ControllerApiOrder extends Controller {
 					}
 
 					array_multisort($sort_order, SORT_ASC, $total_data['totals']);
-
 					$order_data = array_merge($order_data, $total_data);
 
 					if (isset($this->request->post['comment'])) {

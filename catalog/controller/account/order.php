@@ -396,7 +396,9 @@ class ControllerAccountOrder extends Controller {
 			if (isset($this->request->get['order_product_id']) && $this->request->get['order_product_id']) {
 				$this->cart->clear();
 				foreach($this->request->get['order_product_id'] as $order_product_id){
+
 					$order_product_info = $this->model_account_order->getOrderProduct($order_id, $order_product_id);
+
 					if ($order_product_info) {
 						$this->load->model('catalog/product');
 
@@ -418,8 +420,8 @@ class ControllerAccountOrder extends Controller {
 									$option_data[$order_option['product_option_id']] = $this->encryption->encrypt($this->config->get('config_encryption'), $order_option['value']);
 								}
 							}
-
-							$this->cart->add($order_product_info['product_id'], $order_product_info['quantity'], $option_data);
+							$attrs = json_decode($order_product_info['attrs'], true);
+							$this->cart->add($order_product_info['product_id'], $order_product_info['quantity'], $option_data, 0,$attrs);
 
 							$this->session->data['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $product_info['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
 
@@ -436,7 +438,7 @@ class ControllerAccountOrder extends Controller {
 
 			}
 		}
-
+		$this->response->setOutput(json_encode(['total' => $this->cart->getTotal()]));
 		//$this->response->redirect($this->url->link('account/order/info', 'order_id=' . $order_id));
 	}
 }

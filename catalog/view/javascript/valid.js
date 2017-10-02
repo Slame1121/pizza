@@ -73,7 +73,7 @@ var valid = {
             $(el).next('.reviews-text-error').remove();
             htm = '<span class="reviews-text-error hidden">'+txt+'</span>';
             $(el).addClass('error').after(htm).show();
-            $(el).parent().parent().find('.sing-log__label-name').addClass('error').attr('title',er.text);
+            $(el).parent().parent().find('.sing-log__label-name').addClass('error').attr('title',txt);
             //$(el).next('.reviews-text-error');//.css('left', pos.left+'px');
         }
         $(el).bind('click', {}, function(eventObject){ valid.resetErr(this);} );

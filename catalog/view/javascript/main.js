@@ -262,13 +262,14 @@ $('document').ready(function(){
         //auth
     })
 
-    $('form.user-auth .btn.sing-log__btn.btn-orange').on('click',function () {
+    $('form.user-auth .btn.sing-log__btn.btn-orange').on('click',function (e) {
         if(loginValid.valid('.user-auth')){
             formAuth();
         }else{
             return false;
         }
-
+        e.preventDefault();
+        return false;
     });
     $('form.user-auth').submit(function (e) {
         e.preventDefault();

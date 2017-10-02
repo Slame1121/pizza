@@ -802,11 +802,20 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 .opencart-icon-cart-mini:before {
 	content: "\e91c";
 }
-div#mapsMarker { min-height: 400px;height: 400px;  }
+div#mapsMarker,div#mapsMarkerForms { min-height: 400px;height: 400px;  }
 .refreshMap.btn {
 	display: block;
 	width: 200px;
 	box-shadow: 0px 0px 3px black;
 	text-align: center;
+	cursor: pointer;
+}
+span.refreshMap {
+	display: block;
+	position: absolute;
+	right: 51%;
+	margin-top: -20px;
+	box-shadow: 0px 0px 3px black;
+	padding: 5px;
 	cursor: pointer;
 }

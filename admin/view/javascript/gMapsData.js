@@ -13,13 +13,20 @@ var markerTriangle = new google.maps.Polygon({
 var map;
 
 $(document).ready(function() {
+    $('.refreshMap').on('click', function () {
+        $(document).resize();
+        google.maps.event.trigger(map, 'resize');
+    });
     function initMap() {
         var lat = parseFloat( $('#map_pos_lat').val());
         var lng = parseFloat( $('#map_pos_lng').val());
         var zoom = parseInt( $('#map_pos_zoom').val());
+        if(zoom == 0)zoom = 8;
+        if(lat == 0) lat = 50.44263847959072;
+        if(lng == 0) lng = 30.5474853515625;
         var posit = {lat: lat,lng:lng};
 
-        map = new google.maps.Map(document.getElementById('mapsMarker'), {
+        map = new google.maps.Map(document.getElementById('mapsMarkerForms'), {
             zoom: zoom,
             center: posit,
             mapTypeId: 'terrain'

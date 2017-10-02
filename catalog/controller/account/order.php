@@ -48,6 +48,25 @@ class ControllerAccountOrder extends Controller {
 
 		$results = $this->model_account_order->getOrders(($page - 1) * 10, 10);
 
+        $data['txt_top_tit'] = $this->language->get('txt_top_tit');
+        $data['txt_top_tit_end'] = $this->language->get('txt_top_tit_end');
+        $data['txt_titl'] = $this->language->get('txt_titl');
+        $data['txt_adress'] = $this->language->get('txt_adress');
+        $data['txt_tel'] = $this->language->get('txt_tel');
+        $data['txt_orders'] = $this->language->get('txt_orders');
+        $data['txt_ball_txt'] = $this->language->get('txt_ball_txt');
+        $data['txt_ball'] = $this->language->get('txt_ball');
+        $data['txt_all'] = $this->language->get('txt_all');
+        $data['txt_new'] = $this->language->get('txt_new');
+        $data['txt_view'] = $this->language->get('txt_view');
+        $data['txt_ball_true'] = $this->language->get('txt_ball_true');
+        $data['txt_ball_sell'] = $this->language->get('txt_ball_sell');
+        $data['txt_ball_not'] = $this->language->get('txt_ball_not');
+        $data['txt_pay_date'] = $this->language->get('txt_pay_date');
+        $data['txt_pay_cash'] = $this->language->get('txt_pay_cash');
+        $data['txt_pay_ball'] = $this->language->get('txt_pay_ball');
+        $data['txt_pay_ball_sell'] = $this->language->get('txt_pay_ball_sell');
+        $data['txt_data_end'] = $this->language->get('txt_data_end');
 
 		$total_bonuses = 0;
 		$bonuses_spent = 0;

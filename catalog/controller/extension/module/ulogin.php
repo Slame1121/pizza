@@ -12,8 +12,8 @@ class ControllerExtensionModuleUlogin extends Controller {
 		$this->load->language('extension/module/ulogin');
 
 		$this->document->addScript('https://ulogin.ru/js/ulogin.js');
-		$this->document->addScript('catalog/view/javascript/ulogin.js');
-		$this->document->addStyle('catalog/view/theme/default/stylesheet/ulogin.css');
+		$this->document->addScript('/catalog/view/javascript/ulogin.js');
+		$this->document->addStyle('/catalog/view/theme/default/stylesheet/ulogin.css');
 		$this->document->addStyle('https://ulogin.ru/css/providers.css');
 
 		$url = $this->url->link('extension/module/ulogin/login', '', true);

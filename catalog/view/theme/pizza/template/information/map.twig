@@ -1,67 +1,71 @@
-<div class="hidden">
-    <div class="col-sm-12 map-position-data" style="display: none;">
-        <input id="map_pos_lat" type="hidden" name="map[pos][lat]" value="{{ lat }}" class="map_pos_lat">
-        <input id="map_pos_lng" type="hidden" name="map[pos][lng]" value="{{ lng}}" class="map_pos_lng">
-        <input id="map_pos_zoom" type="hidden" name="map[pos][zoom]" value="{{ zoom}}" class="map_pos_zoom">
-    </div>
-    {% for pol in poligon %}
-        <div class="col-sm-12 poligons-data-item" style="display: none;" >
-            <input type="text" name="map[poligon][lat][]" value="{{ pol.lat }}" class="map_pos_lat">
-            <input type="text" name="map[poligon][lng][]" value="{{ pol.lng }}" class="map_pos_lng">
+{% if poligon %}
+    <div class="hidden">
+        <div class="col-sm-12 map-position-data" style="display: none;">
+            <input id="map_pos_lat" type="hidden" name="map[pos][lat]" value="{{ lat }}" class="map_pos_lat">
+            <input id="map_pos_lng" type="hidden" name="map[pos][lng]" value="{{ lng}}" class="map_pos_lng">
+            <input id="map_pos_zoom" type="hidden" name="map[pos][zoom]" value="{{ zoom}}" class="map_pos_zoom">
         </div>
-    {% endfor %}
-</div>
-<script>
-    $(document).ready(function() {
-        function initMap() {
-            var lat = parseFloat( $('#map_pos_lat').val());
-            var lng = parseFloat( $('#map_pos_lng').val());
-            var zoom = parseInt( $('#map_pos_zoom').val());
-            var posit = {lat: lat,lng:lng};
+        {% for pol in poligon %}
+            <div class="col-sm-12 poligons-data-item" style="display: none;" >
+                <input type="text" name="map[poligon][lat][]" value="{{ pol.lat }}" class="map_pos_lat">
+                <input type="text" name="map[poligon][lng][]" value="{{ pol.lng }}" class="map_pos_lng">
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        $(document).ready(function() {
+            if($('#mapsMarker').length){
+                function initMap() {
+                    var lat = parseFloat( $('#map_pos_lat').val());
+                    var lng = parseFloat( $('#map_pos_lng').val());
+                    var zoom = parseInt( $('#map_pos_zoom').val());
+                    var posit = {lat: lat,lng:lng};
 
-            map = new google.maps.Map(document.getElementById('mapsMarker'), {
-                zoom: zoom,
-                center: posit,
-                mapTypeId: 'terrain'
-            });
+                    map = new google.maps.Map(document.getElementById('mapsMarker'), {
+                        zoom: zoom,
+                        center: posit,
+                        mapTypeId: 'terrain'
+                    });
 
-            map.addListener("click", function(e) {
-                var location = e.latLng;
-                var el = $('input.map_pos_enabl:checked').parent().parent();
-                $(el).find('.map_pos_lat').val(parseFloat(location.lat()));
-                $(el).find('.map_pos_lng').val(parseFloat(location.lng()));
-            });
+                    map.addListener("click", function(e) {
+                        var location = e.latLng;
+                        var el = $('input.map_pos_enabl:checked').parent().parent();
+                        $(el).find('.map_pos_lat').val(parseFloat(location.lat()));
+                        $(el).find('.map_pos_lng').val(parseFloat(location.lng()));
+                    });
 
-            map.addListener('zoom_changed', function() {
-                if($('.map-position-data input.map_pos_enabl:checked')){
-                    $('#map_pos_zoom').val( parseInt( map.getZoom()) );
-                    console.log('Zoom: ' + map.getZoom());
+                    map.addListener('zoom_changed', function() {
+                        if($('.map-position-data input.map_pos_enabl:checked')){
+                            $('#map_pos_zoom').val( parseInt( map.getZoom()) );
+                            console.log('Zoom: ' + map.getZoom());
+                        }
+                    });
+                    refreshMap();
                 }
-            });
-            refreshMap();
-        }
 
-        function refreshMap() {
-            var item = $('.poligons-data-item');
-            triangleCoords = [];
-            $.each(item, function ( index, value ) {
-                var lat = parseFloat( $(this).find('.map_pos_lat').val());
-                var lng = parseFloat( $(this).find('.map_pos_lng').val());
+                function refreshMap() {
+                    var item = $('.poligons-data-item');
+                    triangleCoords = [];
+                    $.each(item, function ( index, value ) {
+                        var lat = parseFloat( $(this).find('.map_pos_lat').val());
+                        var lng = parseFloat( $(this).find('.map_pos_lng').val());
 
-                var posit = {lat: lat,lng:lng};
-                triangleCoords.push(posit);
-            });
-            //markerTriangle.paths = triangleCoords;
-            markerTriangle = new google.maps.Polygon({
-                paths: triangleCoords,
-                strokeColor: '#FF0000',
-                strokeOpacity: 0.7,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35
-            });
-            markerTriangle.setMap(map);
-        }
-        initMap();
-    });
-</script>
+                        var posit = {lat: lat,lng:lng};
+                        triangleCoords.push(posit);
+                    });
+                    //markerTriangle.paths = triangleCoords;
+                    markerTriangle = new google.maps.Polygon({
+                        paths: triangleCoords,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.7,
+                        strokeWeight: 2,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.35
+                    });
+                    markerTriangle.setMap(map);
+                }
+                initMap();
+            }
+        });
+    </script>
+{% endif %}

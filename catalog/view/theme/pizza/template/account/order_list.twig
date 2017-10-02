@@ -1,62 +1,62 @@
 
-<div class="profile__title">У вас на счету <a class="for-popup" href="#bonus-popup">{{ total_bonuses }} бонусов.</a></div>
+<div class="profile__title">{{ txt_top_tit }} <a class="for-popup" href="#bonus-popup">{{ total_bonuses }} {{ txt_top_tit_end }}</a></div>
 <div class="profile-history">
     {% if orders %}
-        <div class="profile__title">Ваша история заказов:</div>
+        <div class="profile__title">{{ txt_titl }}</div>
         <div class="profile-history__content">
 
             {% for order in orders %}
                 <div class="profile-history__item">
                     <div class="profile-history__line">
-                        <div class="profile-history__line-name">Адрес:</div>
+                        <div class="profile-history__line-name">{{ txt_adress }}</div>
                         <div class="profile-history__line-value">{{ order.shipping }}</div>
                     </div>
                     <div class="profile-history__line">
-                        <div class="profile-history__line-name">Телефон:</div>
+                        <div class="profile-history__line-name">{{ txt_tel }}:</div>
                         <div class="profile-history__line-value">{{ order.telephone }}</div>
                     </div>
                     <div class="profile-history__line">
-                        <div class="profile-history__line-name">Заказ:</div>
+                        <div class="profile-history__line-name">{{ txt_orders }}</div>
                         <div class="profile-history__line-value"> {{ order.products }}</div>
                     </div>
                     {% if order.reserved_bonuses > 0 %}
                         <div class="profile-history__line">
-                            <div class="profile-history__line-name"> <span style="font-size:12px;line-height:12px;">Баллы (ожидают одобрения) :</span> </div>
+                            <div class="profile-history__line-name"> <span style="font-size:12px;line-height:12px;">{{ txt_ball_txt }}</span> </div>
                             <div class="profile-history__line-value"> {{ order.reserved_bonuses }}</div>
                         </div>
                     {% endif %}
                     <div class="profile-history__line">
-                        <div class="profile-history__line-name">Баллы:</div>
+                        <div class="profile-history__line-name">{{ txt_ball }}</div>
                         <div class="profile-history__line-value"> {{ order.got_bonuses }}</div>
                     </div>
                     <div class="profile-history__line">
-                        <div class="profile-history__line-name">ВСЕГО:</div>
+                        <div class="profile-history__line-name">{{ txt_all }}</div>
                         <div class="profile-history__line-value"> <b>{{ order.total }}</b></div>
                     </div>
                     <div class="profile-history__line">
                         <div class="profile-history__line-name"></div>
-                        <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="{{ order.reorder }}">Повторить заказ</a></div>
+                        <div class="profile-history__line-value"> <a class="btn profile-history__btn" href="{{ order.reorder }}">{{ txt_new }}</a></div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% endif %}
 
-    <div class="profile-history__conrols"><a href="#">Показать ещё</a></div>
+    <div class="profile-history__conrols"><a href="#">{{ txt_view }}</a></div>
 </div>
 <div class="hidden">
     <div class="bonus-popup container" id="bonus-popup">
         <div class="bonus-popup__top">
             <div class="bonus-popup__line">
-                <div class="bonus-popup__line-name">Бонусов доступно:</div>
+                <div class="bonus-popup__line-name">{{ txt_ball_true }}</div>
                 <div class="bonus-popup__line-value">{{ total_bonuses }}</div>
             </div>
             <div class="bonus-popup__line">
-                <div class="bonus-popup__line-name">Бонусов потрачено:</div>
+                <div class="bonus-popup__line-name">{{ txt_ball_sell }}</div>
                 <div class="bonus-popup__line-value">{{ spent_bonuses }}</div>
             </div>
             <div class="bonus-popup__line">
-                <div class="bonus-popup__line-name">Бонусов потеряно:</div>
+                <div class="bonus-popup__line-name">{{ txt_ball_not }}</div>
                 <div class="bonus-popup__line-value">{{ lost_bonuses }}</div>
             </div>
         </div>
@@ -64,12 +64,12 @@
             <div class="bonus-popup__table-top">
                 <div class="bonus-popup__table-line--wrap">
                     <div class="bonus-popup__table-line">
-                        <div class="bonus-popup__table-date" data-info="Дата заказа">Дата заказа</div>
-                        <div class="bonus-popup__table-phone" data-info="Телефон">Телефон</div>
-                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">Сумма заказа</div>
-                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">Начислено бонусов</div>
-                        <div class="bonus-popup__table-num" data-info="Потрачено из них">Потрачено из них</div>
-                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">Дата сгорания бонусов</div>
+                        <div class="bonus-popup__table-date" data-info="{{ txt_pay_date }}">{{ txt_pay_date }}</div>
+                        <div class="bonus-popup__table-phone" data-info="{{ txt_tel }}">{{ txt_tel }}</div>
+                        <div class="bonus-popup__table-summa" data-info="{{ txt_pay_cash }}">{{ txt_pay_cash }}</div>
+                        <div class="bonus-popup__table-bonus" data-info="{{ txt_pay_ball }}">{{ txt_pay_ball }}</div>
+                        <div class="bonus-popup__table-num" data-info="{{ txt_pay_ball_sell }}">{{ txt_pay_ball_sell }}</div>
+                        <div class="bonus-popup__table-last" data-info="{{ txt_data_end }}">{{ txt_data_end }}</div>
                     </div>
                 </div>
             </div>
@@ -78,12 +78,12 @@
             {% for order in orders %}
                 <div class="bonus-popup__table-line--wrap">
                     <div class="bonus-popup__table-line">
-                        <div class="bonus-popup__table-date" data-info="Дата заказа">{{ order.date_added }}</div>
-                        <div class="bonus-popup__table-phone" data-info="Телефон">{{ order.telephone }}</div>
-                        <div class="bonus-popup__table-summa" data-info="Сумма заказа">{{ order.total }}</div>
-                        <div class="bonus-popup__table-bonus" data-info="Начислено бонусов">{{ order.got_bonuses }}</div>
-                        <div class="bonus-popup__table-num" data-info="Потрачено из них">{{ order.spent_bonuses }}</div>
-                        <div class="bonus-popup__table-last" data-info="Дата сгорания бонусов">{{ order.bonus_null }}</div>
+                        <div class="bonus-popup__table-date" data-info="{{ txt_pay_date }}">{{ order.date_added }}</div>
+                        <div class="bonus-popup__table-phone" data-info="{{ txt_tel }}">{{ order.telephone }}</div>
+                        <div class="bonus-popup__table-summa" data-info="{{ txt_pay_cash }}">{{ order.total }}</div>
+                        <div class="bonus-popup__table-bonus" data-info="{{ txt_pay_ball }}">{{ order.got_bonuses }}</div>
+                        <div class="bonus-popup__table-num" data-info="{{ txt_pay_ball_sell }}">{{ order.spent_bonuses }}</div>
+                        <div class="bonus-popup__table-last" data-info="{{ txt_data_end }}">{{ order.bonus_null }}</div>
                     </div>
                 </div>
             {% endfor %}

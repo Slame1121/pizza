@@ -1,13 +1,23 @@
 <?php
 class ControllerAccountAccount extends Controller {
 	public function index() {
+
 		if (!$this->customer->isLogged()) {
 			$this->session->data['redirect'] = $this->url->link('account/account', '', true);
 
 			$this->response->redirect($this->url->link('account/login', '', true));
 		}
-
+        $this->document->addStyle('/catalog/view/theme/default/stylesheet/bootstrap-datepicker3.min.css');
 		$this->document->addScript('/catalog/view/javascript/pages/account.js');
+		$this->document->addScript('/catalog/view/javascript/jquery-migrate-3.0.1.min.js');
+		$this->document->addScript('/catalog/view/javascript/bootstrap-datepicker.js');
+        $data['langs'] = 'ru';
+		if($this->language->data["code"] == "uk"){
+            $data['langs'] = 'uk';
+            $this->document->addScript('/catalog/view/javascript/locales/bootstrap-datepicker.uk.js');
+        }else{
+            $this->document->addScript('/catalog/view/javascript/locales/bootstrap-datepicker.ru.js');
+        }
 
 		$this->load->language('account/account');
 
@@ -39,7 +49,27 @@ class ControllerAccountAccount extends Controller {
 		$this->load->model('account/address');
 		$data['addresses'] = $this->model_account_address->getAddresses();
 		$data['credit_cards'] = array();
-		
+        $data['text_acc_hello'] = $this->language->get('text_acc_hello');
+        $data['text_acc_user_text'] = $this->language->get('text_acc_user_text');
+        $data['text_acc_user_name'] = $this->language->get('text_acc_user_name');
+        $data['text_acc_user_tel'] = $this->language->get('text_acc_user_tel');
+        $data['text_acc_user_date'] = $this->language->get('text_acc_user_date');
+        $data['text_acc_user_pass'] = $this->language->get('text_acc_user_pass');
+        $data['text_acc_user_new_pass'] = $this->language->get('text_acc_user_new_pass');
+        $data['text_acc_user_place'] = $this->language->get('text_acc_user_place');
+        $data['text_acc_user_btn_tit'] = $this->language->get('text_acc_user_btn_tit');
+
+        $data['text_acc_user_adr'] = $this->language->get('text_acc_user_adr');
+        $data['text_acc_user_adr_add'] = $this->language->get('text_acc_user_adr_add');
+        $data['text_acc_user_sity'] = $this->language->get('text_acc_user_sity');
+        $data['arr_sity'] = $this->language->get('text_acc_user_arr_sity');
+        $data['text_acc_user_strit'] = $this->language->get('text_acc_user_strit');
+        $data['text_acc_user_dim'] = $this->language->get('text_acc_user_dim');
+        $data['text_acc_user_home'] = $this->language->get('text_acc_user_home');
+        $data['text_acc_user_lvl'] = $this->language->get('text_acc_user_lvl');
+        $data['text_acc_user_home_nom'] = $this->language->get('text_acc_user_home_nom');
+        $data['text_acc_user_key_door'] = $this->language->get('text_acc_user_key_door');
+
 		$files = glob(DIR_APPLICATION . 'controller/extension/credit_card/*.php');
 		
 		foreach ($files as $file) {
@@ -93,6 +123,7 @@ class ControllerAccountAccount extends Controller {
 		$data['email'] = $this->customer->getEmail();
 		$data['telephone'] = $this->customer->getTelephone();
 		$data['firstname'] = $this->customer->getFirstName();
+		$data['bdate'] = date( "d.m.Y", $this->customer->getBdate() );
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
 		$data['content_top'] = $this->load->controller('common/content_top');
@@ -119,6 +150,7 @@ class ControllerAccountAccount extends Controller {
 				'telephone' => $this->request->post['telephone'],
 				'email' => $this->request->post['email'],
 				'firstname' => $this->request->post['firstname'],
+                'bdate' => $this->request->post['bdate']
 			];
 			$this->model_account_customer->editCustomer($this->customer->getId(), $customer_info);
 

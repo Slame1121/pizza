@@ -194,12 +194,13 @@
               <div class="col-sm-12" style="text-align: left;">
                 <label class="col-sm-12 control-label" style="text-align: left;">Статус</label>
                 <input class="" type="checkbox" name="map[status]" {% if map['status'] %} checked {% endif %}>
+                <span class="refreshMap">Обновить</span>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-sm-12 control-label">{{ map_txt }}</label>
                   <div class="col-sm-12">
-                    <div id="mapsMarker"></div>
+                    <div id="mapsMarkerForms"></div>
                   </div>
                 </div>
               </div>

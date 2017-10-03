@@ -92,8 +92,6 @@ $('document').ready(function(){
 		this.classList.add('active');
 
 	});
-
-
 	$('.menu-tabs__link').click(function(e) {
 		e.preventDefault();
 
@@ -105,8 +103,6 @@ $('document').ready(function(){
 
 
 	});
-
-
 	$('.header-basket__box').click(function() {
 
 		var log = $('.basket-log');
@@ -114,49 +110,37 @@ $('document').ready(function(){
 		log.toggleClass('opened');
 
 	});
-
-
 	$('.burg').click(function(e) {
 		e.preventDefault();
 
 		$('.drop-menu').toggleClass('opened');
 	});
-
 	$('.drop-menu__close').click(function(e) {
 		e.preventDefault();
 
 		$('.drop-menu').toggleClass('opened');
 	});
-
 	$('.drop-menu__bg').click(function() {
 		$('.drop-menu').toggleClass('opened');
 	});
-
-
 	$('.header-sing').click(function() {
 		$('.sing-log').toggleClass('opened');
 	});
-
 	$('.drop-menu__sing-link').click(function() {
 		$('.drop-menu__sing-content').toggleClass('opened');
 	});
-
 	$('.basket-log__close').click(function() {
 		$('.basket-log').toggleClass('opened');
 	});
-
 	$('.profile-form__add-label').click(function(e) {
 		e.preventDefault();
 		$('.profile-form__drop').toggleClass('opened');
 	});
-
-
 	$('.card-price__box').click(function() {
 		$(this).addClass('active')
 			.siblings()
 			.removeClass('active');
 	});
-
 
 	$('.ingredients-popup__tabs-link').click(function(e) {
 		e.preventDefault();
@@ -164,8 +148,6 @@ $('document').ready(function(){
 			.siblings()
 			.removeClass('active');
 	});
-
-
 	document.addEventListener('click', area);
 
 	function area(e) {
@@ -208,14 +190,21 @@ $('document').ready(function(){
         $('form.user-auth .label-password').removeClass('hidden');
         $('form.user-auth .label-confirm').removeClass('hidden');
         $('form.user-auth .label-tel').removeClass('hidden');
+        $('form.user-auth .label-tel-codes').addClass('hidden');
 
 		$('form.user-auth .sing-log__reg-wrap.login').removeClass('hidden');
         $('form.user-auth .auth_confirm').removeClass('hidden');
 		$('form.user-auth .sing-log__reg-wrap.regis').addClass('hidden');
+		if($('.smsRec').val() != ''){
+            $('form.user-auth .label-tel-code').removeClass('hidden');
+            $('form.user-auth .auth_tel_code').prop('required', true);
+		}
 		$('form.user-auth .auth_type').val('reg');
 		$('form.user-auth .auth_email').prop('required', true);
         $('form.user-auth .auth_tel').prop('required', true);
         $('form.user-auth .auth_pass').prop('required', true);
+        $('form.user-auth .auth_tel_codes').prop('required', false);
+
         var txt = $('form.user-auth .btn.sing-log__btn.btn-orange').attr('data-regis');
         $('form.user-auth .btn.sing-log__btn.btn-orange').html(txt);//'Регистрация'
         //auth
@@ -228,14 +217,19 @@ $('document').ready(function(){
         $('form.user-auth .label-password').removeClass('hidden');
         $('form.user-auth .label-confirm').removeClass('hidden');
         $('form.user-auth .label-tel').removeClass('hidden');
+        $('form.user-auth .label-tel-code').addClass('hidden');
+        $('form.user-auth .label-tel-codes').addClass('hidden');
 
         $('form.user-auth .sing-log__reg-wrap.login').addClass('hidden');
         $('form.user-auth .sing-log__reg-wrap.regis').removeClass('hidden');
         $('form.user-auth .auth_confirm').removeClass('hidden');
 		$('form.user-auth .auth_type').val('auth');
         $('form.user-auth .auth_email').prop('required', false);
+        $('form.user-auth .auth_tel_code').prop('required', false);
         $('form.user-auth .auth_tel').prop('required', true);
         $('form.user-auth .auth_pass').prop('required', true);
+        $('form.user-auth .auth_tel_codes').prop('required', false);
+
         var txt = $('form.user-auth .btn.sing-log__btn.btn-orange').attr('data-auth');
         $('form.user-auth .btn.sing-log__btn.btn-orange').html(txt);//'Войти'
         //auth
@@ -245,13 +239,24 @@ $('document').ready(function(){
         var action = $('form.user-auth input.auth_forgots').val();
         $('form.user-auth').prop('action', action);
 
-        $('form.user-auth .label-email').removeClass('hidden');
+        $('form.user-auth .label-email').addClass('hidden');
+        //$('form.user-auth .label-email').removeClass('hidden');
         $('form.user-auth .label-password').addClass('hidden');
-        $('form.user-auth .label-tel').addClass('hidden');
+        //$('form.user-auth .label-tel').addClass('hidden');
         $('form.user-auth .label-confirm').addClass('hidden');
+        $('form.user-auth .label-tel-code').addClass('hidden');
 
-        $('form.user-auth .auth_email').prop('required', true);
-        $('form.user-auth .auth_tel').prop('required', false);
+        $('form.user-auth .label-tel').removeClass('hidden');
+        if($('.smsForg').val() != ''){
+            $('form.user-auth .label-tel-codes').removeClass('hidden');
+            $('form.user-auth .auth_tel_codes').prop('required', true);
+        }
+
+        $('form.user-auth .auth_email').prop('required', false);
+        //$('form.user-auth .auth_email').prop('required', true);
+        //$('form.user-auth .auth_tel').prop('required', false);
+        $('form.user-auth .auth_tel').prop('required', true);
+        $('form.user-auth .auth_tel_code').prop('required', false);
         $('form.user-auth .auth_pass').prop('required', false);
 
         $('form.user-auth .sing-log__reg-wrap.regis').addClass('hidden');
@@ -262,15 +267,96 @@ $('document').ready(function(){
         //auth
     })
 
+	$('.sms-send').on('click', function () {
+        if($('form.user-auth:visible input.auth_tel').val()){
+            sendSMS();
+        }else{
+            loginValid.valid('.user-auth');
+            return false;
+        }
+    })
+
+	function sendSMS() {
+        var tel = $('form.user-auth:visible input.auth_tel').val();
+        var _email = $('form.user-auth:visible input.auth_email').val();
+        $('form.user-auth .send-sms-tel').addClass('hidden');
+        $.ajax({
+            url: '/index.php?route=account/register/send',
+            type: 'post',
+            data:{
+            	phone: tel,
+				email: _email
+			},
+            dataType: 'json',
+            crossDomain: true,
+            success: function(json) {
+                setTimeout(function () {
+                    $('form.user-auth .send-sms-tel').removeClass('hidden');
+                },1000);
+                if(json.success){
+					if(json.code){
+                        $('img.sms-send').removeClass('redBord');
+                        $('form.user-auth .smsRec').val(json.code);
+                        $('form.user-auth .auth_tel_code').prop('required', true);
+                        $('form.user-auth .label-tel-code').removeClass('hidden');
+					}
+
+                }else{
+                    if(json.error){
+                        $.each(json.error, function(i, er) {
+                            var el = $("form.user-auth "+er.inp);
+                            $(el).next('.reviews-text-error').remove();
+                            htm = '<span class="reviews-text-error hidden">'+er.text+'</span>';
+                            $(el).parent().parent().find('.sing-log__label-name').addClass('error').attr('title',er.text);
+                            $(el).addClass('error').after(htm).show();
+                            //$("form.user-auth "+er.inp).addClass('error').attr('title',er.text);
+                        });
+                        $('img.sms-send').addClass('redBord');
+                    }
+                    if(json.warning){
+                        $.each(json.warning, function(i, er) {
+                            var el = $("form.user-auth "+er.inp);
+                            $(el).next('.reviews-text-error').remove();
+                            htm = '<span class="reviews-text-error hidden">'+er.text+'</span>';
+                            $(el).parent().parent().find('.sing-log__label-name').addClass('error').attr('title',er.text);
+                            $(el).addClass('error').after(htm).show();
+                        });
+                    }
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+
     $('form.user-auth .btn.sing-log__btn.btn-orange').on('click',function (e) {
         if(loginValid.valid('.user-auth')){
-            formAuth();
+        	if($('.auth_type').val() == 'auth'){
+                formAuth();
+			}else if($('.auth_type').val() == 'reg'){
+                if($('form.user-auth .smsRec').val() != ''){
+                    formAuth();
+                }else{
+                    sendSMS();
+                }
+        	}else if($('.auth_type').val() == 'forgot'){
+                if($('form.user-auth .smsForg').val() != ''){
+                    formAuth();
+                }else{
+                    formForgot();
+                }
+			}else{
+                formAuth();
+			}
+
         }else{
             return false;
         }
         e.preventDefault();
         return false;
     });
+
     $('form.user-auth').submit(function (e) {
         e.preventDefault();
         return false;
@@ -331,6 +417,56 @@ $('document').ready(function(){
                             $(el).addClass('error').after(htm).show();
                             //$("form.user-auth "+er.inp).addClass('error').attr('title',er.text);
                         });
+                    }
+                    if(json.warning){
+                        $.each(json.warning, function(i, er) {
+                            var el = $("form.user-auth "+er.inp);
+                            $(el).next('.reviews-text-error').remove();
+                            htm = '<span class="reviews-text-error hidden">'+er.text+'</span>';
+                            $(el).parent().parent().find('.sing-log__label-name').addClass('error').attr('title',er.text);
+                            $(el).addClass('error').after(htm).show();
+                        });
+                    }
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+    function formForgot() {
+        var action = 'index.php?route=account/forgotten/forgot_send';
+        var param = $('form.user-auth:visible input').serializeArray();
+        $('form.user-auth .send-sms-tel').addClass('hidden');
+        $.ajax({
+            url: action,
+            type: 'post',
+            data: param,
+            dataType: 'json',
+            crossDomain: true,
+            success: function(json) {
+                setTimeout(function () {
+                    $('form.user-auth .send-sms-tel').removeClass('hidden');
+                },1000);
+                if(json.success){
+                    if(json.code){
+                        $('img.sms-send').removeClass('redBord');
+                        $('form.user-auth .smsForg').val(json.code);
+                        $('form.user-auth .auth_tel_code').prop('required', true);
+                        $('form.user-auth .label-tel-codes').removeClass('hidden');
+                    }
+
+                }else{
+                    if(json.error){
+                        $.each(json.error, function(i, er) {
+                            var el = $("form.user-auth "+er.inp);
+                            $(el).next('.reviews-text-error').remove();
+                            htm = '<span class="reviews-text-error hidden">'+er.text+'</span>';
+                            $(el).parent().parent().find('.sing-log__label-name').addClass('error').attr('title',er.text);
+                            $(el).addClass('error').after(htm).show();
+                            //$("form.user-auth "+er.inp).addClass('error').attr('title',er.text);
+                        });
+                        $('img.sms-send').addClass('redBord');
                     }
                     if(json.warning){
                         $.each(json.warning, function(i, er) {

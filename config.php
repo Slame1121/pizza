@@ -28,3 +28,6 @@ define('DB_PASSWORD', '6t3b77w3');
 define('DB_DATABASE', 'itserv10_pizza');
 define('DB_PORT', '3306');
 define('DB_PREFIX', 'oc_');
+
+define('SMS_USER', '380953151836');
+define('SMS_PASS', '123456');

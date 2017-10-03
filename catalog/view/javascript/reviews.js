@@ -55,6 +55,25 @@ $('document').ready(function(){
 
     })
 
+    $('a.card-reviews__stars-item')
+        .mouseover(function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var ind = $(this).index();
+            $("input[name='rating']").val(ind + 1);
+            $("#reviewsAddForm .card-reviews__stars").removeClass('error').attr('title','');
+            var star = $('a.card-reviews__stars-item');
+            $.each(star, function(i, st) {
+                $(st).removeClass('fills');
+                if( i < ind + 1 ){
+                    $(st).addClass('fills');
+                }
+            });
+        })
+        .mouseout(function() {
+            $('a.card-reviews__stars-item').removeClass('fills');
+        });
+
     //if( $('input[type=tel]').exists()){
         //$('input[type=tel]').mask('38 (999) 999-99-99');
    // }

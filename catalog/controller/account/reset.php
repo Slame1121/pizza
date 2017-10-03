@@ -19,7 +19,7 @@ class ControllerAccountReset extends Controller {
 
 		if ($customer_info) {
 			$this->load->language('account/reset');
-
+            $data['heading_title'] = $this->language->get('heading_title');
 			$this->document->setTitle($this->language->get('heading_title'));
 
 			if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
@@ -27,7 +27,7 @@ class ControllerAccountReset extends Controller {
 
 				$this->session->data['success'] = $this->language->get('text_success');
 
-				$this->response->redirect($this->url->link('account/login', '', true));
+				$this->response->redirect($this->url->link('common/home', '', true));
 			}
 
 			$data['breadcrumbs'] = array();

@@ -70,6 +70,9 @@ class ControllerCommonHeader extends Controller {
 
         $data['text_auth_phon'] = $this->language->get('text_auth_phon');
          $data['text_auth_phon_smal'] = $this->language->get('text_auth_phon_smal');
+         $data['text_auth_phon_code'] = $this->language->get('text_auth_phon_code');
+         $data['text_phon_auth_tit'] = $this->language->get('text_phon_auth_tit');
+         $data['text_auth_phon_smal_code'] = $this->language->get('text_auth_phon_smal_code');
          $data['text_auth_pass'] = $this->language->get('text_auth_pass');
          $data['text_auth_pass_smal'] = $this->language->get('text_auth_pass_smal');
          $data['text_auth_chek'] = $this->language->get('text_auth_chek');

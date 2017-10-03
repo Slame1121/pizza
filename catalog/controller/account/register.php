@@ -19,8 +19,8 @@ class ControllerAccountRegister extends Controller {
 		$this->load->model('account/customer');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-			$customer_id = $this->model_account_customer->addCustomer($this->request->post);
 
+			$customer_id = $this->model_account_customer->addCustomer($this->request->post);
 			// Clear any previous login attempts for unregistered accounts.
 			$this->model_account_customer->deleteLoginAttempts($this->request->post['email']);
 
@@ -229,6 +229,7 @@ class ControllerAccountRegister extends Controller {
         $data['success'] = false;
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validat()) {
+
             $customer_id = $this->model_account_customer->addCustomer($this->request->post);
             $this->model_account_customer->deleteLoginAttempts($this->request->post['email']);
             $this->customer->login($this->request->post['email'], $this->request->post['password']);
@@ -245,7 +246,16 @@ class ControllerAccountRegister extends Controller {
                 $json['error'][] = ['inp' => "input[name='password']" , 'text' => $this->error['password']];
             }
             if (isset($this->error['warning'])) {
-                $json['error'][] = ['inp' => "input[name='email']" , 'text' => $this->error['warning']];
+                if (isset($this->error['warning']['email'])) {
+                    $json['error'][] = ['inp' => "input[name='email']" , 'text' => $this->error['warning']['email']];
+                }
+                if (isset($this->error['warning']['tel'])) {
+                    $json['error'][] = ['inp' => "input[name='tel']" , 'text' => $this->error['warning']];
+                }
+                //$json['error'][] = ['inp' => "input[name='email']" , 'text' => $this->error['warning']['tel']];
+            }
+            if (isset($this->error['tel_code'])) {
+                $json['error'][] = ['inp' => "input[name='tel_code']" , 'text' => $this->error['tel_code']];
             }
 
         }
@@ -259,6 +269,56 @@ class ControllerAccountRegister extends Controller {
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
+
+    public function send(){
+        if ($this->customer->isLogged()) {
+            $this->response->redirect($this->url->link('account/account', '', true));
+        }
+        $this->load->language('account/register');
+        $this->load->model('account/customer');
+
+        $json = array();
+        $json['redirect'] = false;
+        $json['error'] = false;
+        $json['success'] = false;
+
+        if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
+            $json['error'][] = ['inp' => "input[name='email']" , 'text' => $this->language->get('error_email')];
+        }
+
+        if ($this->model_account_customer->getTotalCustomersByEmail($this->request->post['email'])) {
+            $json['error'][] = ['inp' => "input[name='email']" , 'text' => $this->language->get('error_exists')];
+        }
+
+        if ($this->model_account_customer->getCustomerByTel($this->request->post['phone'])) {
+            $json['error'][] = ['inp' => "input[name='tel']" , 'text' => $this->language->get('error_exists_tel')];
+        }
+
+        if ((utf8_strlen($this->request->post['phone']) < 3) || (utf8_strlen($this->request->post['phone']) > 32)) {
+            $json['error'][] = ['inp' => "input[name='tel']" , 'text' => $this->language->get('error_telephone')];
+        }
+
+        if (($this->request->server['REQUEST_METHOD'] == 'POST') && !$json['error']) {
+            $tel = isset($this->request->post['phone'])?$this->request->post['phone']: false;
+            if($tel){
+                $tel = str_replace(' ','',$tel);
+                $tel = str_replace('+3','',$tel);
+
+                $code  = mt_rand(1000,9999);
+                $json['send'] = $this->sendSMS($tel,$code);
+                $json['code']  = md5($tel.$code);
+                //$json['code_v']  = $code;
+                $json['success'] = true;
+
+            }else{
+                $json['error'][] = ['inp' => "input[name='tel']" , 'text' => $this->error['telephone']];
+            }
+        }
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+
 	private function validat() {
 //		if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {
 //			$this->error['firstname'] = $this->language->get('error_firstname');
@@ -273,12 +333,38 @@ class ControllerAccountRegister extends Controller {
 		}
 
 		if ($this->model_account_customer->getTotalCustomersByEmail($this->request->post['email'])) {
-			$this->error['warning'] = $this->language->get('error_exists');
+			$this->error['warning']['email'] = $this->language->get('error_exists');
+		}
+
+        if ($this->model_account_customer->getCustomerByTel($this->request->post['tel'])) {
+			$this->error['warning']['tel'] = $this->language->get('error_exists_tel');
 		}
 
 		if ((utf8_strlen($this->request->post['tel']) < 3) || (utf8_strlen($this->request->post['tel']) > 32)) {
 			$this->error['tel'] = $this->language->get('error_telephone');
 		}
+
+		if ((utf8_strlen($this->request->post['sms_rec']) < 30) || (utf8_strlen($this->request->post['sms_rec']) > 32)) {
+			$this->error['tel_code'] = $this->language->get('error_tel_code');
+		}else{
+		    if(!isset($this->error['tel'])){
+
+                if (utf8_strlen($this->request->post['tel_code']) != 4) {
+                    $this->error['tel_code'] = $this->language->get('error_tel_code_len');
+                }else{
+                    $code_hash = $this->request->post['sms_rec'];
+                    $tel = $this->request->post['tel'];
+                    $tel = str_replace(' ','',$tel);
+                    $tel = str_replace('+3','',$tel);
+
+                    $code = $this->request->post['tel_code'];
+                    $hash = md5($tel.$code);
+                    if($hash != $code_hash){
+                        $this->error['tel_code'] = $this->language->get('error_tel_code_err');
+                    }
+                }
+            }
+        }
 
 		// Customer Group
 //		if (isset($this->request->post['customer_group_id']) && is_array($this->config->get('config_customer_group_display')) && in_array($this->request->post['customer_group_id'], $this->config->get('config_customer_group_display'))) {
@@ -431,4 +517,59 @@ class ControllerAccountRegister extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
+	private function getBallans(){
+        $user = SMS_USER;
+        $password = SMS_PASS;
+
+        $myXML 	 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+        $myXML 	.= "<request>"."\n";
+        $myXML 	.= "<operation>GETBALANCE</operation>"."\n";
+        $myXML 	.= "</request>";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_USERPWD , $user.':'.$password);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_URL, 'http://sms-fly.com/api/api.noai.php');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: text/xml", "Accept: text/xml"));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $myXML);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
+
+    public function sendSMS($tel,$text,$desc = 'send'){
+        $text = iconv('windows-1251', 'utf-8', htmlspecialchars($text));
+        $description = iconv('windows-1251', 'utf-8', htmlspecialchars($desc));
+        $start_time = 'AUTO'; //отправить немедленно
+        $end_time = 'AUTO'; // автоматически рассчитать системой
+        $rate = 1; // скорость отправки сообщений (1 = 1 смс минута). Одиночные СМС сообщения отправляются всегда с максимальной скоростью.
+        $lifetime = 4; ; // срок жизни сообщения 4 часа
+        $recipient = $tel;
+        $user = SMS_USER; // тут ваш логин в международном формате без знака +. Пример: 380501234567
+        $password = SMS_PASS; // Ваш пароль
+
+        $myXML 	 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+        $myXML 	.= "<request>"."\n";
+        $myXML 	.= "<operation>SENDSMS</operation>"."\n";
+        $myXML 	.= '		<message start_time="'.$start_time.'" end_time="'.$end_time.'" lifetime="'.$lifetime.'" rate="'.$rate.'" desc="'.$description.'">'."\n";
+        $myXML 	.= "		<body>".$text."</body>"."\n";
+        $myXML 	.= "		<recipient>".$recipient."</recipient>"."\n";
+        $myXML 	.=  "</message>"."\n";
+        $myXML 	.= "</request>";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_USERPWD , $user.':'.$password);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_URL, 'http://sms-fly.com/api/api.noai.php');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: text/xml", "Accept: text/xml"));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $myXML);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
 }

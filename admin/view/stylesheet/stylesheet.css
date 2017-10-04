@@ -812,10 +812,17 @@ div#mapsMarker,div#mapsMarkerForms { min-height: 400px;height: 400px;  }
 }
 span.refreshMap {
 	display: block;
-	position: absolute;
-	right: 51%;
-	margin-top: -20px;
-	box-shadow: 0px 0px 3px black;
 	padding: 5px;
 	cursor: pointer;
 }
+span.hid-panel {
+	display: inline-block;
+	padding: 5px;
+	cursor: pointer;
+}
+span.setMapPoli.enabl {	box-shadow: inset 1px 1px 3px 0px black;}
+span.setMapPoli {display: block;padding: 5px;cursor: pointer;}
+span.hid-panel {transform: rotate(0deg);}
+span.hid-panel.shows {transform: rotate(180deg);}
+.panel-heading .panel-title {cursor: pointer;}
+.panel-heading.enabl {background: rgba(0, 128, 0, 0.2);}

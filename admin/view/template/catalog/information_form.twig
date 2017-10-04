@@ -29,7 +29,7 @@
             <li><a href="#tab-data" data-toggle="tab">{{ tab_data }}</a></li>
             <li><a href="#tab-seo" data-toggle="tab">{{ tab_seo }}</a></li>
             <li><a href="#tab-design" data-toggle="tab">{{ tab_design }}</a></li>
-            <li><a href="#tab-map" data-toggle="tab">Map Data</a></li>
+            <li><a id="mapsDatA" href="#tab-map" data-toggle="tab">Map Data</a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab-general">
@@ -191,76 +191,263 @@
             </div>
 
             <div class="tab-pane" id="tab-map">
-              <div class="col-sm-12" style="text-align: left;">
-                <label class="col-sm-12 control-label" style="text-align: left;">Статус</label>
-                <input class="" type="checkbox" name="map[status]" {% if map['status'] %} checked {% endif %}>
-                <span class="refreshMap">Обновить</span>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label class="col-sm-12 control-label">{{ map_txt }}</label>
-                  <div class="col-sm-12">
-                    <div id="mapsMarkerForms"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <label class="col-sm-12 control-label">{{ map_data_txt }}</label>
-                <br style="border-bottom: 1px solid black;margin-bottom: 10px;">
-                <div class="form-group">
-                  <label class="col-sm-12 control-label">{{ map_data_position }}</label>
-                  <div class="col-sm-12 map-position-data">
-                      <div class="col-sm-4">
-                        <label class="col-sm-12 control-label">{{ map_data_pos_lat }}</label>
-                        <input id="map_pos_lat" type="text" name="map[pos][lat]" value="{{ map['lat'] }}" class="map_pos_lat">
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <div class="pull-right">
+                        <input class="" type="checkbox" name="map[status]" {% if map['status'] %} checked {% endif %} title="Включена ли карта для отображения на данной странице материала">
                       </div>
-                      <div class="col-sm-4">
-                        <label class="col-sm-12 control-label">{{ map_data_pos_lng }}</label>
-                        <input id="map_pos_lng" type="text" name="map[pos][lng]" value="{{ map['lng'] }}" class="map_pos_lng">
-                      </div>
-                      <div class="col-sm-2">
-                        <label class="col-sm-12 control-label">{{ map_data_pos_zoom }}</label>
-                        <input id="map_pos_zoom" type="text" name="map[pos][zoom]" value="{{ map['zoom'] }}" class="map_pos_zoom" style="width: 100%;">
-                      </div>
-                      <div class="col-sm-2">
-                        <label class="col-sm-12 control-label">{{ map_data_enabl }}</label>
-                        <input class="map_pos_enabl" type="radio" name="enabl_data" checked >
-                      </div>
+                      <h3 class="panel-title">
+                        <i class="fa fa-globe"></i> Map Data
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-lg-8 col-md-12 col-sm-12">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <div class="pull-right" style=" display: flex; flex-wrap: wrap; margin-top: -5px;">
+                                <input type="hidden" id="newPoli">
+                                <span class="setMapPoli" title="Кликая на карту добавляем новые метки"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                                <span class="refreshMap" title="Обновить карту"><i class="fa fa-refresh"></i></span>
+                              </div>
 
-                  </div>
-
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-12 control-label refreshMap btn" title="обновить карту">Применить на карту</label>
-
-                  <div class="col-sm-12 poligons-data" >
-
-                      {% for poligon in map["poligon"] %}
-                        <div class="col-sm-12 poligons-data-item" style="text-align: center;" >
-                          <div class="col-sm-4">
-                            <label class="col-sm-12 control-label">{{ map_data_pos_lat }}</label>
-                            <input type="text" name="map[poligon][lat][]" value="{{ poligon.lat }}" class="map_pos_lat">
+                              <h3 class="panel-title">
+                                <i class="fa fa-television fw"></i> Карта
+                              </h3>
+                            </div>
+                            <div class="panel-body">
+                              <div id="mapsMarkerForms"></div>
+                            </div>
                           </div>
-                          <div class="col-sm-4">
-                            <label class="col-sm-12 control-label">{{ map_data_pos_lng }}</label>
-                            <input type="text" name="map[poligon][lng][]" value="{{ poligon.lng }}" class="map_pos_lng">
-                          </div>
-                          <div class="col-sm-2">
-                            <label class="col-sm-12 control-label" style="font-size: 10px;">{{ map_data_enabl }}</label>
-                            <input class="map_pos_enabl" type="radio" name="enabl_data" style="box-shadow: 0px 0px 2px black;" >
-                          </div>
-                          <span class="btn btn-metka-del" style="box-shadow: 0px 0px 2px black;">X</span>
                         </div>
-                      {% endfor %}
 
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <div class="pull-right">
+                                <input class="map_pos_enabl" type="radio" name="enabl_datas" checked title="{{ map_data_enabl }}" >
+                                <span class="hid-panel shows"><i class="caret"></i></span>
+                              </div>
+                              <h3 class="panel-title">
+                                <i class="fa fa-map-o"></i> Позиционирование карты
+                              </h3>
+                            </div>
+                            <div class="panel-body">
+                              <div class="table-responsive">
+                                <table class="table">
+                                  <thead>
+                                  <tr>
+                                    <td class="text-right">{{ map_data_pos_lat }}</td>
+                                    <td>{{ map_data_pos_lng }}</td>
+                                    <td>{{ map_data_pos_zoom }}</td>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  <tr>
+                                    <td>
+                                      <input id="map_pos_lat" type="text" name="map[pos][lat]" value="{{ map['lat'] }}" class="map_pos_lat" style="width: 140px;">
+                                    </td>
+                                    <td>
+                                      <input id="map_pos_lng" type="text" name="map[pos][lng]" value="{{ map['lng'] }}" class="map_pos_lng" style="width: 140px;">
+                                    </td>
+                                    <td>
+                                      <input id="map_pos_zoom" type="text" name="map[pos][zoom]" value="{{ map['zoom'] }}" class="map_pos_zoom" style="width: 100%;">
+                                    </td>
+                                  </tr>
+
+
+                                  </tbody>
+                                </table>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                          <div class="panel panel-default poligon-panel">
+                            <input class="map_pos_enabl" type="radio" name="enabl_data[]" checked title="{{ map_data_enabl }}" style="display: none;" >
+                            <div class="panel-heading">
+                              <div class="pull-right" style="margin-top: -5px;">
+                                <input type="hidden" class="viewPoli" checked>
+                                <input class="poli-add" type="checkbox" style="display: none;">
+                                <span class="btn viewZone shows" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
+                                  <i class="fa fa-eye"></i>
+                                </span>
+                                <span class="btn btn-metka-add" title="Добавить новую точку для зоны" style="margin-top: -5px; z-index: 20;" >
+                                  <i class="fa fa-plus-circle"></i>
+                                </span>
+                                <span class="btn btn-metka-clear" title="Удалить все точки для зоны" style="margin-top: -5px; z-index: 20;" >
+                                  <i class="fa fa-eraser"></i>
+                                </span>
+                                <span class="hid-panel shows" style="z-index: 20;"><i class="caret"></i></span>
+                              </div>
+                              <h3 class="panel-title">
+                                <i class="fa fa-object-group" style="background: rgba(255, 0, 0, 0.54); padding: 3px;"></i> Зона 1
+                              </h3>
+                            </div>
+
+                            <div class="panel-body" data-pol-id="0">
+                              <div class="table-responsive">
+                                <table class="table">
+                                  <thead>
+                                  <tr>
+                                    <td></td>
+                                    <td>{{ map_data_pos_lat }}</td>
+                                    <td>{{ map_data_pos_lng }}</td>
+                                    <td></td>
+                                  </tr>
+                                  </thead>
+                                  <tbody class="poligons-data">
+                                  {% for poligon in map["poligon"] %}
+                                    <tr class="poligons-data-item">
+                                      <td>
+                                        <input class="map_pos_enabl" type="radio" name="enabl_data" style="box-shadow: 0px 0px 2px black;" >
+                                      </td>
+                                      <td>
+                                        <input type="text" name="map[poligon][0][lat][]" value="{{ poligon.lat }}" class="map_pos_lat" style="width: 120px;">
+                                      </td>
+                                      <td>
+                                        <input type="text" name="map[poligon][0][lng][]" value="{{ poligon.lng }}" class="map_pos_lng" style="width: 120px;">
+                                      </td>
+                                      <td>
+                                        <span class="btn btn-danger btn-metka-del" title="удалить данную точку"><i class="fa fa-trash-o"></i></span>
+                                      </td>
+                                    </tr>
+                                  {% endfor %}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                          <div class="panel panel-default poligon-panel">
+                            <input class="map_pos_enabl" type="radio" name="enabl_data[]" title="{{ map_data_enabl }}" style="display: none;" >
+                            <div class="panel-heading">
+                              <div class="pull-right"  style="margin-top: -5px;">
+                                <input type="hidden" class="viewPoli" checked>
+                                <input class="poli-add" type="checkbox" style="display: none;">
+                                <span class="btn viewZone shows" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
+                                  <i class="fa fa-eye"></i>
+                                </span>
+                                <span class="btn btn-metka-add" title="Добавить новую точку для зоны" style="margin-top: -5px; z-index: 20;" >
+                                  <i class="fa fa-plus-circle"></i>
+                                </span>
+                                <span class="btn btn-metka-clear" title="Удалить все точки для зоны" style="margin-top: -5px; z-index: 20;" >
+                                  <i class="fa fa-eraser"></i>
+                                </span>
+                                <span class="hid-panel shows" style="z-index: 20;"><i class="caret"></i></span>
+                              </div>
+                              <h3 class="panel-title">
+                                <i class="fa fa-object-group" style="background: rgba(32,25,255,0.54); padding: 3px;"></i> Зона 2
+                              </h3>
+                            </div>
+                            <div class="panel-body" data-pol-id="1">
+                              <div class="table-responsive">
+
+                                  <table class="table">
+                                    <thead>
+                                    <tr>
+                                      <td></td>
+                                      <td>{{ map_data_pos_lat }}</td>
+                                      <td>{{ map_data_pos_lng }}</td>
+                                      <td></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="poligons-data">
+                                    {% for poligon in map["poligon"] %}
+                                      <tr class="poligons-data-item">
+                                        <td>
+                                          <input class="map_pos_enabl" type="radio" name="enabl_data" style="box-shadow: 0px 0px 2px black;" >
+                                        </td>
+                                        <td>
+                                          <input type="text" name="map[poligon][1][lat][]" value="{{ poligon.lat }}" class="map_pos_lat" style="width: 120px;">
+                                        </td>
+                                        <td>
+                                          <input type="text" name="map[poligon][1][lng][]" value="{{ poligon.lng }}" class="map_pos_lng" style="width: 120px;">
+                                        </td>
+                                        <td>
+                                          <span class="btn btn-danger btn-metka-del" title="удалить данную точку"><i class="fa fa-trash-o"></i></span>
+                                        </td>
+                                      </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                  </table>
+
+                            </div>
+                          </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                          <div class="panel panel-default poligon-panel">
+                            <input class="map_pos_enabl" type="radio" name="enabl_data[]" checked title="{{ map_data_enabl }}" style="display: none;" >
+                            <div class="panel-heading">
+                              <div class="pull-right" style="margin-top: -5px;">
+                                <input type="hidden" class="viewPoli" checked>
+                                <input class="poli-add" type="checkbox" style="display: none;">
+                                <span class="btn viewZone shows" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
+                                  <i class="fa fa-eye"></i>
+                                </span>
+                                <span class="btn btn-metka-add" title="Добавить новую точку для зоны" style="margin-top: -5px;z-index: 20;" >
+                                  <i class="fa fa-plus-circle"></i>
+                                </span>
+                                <span class="btn btn-metka-clear" title="Удалить все точки для зоны" style="margin-top: -5px;z-index: 20;" >
+                                  <i class="fa fa-eraser"></i>
+                                </span>
+                                <span class="hid-panel shows" style="z-index: 20;"><i class="caret"></i></span>
+                              </div>
+                              <h3 class="panel-title">
+                                <i class="fa fa-object-group" style="background: rgba(50,255,14,0.7); padding: 3px;"></i> Зона 3
+                              </h3>
+                            </div>
+                            <div class="panel-body" data-pol-id="2">
+                              <div class="table-responsive">
+                                  <table class="table">
+                                    <thead>
+                                    <tr>
+                                      <td></td>
+                                      <td>{{ map_data_pos_lat }}</td>
+                                      <td>{{ map_data_pos_lng }}</td>
+                                      <td></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="poligons-data">
+                                    {% for poligon in map["poligon"] %}
+                                      <tr class="poligons-data-item">
+                                        <td>
+                                          <input class="map_pos_enabl" type="radio" name="enabl_data" style="box-shadow: 0px 0px 2px black;" >
+                                        </td>
+                                        <td>
+                                          <input type="text" name="map[poligon][2][lat][]" value="{{ poligon.lat }}" class="map_pos_lat" style="width: 120px;">
+                                        </td>
+                                        <td>
+                                          <input type="text" name="map[poligon][2][lng][]" value="{{ poligon.lng }}" class="map_pos_lng" style="width: 120px;">
+                                        </td>
+                                        <td>
+                                          <span class="btn btn-danger btn-metka-del" title="удалить данную точку"><i class="fa fa-trash-o"></i></span>
+                                        </td>
+                                      </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                  </table>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-sm-12" style="margin-top: 15px;" ><span class="btn btn-metka-add" style="box-shadow: 0px 0px 5px black;">{{ add_txt }}</span> </div>
+
                 </div>
               </div>
-
-
             </div>
-          </div>
         </form>
       </div>
     </div>

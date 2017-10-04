@@ -194,9 +194,9 @@ class ControllerAccountForgotten extends Controller {
                 $tel = str_replace('+3','',$tel);
 
                 $code  = mt_rand(1000,9999);
-                //$json['send'] = $this->sendSMS($tel,$code);
+                $json['send'] = $this->sendSMS($tel,$code);
                 $json['code']  = md5($tel.$code);
-                $json['code_v']  = $code;
+                //$json['code_v']  = $code;
                 $json['success'] = true;
 
             }else{

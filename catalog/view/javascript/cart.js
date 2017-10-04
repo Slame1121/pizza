@@ -127,7 +127,7 @@ var cart = {
 			var discount_str = '';
 			if($(input).data('discount') == 1){
 				total_price = parseFloat((price/2).toFixed(2)) + parseFloat(price*(count - 1));
-				discount_str= '(-'+(price/2).toFixed(2)+' грн (50%))';
+				discount_str= ' (-'+(price/2).toFixed(2)+' грн (50%))';
 			}
 			$('#basket-item-'+cart_id).find('.basket-log__item-price').html(total_price + ' грн' + discount_str);
 			total_summ += total_price;

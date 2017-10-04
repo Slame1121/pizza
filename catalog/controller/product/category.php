@@ -351,7 +351,13 @@ class ControllerProductCategory extends Controller {
 
 			$category_id = (int)array_pop($parts);
 		}
+		if (isset($this->request->post['path'])) {
 
+			$parts = explode('_', (string)$this->request->post['path']);
+
+			$category_id = (int)array_pop($parts);
+		}
+		
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
 		} else {

@@ -359,9 +359,45 @@ class Cart {
 
 	public function getTotal() {
 		$total = 0;
-
+		$discount_summ = -1;
+		$pizza_products = 0;
 		foreach ($this->getProducts() as $product) {
 			$total += $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'];
+			$days = [
+				'Sunday',
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday'
+			];
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product['product_id'] . "'");
+			$categories = [];
+			foreach ($query->rows as $result) {
+				$categories[] = $result['category_id'];
+			}
+
+			$pizza_product= false;
+			foreach($categories as $category_id){
+				if($category_id == '59'){
+					$pizza_product = true;
+					$pizza_products += $product['quantity'];
+				}
+			}
+			//Если это пицца и дело происходит в понедельник, вторник, среду или четвер между 12 утра и 4 вечера
+			if($pizza_product && in_array(date('w', strtotime(time())),[1,2,3,4]) /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 12:00:00 pm')*/){
+				if($discount_summ == -1){
+					$discount_summ = round($product['price'] / 2, 2);
+				}else{
+					if($discount_summ > round($product['price'] / 2, 2)){
+						$discount_summ = round($product['price'] / 2, 2);
+					}
+				}
+			}
+		}
+		if($discount_summ != -1 && $pizza_products >= 2){
+			$total -= $discount_summ;
 		}
 
 		return $total;

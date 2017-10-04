@@ -6,7 +6,6 @@ var Checkout = {
 		var method = $('input[name=shipping_method]:checked').val();
 
 		switch(method){
-
 			case 'citylink.citylink':
 				var adress =  $('#cart_adress_button').attr('data-type');
 				if(typeof adress == 'undefined'){
@@ -32,6 +31,11 @@ var Checkout = {
 			email.parent().find('span').addClass('error');
 			email.addClass('error')
 			error = true;
+		}
+		var telephone = $('#checkout-checkout').find('input[name=telephone]');
+		if(telephone.val() == ''){
+			telephone.parent().find('span').addClass('error');
+			telephone.addClass('error')
 		}
 		if(!error){
 			switch(method) {
@@ -173,11 +177,15 @@ var Checkout = {
 			var method = $(this).find('input').val();
 			var price = 0;
 			var total_container = $('.basket-log__form-num');
+			price = parseInt(total_container.data('price'));
+			var bonuses = parseFloat($('input[name=used_points]').val());
+			if(bonuses > 0){
+				price -= bonuses;
+			}
 			switch (method){
 				case 'citylink.citylink':
-					price = parseInt(total_container.data('price'));
 					total_container.find('span').text(price);
-
+					new_price = price;
 					$('#cart-pickup').addClass('hidden');
 					if($('#cart_adress_button').length < 1 || $('#cart_adress_button').attr('data-type') == 'new'){
 						$('#cart-adress-new').removeClass('hidden');
@@ -185,18 +193,22 @@ var Checkout = {
 						$('#cart-adress-saved').removeClass('hidden');
 					}
 					$('#change_adress_button_container').removeClass('hidden');
+					total_container.find('p').addClass('hidden')
 					break;
 				case 'pickup.pickup':
-					price = parseInt(total_container.data('price'));
-					price -= (price * 0.1);
-					total_container.find('span').text(price);
 
+					var new_price = price-(price * 0.1);
+					total_container.find('span').text(new_price);
+					total_container.find('p').removeClass('hidden').text('(-'+(price * 0.1).toFixed(2)+' грн (10%) за самовывоз.)');
 					$('#cart-adress-new').addClass('hidden');
 					$('#cart-pickup').removeClass('hidden');
 					$('#change_adress_button_container').addClass('hidden');
 					$('#cart-adress-saved').addClass('hidden');
 					break;
 			}
+			//for unlogin users
+			var bonuses_get = new_price * 0.05;
+			$('.basket-log__form-text').find('span').text(bonuses_get.toFixed(2));
 
 		})
 	},
@@ -225,6 +237,29 @@ var Checkout = {
 				}
 		});
 	},
+	checkBonuses: function () {
+		$('#checkout-checkout').on('change', 'input[name=used_points]', function(){
+			var points = parseFloat($(this).val()) >= 0 ? parseFloat($(this).val()) : 0;
+			var method = $('input[name=shipping_method]:checked').val();
+			var price_block = $('#checkout-checkout .basket-log__form-num');
+			var price = parseFloat(price_block.data('price'));
+			var new_price = (price-points);
+			var bonuses = (new_price * 0.05);
+			switch(method){
+				case 'pickup.pickup':
+					price_block.find('span').text((new_price - new_price * 0.1));
+					price_block.find('.pickup_text').text('(-'+(new_price * 0.1).toFixed(2)+' грн (10%) за самовывоз.)');
+					bonuses = (new_price - new_price * 0.1) * 0.05;
+					break;
+				case 'citylink.citylink':
+					price_block.find('span').text((new_price));
+					break;
+			}
+
+			//for unlogin users
+			$('.basket-log__form-text').find('span').text(bonuses.toFixed(2));
+		});
+	},
 	init: function(){
 		this.bindCheckoutButtons();
 
@@ -233,6 +268,8 @@ var Checkout = {
 		this.changeShippingMethod();
 
 		this.bindPaymentMethod();
+
+		this.checkBonuses();
 	}
 };
 

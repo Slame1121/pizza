@@ -8,7 +8,7 @@
         <span class="hit-item__info">
             {% for option in product.options %}
                 {% for key, value in option.product_option_value %}
-                    <span class="hit-item__info-box {% if key == 0 %}active{% endif %}">
+                    <span class="hit-item__info-box {% if key == option.product_option_value|length  - 1 %}active{% endif %}">
                         <span class="hit-item__info-block">
                             <span class="hit-item__info-size">{{ value.name }}{% if value.weight > 0 %}<span>{{ value.weight }}</span>{% endif %}</span>
                             <span class="hit-item__info-price">{{ value.price }}</span>

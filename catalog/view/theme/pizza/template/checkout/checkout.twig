@@ -10,11 +10,9 @@
             <label class="basket-log__form-label basket-log__form-label--email"><span class="basket-log__form-name">Ваше имя </span>
                 <input class="basket-log__form-value" type="text" value="{{ firstname }}" name="firstname">
             </label>
-            <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Телефон<span>*</span></span>
-                <select name="telephone" class="basket-log__form-value">
-                    <option>8 923 312 22 11</option>
-                    <option>7 232 234 23 12</option>
-                </select>
+            <label class="basket-log__form-label basket-log__form-label--telephone"><span class="basket-log__form-name">Телефон<span>*</span></span>
+                <input name="telephone" value="{{ telephone }}" class="basket-log__form-value" type="text"/>
+
             </label>
             <label class="basket-log__form-label basket-log__form-label--email"><span class="basket-log__form-name">E-mail<span>*</span></span>
                 <input class="basket-log__form-value" type="text" value="{{ email }}" name="email">
@@ -34,7 +32,7 @@
         <div class="basket-log__form-box">
             <div class="basket-log__form-summa">
                 <div class="basket-log__form-name">Цена</div>
-                <div class="basket-log__form-num" data-price="{{ total_cart_price_def }}"><span>{{ total_cart_price }}</span> грн</div>
+                <div class="basket-log__form-num" data-price="{{ total_cart_price_def }}"><span>{{ total_cart_price }}</span> грн <p class="pickup_text hidden">(-20 грн за самовывоз)</p></div>
             </div>
         </div>
         {%  if not logged %}

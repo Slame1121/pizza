@@ -112,7 +112,7 @@ class ControllerCheckoutCheckout extends Controller {
 		}
 
 		$data['firstname'] = $this->customer->getFirstName();
-
+		$data['telephone'] = $this->customer->getTelephone();
 		$data['bonuses'] = isset($this->customer->bonuses) ? ($this->customer->bonuses) : 0;
 		$data['can_get_bonuses'] = $this->cart->getTotal() * 0.05;
 
@@ -132,7 +132,7 @@ class ControllerCheckoutCheckout extends Controller {
 			if(isset($this->customer->bonuses ) && $this->customer->bonuses >= $bon){
 				$this->response->setOutput((1));
 			}else{
-				if(!isset($this->customer->bonuses)){
+				if(!isset($this->customer->bonuses) && $bon == 0){
 					$this->response->setOutput((1));
 				}else{
 					$this->response->setOutput((0));

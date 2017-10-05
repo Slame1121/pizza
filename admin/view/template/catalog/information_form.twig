@@ -210,6 +210,7 @@
                               <div class="pull-right" style=" display: flex; flex-wrap: wrap; margin-top: -5px;">
                                 <input type="hidden" id="newPoli">
                                 <span class="setMapPoli" title="Кликая на карту добавляем новые метки"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                                <span class="redMapPoli" title="Кликая на карту редактируем выбранную метку"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
                                 <span class="refreshMap" title="Обновить карту"><i class="fa fa-refresh"></i></span>
                               </div>
 
@@ -226,8 +227,8 @@
                         <div class="col-lg-4 col-md-12 col-sm-12">
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <div class="pull-right">
-                                <input class="map_pos_enabl" type="radio" name="enabl_datas" checked title="{{ map_data_enabl }}" >
+                              <div class="pull-right" style="margin-top: -5px;">
+                                <input class="poli-add" type="checkbox" data-posM="true" style="display: none;">
                                 <span class="hid-panel shows"><i class="caret"></i></span>
                               </div>
                               <h3 class="panel-title">
@@ -272,11 +273,17 @@
                             <input class="map_pos_enabl" type="radio" name="enabl_data[]" checked title="{{ map_data_enabl }}" style="display: none;" >
                             <div class="panel-heading">
                               <div class="pull-right" style="margin-top: -5px;">
-                                <input type="hidden" class="viewPoli" checked>
+                                <input type="hidden" class="viewPoli"  name="showMap[0]" {% if map["poligon"][0][0]["view"] == '1' %} value="1" checked{% else %}value="0"  {% endif %}>
                                 <input class="poli-add" type="checkbox" style="display: none;">
-                                <span class="btn viewZone shows" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
-                                  <i class="fa fa-eye"></i>
-                                </span>
+                                  {% if map["poligon"][0][0]["view"] == '1' %}
+                                      <span class="btn viewZone shows" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
+                                          <i class="fa fa-eye"></i>
+                                        </span>
+                                  {% else %}
+                                      <span class="btn viewZone" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
+                                          <i class="fa fa-eye-slash"></i>
+                                        </span>
+                                  {% endif %}
                                 <span class="btn btn-metka-add" title="Добавить новую точку для зоны" style="margin-top: -5px; z-index: 20;" >
                                   <i class="fa fa-plus-circle"></i>
                                 </span>
@@ -302,7 +309,7 @@
                                   </tr>
                                   </thead>
                                   <tbody class="poligons-data">
-                                  {% for poligon in map["poligon"] %}
+                                  {% for poligon in map["poligon"][0] %}
                                     <tr class="poligons-data-item">
                                       <td>
                                         <input class="map_pos_enabl" type="radio" name="enabl_data" style="box-shadow: 0px 0px 2px black;" >
@@ -330,11 +337,17 @@
                             <input class="map_pos_enabl" type="radio" name="enabl_data[]" title="{{ map_data_enabl }}" style="display: none;" >
                             <div class="panel-heading">
                               <div class="pull-right"  style="margin-top: -5px;">
-                                <input type="hidden" class="viewPoli" checked>
+                                <input type="hidden" class="viewPoli"  name="showMap[1]" {% if map["poligon"][1][0]["view"] == '1' %} value="1" checked{% else %}value="0" {% endif %}>
                                 <input class="poli-add" type="checkbox" style="display: none;">
-                                <span class="btn viewZone shows" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
-                                  <i class="fa fa-eye"></i>
-                                </span>
+                                  {% if map["poligon"][1][0]["view"] == '1' %}
+                                      <span class="btn viewZone shows" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
+                                          <i class="fa fa-eye"></i>
+                                        </span>
+                                  {% else %}
+                                      <span class="btn viewZone" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
+                                          <i class="fa fa-eye-slash"></i>
+                                        </span>
+                                  {% endif %}
                                 <span class="btn btn-metka-add" title="Добавить новую точку для зоны" style="margin-top: -5px; z-index: 20;" >
                                   <i class="fa fa-plus-circle"></i>
                                 </span>
@@ -360,7 +373,7 @@
                                     </tr>
                                     </thead>
                                     <tbody class="poligons-data">
-                                    {% for poligon in map["poligon"] %}
+                                    {% for poligon in map["poligon"][1] %}
                                       <tr class="poligons-data-item">
                                         <td>
                                           <input class="map_pos_enabl" type="radio" name="enabl_data" style="box-shadow: 0px 0px 2px black;" >
@@ -389,11 +402,17 @@
                             <input class="map_pos_enabl" type="radio" name="enabl_data[]" checked title="{{ map_data_enabl }}" style="display: none;" >
                             <div class="panel-heading">
                               <div class="pull-right" style="margin-top: -5px;">
-                                <input type="hidden" class="viewPoli" checked>
+                                <input type="hidden" class="viewPoli" name="showMap[2]" {% if map["poligon"][2][0]["view"] == '1' %} value="1" checked{% else %}value="0" {% endif %}>
                                 <input class="poli-add" type="checkbox" style="display: none;">
-                                <span class="btn viewZone shows" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
-                                  <i class="fa fa-eye"></i>
-                                </span>
+                                  {% if map["poligon"][2][0]["view"] == '1' %}
+                                      <span class="btn viewZone shows" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
+                                          <i class="fa fa-eye"></i>
+                                        </span>
+                                  {% else %}
+                                      <span class="btn viewZone" title="Отображать зону на карте" style="margin-top: -5px; z-index: 20;" >
+                                          <i class="fa fa-eye-slash"></i>
+                                        </span>
+                                  {% endif %}
                                 <span class="btn btn-metka-add" title="Добавить новую точку для зоны" style="margin-top: -5px;z-index: 20;" >
                                   <i class="fa fa-plus-circle"></i>
                                 </span>
@@ -418,7 +437,7 @@
                                     </tr>
                                     </thead>
                                     <tbody class="poligons-data">
-                                    {% for poligon in map["poligon"] %}
+                                    {% for poligon in map["poligon"][2] %}
                                       <tr class="poligons-data-item">
                                         <td>
                                           <input class="map_pos_enabl" type="radio" name="enabl_data" style="box-shadow: 0px 0px 2px black;" >

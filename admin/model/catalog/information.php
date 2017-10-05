@@ -31,6 +31,8 @@ class ModelCatalogInformation extends Model {
 				$this->db->query("INSERT INTO " . DB_PREFIX . "information_to_layout SET information_id = '" . (int)$information_id . "', store_id = '" . (int)$store_id . "', layout_id = '" . (int)$layout_id . "'");
 			}
 		}
+
+
         if (isset($data['map'])) {
             if(isset($data['map']["status"])){
                 $this->db->query("DELETE FROM `" . DB_PREFIX . "map_metka` WHERE information_id = '" . (int)$information_id . "'");
@@ -49,17 +51,21 @@ class ModelCatalogInformation extends Model {
                     status = '" . (int)$status . "'");
                 $query = $this->db->query("SELECT DISTINCT poligon_id FROM " . DB_PREFIX . "map_metka WHERE information_id = '" . (int)$information_id . "'");
                 $poligon_id = $query->row['poligon_id'];
-
-                foreach ($data['map']["poligon"]["lat"] as $key => $val) {
-                    $lngs = (float)$data['map']["poligon"]["lng"][$key];
-                    $lats = (float)$val;
-                    $this->db->query("INSERT INTO " . DB_PREFIX . "map_metka_poligon SET 
+                foreach ($data['map']["poligon"] as $zone => $dat) {
+                    foreach ($dat["lat"] as $key => $val) {
+                        $lngs = (float)$data['map']["poligon"][$zone]["lng"][$key];
+                        $lats = (float)$val;
+                        $show = (int)(isset($data["showMap"][$zone]) && ($data["showMap"][$zone] == 'on' || $data["showMap"][$zone] == "true"))?1:0;
+                        $this->db->query("INSERT INTO " . DB_PREFIX . "map_metka_poligon SET 
                             information_id = '" . (int)$information_id . "', 
                             status = 1, 
-                            sort_order = '" . (int)$key . "', 
+                            view = '" . (int)$show . "', 
+                            sort_order = '" . (int)$key . "',
+                            zona = '" . (int)$zone . "', 
                             lat = '" . $this->db->escape($lats) . "',
                             lng = '" . $this->db->escape($lngs) . "', 
-                            poligon_id = '" . (int)$poligon_id. "'");
+                            poligon_id = '" . (int)$poligon_id . "'");
+                    }
                 }
             }
         }
@@ -124,20 +130,28 @@ class ModelCatalogInformation extends Model {
                     status = '" . (int)$status . "'");
                 $query = $this->db->query("SELECT DISTINCT poligon_id FROM " . DB_PREFIX . "map_metka WHERE information_id = '" . (int)$information_id . "'");
                 $poligon_id = $query->row['poligon_id'];
-
-                foreach ($data['map']["poligon"]["lat"] as $key => $val) {
-                    $lngs = (float)$data['map']["poligon"]["lng"][$key];
-                    $lats = (float)$val;
-                    $this->db->query("INSERT INTO " . DB_PREFIX . "map_metka_poligon SET 
+                foreach ($data['map']["poligon"] as $zone => $dat) {
+                    foreach ($dat["lat"] as $key => $val) {
+                        $lngs = (float)$data['map']["poligon"][$zone]["lng"][$key];
+                        $lats = (float)$val;
+                        $show = (int)(isset($data["showMap"][$zone]) && ($data["showMap"][$zone] == '1' || $data["showMap"][$zone] == "true"))?1:0;
+                        $this->db->query("INSERT INTO " . DB_PREFIX . "map_metka_poligon SET 
                             information_id = '" . (int)$information_id . "', 
                             status = 1, 
-                            sort_order = '" . (int)$key . "', 
+                            view = '" . (int)$show . "', 
+                            sort_order = '" . (int)$key . "',
+                            zona = '" . (int)$zone . "', 
                             lat = '" . $this->db->escape($lats) . "',
                             lng = '" . $this->db->escape($lngs) . "', 
-                            poligon_id = '" . (int)$poligon_id. "'");
+                            poligon_id = '" . (int)$poligon_id . "'");
+                    }
                 }
+            }else{
+                $this->db->query("UPDATE " . DB_PREFIX . "map_metka SET status = 0 WHERE information_id = '" . (int)$information_id . "'");
+
             }
         }
+        //var_dump($data);die;
 
 
 		$this->cache->delete('information');
@@ -249,10 +263,11 @@ class ModelCatalogInformation extends Model {
             $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "map_metka_poligon WHERE information_id = '" . (int)$information_id . "'");
 
             foreach ($query->rows as $result) {
-                $map_data['poligon'][] = $result;
+                //var_dump($result);
+                $map_data['poligon'][$result["zona"]][] = $result;
             }
         }
-
+        //var_dump($map_data);die;
 		return $map_data;
 	}
 

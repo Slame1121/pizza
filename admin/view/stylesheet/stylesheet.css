@@ -820,8 +820,9 @@ span.hid-panel {
 	padding: 5px;
 	cursor: pointer;
 }
-span.setMapPoli.enabl {	box-shadow: inset 1px 1px 3px 0px black;}
+.enabl {	box-shadow: inset 1px 1px 3px 0px black;}
 span.setMapPoli {display: block;padding: 5px;cursor: pointer;}
+span.redMapPoli {display: block;padding: 5px;cursor: pointer;}
 span.hid-panel {transform: rotate(0deg);}
 span.hid-panel.shows {transform: rotate(180deg);}
 .panel-heading .panel-title {cursor: pointer;}

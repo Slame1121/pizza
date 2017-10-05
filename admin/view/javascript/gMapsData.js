@@ -1,6 +1,8 @@
 var newLoc;//создаем новый елем при клике
 var zoneID;//тек зона
 var nLocate;//координаты клика
+var mapPos;//режим позиционирование карты
+var mapPosRed;//режим редактирования метки
 
 var triangleCoords = [];
 var paramMap = [];
@@ -69,6 +71,7 @@ $(document).ready(function() {
         refreshMap();
     })
     $('.panel-heading .panel-title').on('click',function () {
+        var zonMet = $(this).parent().parent().find('.panel-body .map_pos_enabl');
         var panel = $(this).parent();
         var inp = $(this).parent().find('input.poli-add');
         var sel = inp[0].checked;
@@ -81,9 +84,48 @@ $(document).ready(function() {
             panel.addClass('enabl');
             var panels = $(this).parent().next('.panel-body');
             zoneID = $(panels).attr('data-pol-id');
-
+            if($(inp).attr('data-posM')){
+                mapPos = true;
+            }else{
+                mapPos = false;
+            }
+            if(zonMet){
+                zonMet[0].checked = true;
+            }
         }
         inp[0].checked = !sel;
+    })
+    $('.map_pos_enabl').on('change', function () {
+        var panel = $(this).parent().parent().parent().parent().parent().parent().parent().find('.panel-heading');
+        var inp = panel.find('.poli-add');
+        var sel = inp[0].checked;
+        if(sel){
+           //panel.removeClass('enabl');
+        }else{
+            $('.panel-heading.enabl').removeClass('enabl');
+            $('input.poli-add:checked').prop('checked',false);
+            panel.addClass('enabl');
+            var panels = $(this).parent().next('.panel-body');
+            zoneID = $(panels).attr('data-pol-id');
+            if($(inp).attr('data-posM')){
+                mapPos = true;
+            }else{
+                mapPos = false;
+            }
+
+        }
+        inp[0].checked = true;
+        mapPosRed = true;
+        enabRed();
+    })
+
+    $('.redMapPoli').on('click', function () {
+        if(mapPosRed){
+            mapPosRed = false;
+        }else{
+            mapPosRed = true;
+        }
+        enabRed();
     })
 
     $('.viewZone').on('click',function () {
@@ -96,6 +138,7 @@ $(document).ready(function() {
             $(this).addClass('shows').html('<i class="fa fa-eye"></i>');
         }
         inp[0].checked = !sel;
+        inp[0].value = !sel;
         refreshMap();
     })
 
@@ -116,6 +159,10 @@ $(document).ready(function() {
         var nom = $(panels).attr('data-pol-id');
         var data = panels[0].children[0].children[0].children[1];
         addElPoli(data,nom);
+        var zonMet = $(this).parent().parent().parent().find('.panel-body .map_pos_enabl');
+        if(zonMet){
+            zonMet[zonMet.length-1].checked = true;
+        }
     })
 
     $('.poligons-data').on('click', '.btn-metka-del', function () {
@@ -159,9 +206,8 @@ function initMap() {
     });
 
     map.addListener('zoom_changed', function() {
-        if($('.map-position-data input.map_pos_enabl:checked')){
+        if(mapPos){//позиционируем карту
             $('#map_pos_zoom').val( parseInt( map.getZoom()) );
-            console.log('Zoom: ' + map.getZoom());
         }
     });
     refreshMap();
@@ -175,14 +221,29 @@ function setPol() {
     if(newLoc){
         addNewElPoli(el,zoneID,nLocate);
     }else{
-
+        if(mapPos){//позиционируем карту
+            $('#map_pos_lat').val(nLocate.lat);
+            $('#map_pos_lng').val(nLocate.lng);
+        }else{//позиционируем точку полигона
+            if(mapPosRed){
+                var redP = $('.map_pos_enabl:checked').parent().parent();
+                $(redP).find('.map_pos_lat').val(nLocate.lat);
+                $(redP).find('.map_pos_lng').val(nLocate.lng);
+            }
+        }
     }
     refreshMap();
     // var el = $('input.map_pos_enabl:checked').parent().parent();
     // $(el).find('.map_pos_lat').val(parseFloat(nLocate.lat()));
     // $(el).find('.map_pos_lng').val(parseFloat(nLocate.lng()));
 }
-
+function enabRed() {
+    if(mapPosRed){
+        $('.redMapPoli').addClass('enabl');
+    }else{
+        $('.redMapPoli').removeClass('enabl');
+    }
+}
 function refreshMap() {
     var zone = $('.poligon-panel');
     $.each(zone, function ( index, value ) {

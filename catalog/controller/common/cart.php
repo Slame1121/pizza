@@ -99,10 +99,6 @@ class ControllerCommonCart extends Controller {
 				$price = false;
 				$total = false;
 			}
-
-
-
-
 			$attributes = [];
 
 			foreach($product['attrs'] as $igredient_id => $count){
@@ -144,7 +140,7 @@ class ControllerCommonCart extends Controller {
 				'Saturday'
 			];
 			//Если это пицца и дело происходит в понедельник, вторник, среду или четвер между 12 утра и 4 вечера
-			if($pizza_product && in_array(date('w', strtotime(time())),[1,2,3,4])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
+			if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
 				for( $i = 1; $i <= $product['quantity']; $i++){
 					$pretedends_for_discount[] =['price' => $price, 'key' => count($data['products']) - 1];
 				}
@@ -156,7 +152,7 @@ class ControllerCommonCart extends Controller {
 
 		if(count($pretedends_for_discount) > 1){
 			while(count($pretedends_for_discount) > 1){
-				if($pretedends_for_discount[0] >= $pretedends_for_discount[1]){
+				if($pretedends_for_discount[0]['price'] >= $pretedends_for_discount[1]['price']){
 					array_splice($pretedends_for_discount, 0, 1);
 				}else{
 					$next = $pretedends_for_discount[1];

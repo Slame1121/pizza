@@ -293,10 +293,57 @@ class Cart {
 
 	public function update($cart_id, $quantity) {
 		$this->db->query("UPDATE " . DB_PREFIX . "cart SET quantity = '" . (int)$quantity . "' WHERE cart_id = '" . (int)$cart_id . "' AND api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "'");
+
+		return $this->getDiscountCartId();
+
+	}
+
+	public function getDiscountCartId(){
+		$products = $this->getProducts();
+		$pretedends_for_discount = [];
+		foreach ($products as $product) {
+
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . $product['product_id'] . "'");
+			$categories = [];
+			foreach ($query->rows as $result) {
+				$categories[] = $result['category_id'];
+			}
+			$pizza_product= false;
+			foreach($categories as $category_id){
+				if($category_id == '59'){
+					$pizza_product = true;
+				}
+			}
+
+			if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
+				for( $i = 1; $i <= $product['quantity']; $i++){
+					$pretedends_for_discount[] =['price' => $product['price'], 'cart_id' => $product['cart_id']];
+				}
+			}
+		}
+		if(count($pretedends_for_discount) > 1){
+			while(count($pretedends_for_discount) > 1){
+				if($pretedends_for_discount[0]['price'] >= $pretedends_for_discount[1]['price']){
+					array_splice($pretedends_for_discount, 0, 1);
+				}else{
+					$next = $pretedends_for_discount[1];
+					$pretedends_for_discount[1] =  $pretedends_for_discount[0];
+					$pretedends_for_discount[0] = $next;
+				}
+			}
+
+			if($pretedends_for_discount){
+				return $pretedends_for_discount[0]['cart_id'];
+			}
+		}
+
+		return false;
 	}
 
 	public function remove($cart_id) {
 		$this->db->query("DELETE FROM " . DB_PREFIX . "cart WHERE cart_id = '" . (int)$cart_id . "' AND api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "'");
+
+		return $this->getDiscountCartId();
 	}
 
 	public function clear() {
@@ -359,45 +406,19 @@ class Cart {
 
 	public function getTotal() {
 		$total = 0;
-		$discount_summ = -1;
-		$pizza_products = 0;
-		foreach ($this->getProducts() as $product) {
-			$total += $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'];
-			$days = [
-				'Sunday',
-				'Monday',
-				'Tuesday',
-				'Wednesday',
-				'Thursday',
-				'Friday',
-				'Saturday'
-			];
-			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product['product_id'] . "'");
-			$categories = [];
-			foreach ($query->rows as $result) {
-				$categories[] = $result['category_id'];
-			}
+		$products = $this->getProducts();
+		$discount_cart_id = $this->getDiscountCartId();
 
-			$pizza_product= false;
-			foreach($categories as $category_id){
-				if($category_id == '59'){
-					$pizza_product = true;
-					$pizza_products += $product['quantity'];
-				}
+		foreach ($products as $product) {
+			if ($discount_cart_id && $discount_cart_id == $product['cart_id']) {
+				$total += ($this->tax->calculate($product['price'] / 2, $product['tax_class_id'],
+						$this->config->get('config_tax')) +
+					$this->tax->calculate($product['price'], $product['tax_class_id'],
+						$this->config->get('config_tax')) * ($product['quantity'] - 1));
+			} else {
+				$total += $this->tax->calculate($product['price'], $product['tax_class_id'],
+						$this->config->get('config_tax')) * $product['quantity'];
 			}
-			//Если это пицца и дело происходит в понедельник, вторник, среду или четвер между 12 утра и 4 вечера
-			if($pizza_product && in_array(date('w', strtotime(time())),[1,2,3,4]) /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 12:00:00 pm')*/){
-				if($discount_summ == -1){
-					$discount_summ = round($product['price'] / 2, 2);
-				}else{
-					if($discount_summ > round($product['price'] / 2, 2)){
-						$discount_summ = round($product['price'] / 2, 2);
-					}
-				}
-			}
-		}
-		if($discount_summ != -1 && $pizza_products >= 2){
-			$total -= $discount_summ;
 		}
 
 		return $total;

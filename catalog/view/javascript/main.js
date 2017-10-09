@@ -115,6 +115,7 @@ $('document').ready(function(){
 
 		$('.drop-menu').toggleClass('opened');
 	});
+
 	$('.drop-menu__close').click(function(e) {
 		e.preventDefault();
 
@@ -501,7 +502,12 @@ $('document').ready(function(){
     }).on('click', '.header-box__lang-box',function(){
 		$('#form-language').submit();
 
-	})
+	}).on('click', '#login_for_bonuses', function(){
+		$('.basket-log').removeClass('opened');
+		$('.sing-log').addClass('opened');
+		$('html, body').animate({ scrollTop: '50px' }, 'slow');
+
+	});
 
     $('.auth_tel').mask('+38 000 000 00 00');
 

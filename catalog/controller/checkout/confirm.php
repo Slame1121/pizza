@@ -375,7 +375,9 @@ class ControllerCheckoutConfirm extends Controller {
 			$data['products'] = array();
 			$this->load->model('catalog/catalog');
 			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
-			foreach ($this->cart->getProducts() as $product) {
+			$products = $this->cart->getProducts();
+			$discount_cart_id = $this->cart->getDiscountCartId();
+			foreach ($products as $product) {
 				$option_data = array();
 
 				foreach ($product['option'] as $option) {
@@ -437,7 +439,12 @@ class ControllerCheckoutConfirm extends Controller {
 					];
 				}
 
-
+				if($discount_cart_id && $discount_cart_id == $product['cart_id']){
+					$total_sum = $this->currency->format($this->tax->calculate(round($product['price']/2,2), $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']) +
+						$this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * ($product['quantity'] - 1), $this->session->data['currency']);
+				}else{
+					$total_sum = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
+				}
 				$data['products'][] = array(
 					'cart_id'    => $product['cart_id'],
 					'product_id' => $product['product_id'],
@@ -450,17 +457,26 @@ class ControllerCheckoutConfirm extends Controller {
 					'quantity'   => $product['quantity'],
 					'subtract'   => $product['subtract'],
 					'price'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']),
-					'total'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']),
+					'total'      => $total_sum,
 					'href'       => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 				);
 			}
 
+
+
+
 			$data['bonuses'] = $this->cart->getTotal() * 0.05;
 			$data['total'] = $this->cart->getTotal();
+
+			if($order_data['used_points'] > 0 ){
+				$data['total']  -= $order_data['used_points'];
+			}
+
 			//10% на самовывоз
 			if($order_data['shipping_code'] == 'pickup'){
 				$data['total']  -= $data['total'] * 0.1;
 			}
+
 			$data['street'] = $order_data['shipping_street'];
 			$data['nas_punkt'] = $order_data['shipping_nas_punkt'];
 			$data['house'] = $order_data['shipping_house'];
@@ -469,6 +485,9 @@ class ControllerCheckoutConfirm extends Controller {
 			$data['flat'] = $order_data['shipping_flat'];
 			$data['code_door'] = $order_data['shipping_code_door'];
 			$data['payment_method'] = $order_data['payment_method'];
+			$data['telephone']= $order_data['telephone'];
+			$data['nominal']= $order_data['nominal'];
+			$data['comment'] = $order_data['comment'];
 			$data['shipping_method'] = $order_data['shipping_method'];
 
 			$data['firstname'] = $order_data['firstname'];

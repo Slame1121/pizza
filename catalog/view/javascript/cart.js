@@ -149,6 +149,19 @@ var cart = {
 			complete: function() {
 			},
 			success: function(json) {
+				if('discount_cart_id' in json){
+					if(parseInt(json['discount_cart_id']) == 0){
+						$('.product_counter_input').data('discount', 0).removeAttr('data-discount');
+					}else{
+						var container = $('#basket-item-' +json['discount_cart_id']);
+						var discount = container.find('input[data-discount]').length;
+						if(!discount){
+							$('.product_counter_input').data('discount', 0).removeAttr('data-discount');
+						}
+						container.find('input.product_counter_input').data('discount', 1);
+					}
+
+				}
 				self.recalcBasketPrices();
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -168,7 +181,19 @@ var cart = {
 			complete: function() {
 			},
 			success: function(json) {
+				if('discount_cart_id' in json){
+					if(parseInt(json['discount_cart_id']) == 0){
+						$('.product_counter_input').data('discount', 0).removeAttr('data-discount');
+					}else{
+						var container = $('#basket-item-' +json['discount_cart_id']);
+						var discount = container.find('input[data-discount]').length;
+						if(!discount){
+							$('.product_counter_input').data('discount', 0).removeAttr('data-discount');
+						}
+						container.find('input.product_counter_input').data('discount', 1);
+					}
 
+				}
 				$('#basket-item-'+key).remove();
 				$('.basket-log__summa').html(json['total'])
 				self.recalcBasketPrices();

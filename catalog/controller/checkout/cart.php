@@ -400,7 +400,12 @@ class ControllerCheckoutCart extends Controller {
 
 		// Update
 		if (isset($this->request->post['quantity'])) {
-			$this->cart->update($this->request->post['key'] , $this->request->post['quantity'] );
+
+
+			$cart_id = $this->cart->update($this->request->post['key'] , $this->request->post['quantity'] );
+			$json = [
+				'discount_cart_id' => $cart_id
+			];
 			$this->session->data['success'] = $this->language->get('text_remove');
 
 			unset($this->session->data['shipping_method']);
@@ -423,7 +428,10 @@ class ControllerCheckoutCart extends Controller {
 
 		// Remove
 		if (isset($this->request->post['key'])) {
-			$this->cart->remove($this->request->post['key']);
+			$discount_cart = $this->cart->remove($this->request->post['key']);
+
+				$json['discount_cart_id'] = $discount_cart ? $discount_cart : 0;
+
 
 			unset($this->session->data['vouchers'][$this->request->post['key']]);
 

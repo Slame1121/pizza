@@ -175,6 +175,7 @@ class ControllerCatalogAttributeGroup extends Controller {
 			$data['attribute_groups'][] = array(
 				'attribute_group_id' => $result['attribute_group_id'],
 				'name'               => $result['name'],
+                'filter_name'               => $result['filter_name'],
 				'sort_order'         => $result['sort_order'],
 				'edit'               => $this->url->link('catalog/attribute_group/edit', 'user_token=' . $this->session->data['user_token'] . '&attribute_group_id=' . $result['attribute_group_id'] . $url, true)
 			);
@@ -260,6 +261,12 @@ class ControllerCatalogAttributeGroup extends Controller {
 			$data['error_name'] = array();
 		}
 
+		if (isset($this->error['filter_name'])) {
+			$data['error_filter_name'] = $this->error['filter_name'];
+		} else {
+			$data['error_filter_name'] = array();
+		}
+
 		$url = '';
 
 		if (isset($this->request->get['sort'])) {
@@ -318,6 +325,14 @@ class ControllerCatalogAttributeGroup extends Controller {
 			$data['sort_order'] = '';
 		}
 
+		if (isset($this->request->post['filter_name'])) {
+			$data['filter_name'] = $this->request->post['filter_name'];
+		} elseif (!empty($attribute_group_info)) {
+			$data['filter_name'] = $attribute_group_info['filter_name'];
+		} else {
+			$data['filter_name'] = '';
+		}
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
@@ -335,6 +350,9 @@ class ControllerCatalogAttributeGroup extends Controller {
 				$this->error['name'][$language_id] = $this->language->get('error_name');
 			}
 		}
+        if (!$this->request->post['filter_name']) {
+            $this->error['filter_name'] = $this->language->get('error_name');
+        }
 
 		return !$this->error;
 	}

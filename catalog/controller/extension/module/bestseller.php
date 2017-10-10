@@ -119,9 +119,11 @@ class ControllerExtensionModuleBestSeller extends Controller {
 			}
             $data['text_hit'] = $this->language->get('text_hit');
             $data['cont'] = false;
-            //var_dump($_SERVER);die;
+            //var_dump($setting);die;
             if(@$this->request->get['route'] == "common/home" || $_SERVER["REQUEST_URI"] == '/'){
                 $data['cont'] = true;
+                $data['title'] = $setting["name"];
+
             }
             //var_dump($data['products']);die;
             if ($data['products']) {

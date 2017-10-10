@@ -353,6 +353,7 @@ class ControllerDesignBanner extends Controller {
                     'title2'      => $banner_image['title2'],
 					'link'       => $banner_image['link'],
                     'link_title'       => $banner_image['link_title'],
+                    'position'       => $banner_image['position'],
 					'image'      => $image,
 					'thumb'      => $this->model_tool_image->resize($thumb, 100, 100),
 					'sort_order' => $banner_image['sort_order']

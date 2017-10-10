@@ -67,6 +67,7 @@
                     <td class="text-left">{{ entry_link }}</td>
                     <td class="text-center">{{ entry_image }}</td>
                     <td class="text-right">{{ entry_sort_order }}</td>
+                    <td class="text-right">Позиция</td>
                     <td></td>
                   </tr>
                 </thead>
@@ -95,7 +96,16 @@
                     <td class="text-left" style="width: 30%;"><input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][link]" value="{{ banner_image.link }}" placeholder="{{ entry_link }}" class="form-control" /></td>
                     <td class="text-center"><a href="" id="thumb-image{{ image_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ banner_image.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
                       <input type="hidden" name="banner_image[{{ language.language_id }}][{{ image_row }}][image]" value="{{ banner_image.image }}" id="input-image{{ image_row }}" /></td>
-                    <td class="text-right" style="width: 10%;"><input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][sort_order]" value="{{ banner_image.sort_order }}" placeholder="{{ entry_sort_order }}" class="form-control" /></td>
+                    <td class="text-right" style="width: 10%;">
+                      <input type="text" name="banner_image[{{ language.language_id }}][{{ image_row }}][sort_order]" value="{{ banner_image.sort_order }}" placeholder="{{ entry_sort_order }}" class="form-control" />
+                    </td>
+                    <td class="text-right" style="width: 10%;">
+                      <select name="banner_image[{{ language.language_id }}][{{ image_row }}][position]" class="form-control" >
+                          <option value="0" {% if banner_image.position == 0 %} selected="selected" {% endif %}>Left</option>
+                          <option value="1" {% if banner_image.position == 1 %} selected="selected" {% endif %}>Center</option>
+                          <option value="2" {% if banner_image.position == 2 %} selected="selected" {% endif %}>Right</option>
+                      </select>
+                    </td>
                     <td class="text-left"><button type="button" onclick="$('#image-row{{ image_row }}, .tooltip').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                   </tr>
                   {% set image_row = image_row + 1 %}
@@ -121,10 +131,21 @@ var image_row = {{ image_row }};
 
 function addImage(language_id) {
 	html  = '<tr id="image-row' + image_row + '">';
-    html += '  <td class="text-left"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][title]" value="" placeholder="{{ entry_title }}" class="form-control" /></td>';	
+    html += '  <td class="text-left"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][title]" value="" placeholder="{{ entry_title }}" class="form-control" /></td>';
+    html += '  <td class="text-left"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][title2]" value="" placeholder="{{ entry_title2 }}" class="form-control" /></td>';
+    html += '  <td class="text-left"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][link_title]" value="" placeholder="{{ entry_link_title }}" class="form-control" /></td>';
 	html += '  <td class="text-left" style="width: 30%;"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][link]" value="" placeholder="{{ entry_link }}" class="form-control" /></td>';	
 	html += '  <td class="text-center"><a href="" id="thumb-image' + image_row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="banner_image[' + language_id + '][' + image_row + '][image]" value="" id="input-image' + image_row + '" /></td>';
 	html += '  <td class="text-right" style="width: 10%;"><input type="text" name="banner_image[' + language_id + '][' + image_row + '][sort_order]" value="" placeholder="{{ entry_sort_order }}" class="form-control" /></td>';
+
+	html += '  <td class="text-right" style="width: 10%;">';
+	html += '  <select name="banner_image[' + language_id + '][' + image_row + '][position]" class="form-control" >';
+	html += '  <option value="0" selected="selected">Left</option>';
+	html += '  <option value="1">Center</option>';
+	html += '  <option value="2">Right</option>';
+	html += '  </select>';
+	html += '  </td>';
+
 	html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row  + ', .tooltip\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 	html += '</tr>';
 	

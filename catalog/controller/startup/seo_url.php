@@ -6,6 +6,7 @@ class ControllerStartupSeoUrl extends Controller {
 			$this->url->addRewrite($this);
 		}
 
+
 		// Decode URL
 		if (isset($this->request->get['_route_'])) {
 			$parts = explode('/', $this->request->get['_route_']);
@@ -14,41 +15,56 @@ class ControllerStartupSeoUrl extends Controller {
 			if (utf8_strlen(end($parts)) == 0) {
 				array_pop($parts);
 			}
-
-			foreach ($parts as $part) {
-				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE keyword = '" . $this->db->escape($part) . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "'");
-
-				if ($query->num_rows) {
-					$url = explode('=', $query->row['query']);
-
-					if ($url[0] == 'product_id') {
-						$this->request->get['product_id'] = $url[1];
-					}
-
-					if ($url[0] == 'category_id') {
-						if (!isset($this->request->get['path'])) {
-							$this->request->get['path'] = $url[1];
-						} else {
-							$this->request->get['path'] .= '_' . $url[1];
-						}
-					}
-
-					if ($url[0] == 'manufacturer_id') {
-						$this->request->get['manufacturer_id'] = $url[1];
-					}
-
-					if ($url[0] == 'information_id') {
-						$this->request->get['information_id'] = $url[1];
-					}
-
-					if ($query->row['query'] && $url[0] != 'information_id' && $url[0] != 'manufacturer_id' && $url[0] != 'category_id' && $url[0] != 'product_id') {
-						$this->request->get['route'] = $query->row['query'];
-					}
-				} else {
-					$this->request->get['route'] = 'error/not_found';
-
+			$not_found = false;
+			foreach ($parts as $key => $part) {
+				if($not_found){
 					break;
 				}
+
+				switch($part){
+					case 'page':
+						$this->request->get['page'] = $parts[$key + 1];
+						break;
+					case 'filter':
+						break;
+					default:
+						if(!isset($parts[$key - 1]) || $parts[$key - 1] != 'page'){
+							$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE keyword = '" . $this->db->escape($part) . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "'");
+							if ($query->num_rows) {
+								$url = explode('=', $query->row['query']);
+
+								if ($url[0] == 'product_id') {
+									$this->request->get['product_id'] = $url[1];
+								}
+
+								if ($url[0] == 'category_id') {
+									if (!isset($this->request->get['path'])) {
+										$this->request->get['path'] = $url[1];
+									} else {
+										$this->request->get['path'] .= '_' . $url[1];
+									}
+								}
+
+								if ($url[0] == 'manufacturer_id') {
+									$this->request->get['manufacturer_id'] = $url[1];
+								}
+
+								if ($url[0] == 'information_id') {
+									$this->request->get['information_id'] = $url[1];
+								}
+
+								if ($query->row['query'] && $url[0] != 'information_id' && $url[0] != 'manufacturer_id' && $url[0] != 'category_id' && $url[0] != 'product_id') {
+									$this->request->get['route'] = $query->row['query'];
+								}
+							} else {
+								$this->request->get['route'] = 'error/not_found';
+								$not_found = true;
+							}
+
+						}
+						break;
+				}
+
 			}
 
 			if (!isset($this->request->get['route'])) {
@@ -62,6 +78,7 @@ class ControllerStartupSeoUrl extends Controller {
 					$this->request->get['route'] = 'information/information';
 				}
 			}
+
 		  // Redirect 301	
 		} elseif (isset($this->request->get['route']) && empty($this->request->post) && !isset($this->request->get['token']) && $this->config->get('config_seo_url')) {
 			$arg = '';
@@ -83,6 +100,7 @@ class ControllerStartupSeoUrl extends Controller {
 						break;
 					}
 				}
+
 				$arg = trim($cat_path, '/');
 				if (isset($this->request->get['page'])) $arg = $arg . '?page=' . (int)$this->request->get['page'];
 			} elseif ($this->request->get['route'] == 'product/manufacturer/info' && isset($this->request->get['manufacturer_id'])) {

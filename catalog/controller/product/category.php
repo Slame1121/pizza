@@ -152,6 +152,13 @@ class ControllerProductCategory extends Controller {
 
 			$this->load->model('catalog/catalog');
 			$data['attributes'] = $this->model_catalog_catalog->getAttributes();
+			foreach($data['attributes'] as $group_id => $attribute_group){
+				foreach($attribute_group['attr'] as $key => $attribute){
+					if(isset($this->request->get['attributes']) && in_array($attribute['attribute_id'],$this->request->get['attributes'])){
+						$data['attributes'][$group_id]['attr'][$key]['checked'] = 1;
+					}
+				}
+			}
 			$url = '';
 
 			if (isset($this->request->get['filter'])) {
@@ -269,6 +276,7 @@ class ControllerProductCategory extends Controller {
 			$data['sort'] = $sort;
 			$data['order'] = $order;
 			$data['limit'] = $limit;
+			$data['page'] = $page;
 			$data['path'] = $this->request->get['path'];
 			$data['continue'] = $this->url->link('common/home');
 
@@ -345,24 +353,20 @@ class ControllerProductCategory extends Controller {
 			$limit = $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit');
 		}
 
+
 		if (isset($this->request->get['path'])) {
 
 			$parts = explode('_', (string)$this->request->get['path']);
 
 			$category_id = (int)array_pop($parts);
 		}
-		if (isset($this->request->post['path'])) {
 
-			$parts = explode('_', (string)$this->request->post['path']);
-
-			$category_id = (int)array_pop($parts);
-		}
-		
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
 		} else {
 			$page = 1;
 		}
+
 		if (isset($this->request->get['filter'])) {
 			$filter = $this->request->get['filter'];
 		} else {
@@ -390,10 +394,10 @@ class ControllerProductCategory extends Controller {
 			'start'              => ($page - 1) * $limit,
 			'limit'              => $limit
 		);
-		if(isset($this->request->post['attributes']) && $this->request->post['attributes']){
-			$filter_data['filter_attrs_id'] = $this->request->post['attributes'];
-		}
 
+		if(isset($this->request->get['attributes']) && $this->request->get['attributes']){
+			$filter_data['filter_attrs_id'] = $this->request->get['attributes'];
+		}
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 		$results = $this->model_catalog_product->getProducts($filter_data);
 		foreach ($results as $result) {
@@ -517,7 +521,15 @@ class ControllerProductCategory extends Controller {
 			);
 		}
         //var_dump($products_template);die;
-		$data['products'] = $this->load->view('common/products', ['products' => $products_template]);
+		$url = $this->url->link('product/category', 'path=' . $category_id . '&page=' . $page);
+
+		if(isset($this->request->get['attributes'] )){
+			foreach($this->request->get['attributes'] as $attribute){
+				$url .= '&attributes[]=' . $attribute;
+			}
+		}
+		$url = str_replace('&amp;', '&', $url);
+		$data['products'] = $this->load->view('common/products', ['products' => $products_template,'url' => $url]);
 		$url = '';
 
 		if (isset($this->request->get['filter'])) {

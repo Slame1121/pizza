@@ -1,3 +1,4 @@
+{% if products %}
 {% for product in products %}
 <div class="hit-item">
     <a class="hit-item__box {% if product.prod_type > 0 %} mode-hit {% endif %}" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="{{ product.label_text }}">
@@ -24,3 +25,9 @@
     </a>
 </div>
 {% endfor %}
+    <script type="text/javascript">
+        $('document').ready(function(){
+            history.pushState(null, null, '{{ url }}');
+        });
+    </script>
+{% endif %}

@@ -3,8 +3,8 @@
     <div class="container">
         <h2>{{ heading_title }}</h2>
         <div class="menu-tabs">
-            <form id="filter_form" action="/index.php?route=product/category/filter_data" method="post">
-                <input type="hidden" name="page" value="1" />
+            <form id="filter_form" action="/index.php?route=product/category/filter_data" method="get">
+                <input type="hidden" name="page" value="{{ page }}" />
                 <input type="hidden" name="path" value="{{ path }}" />
                 {% if path == 59 %}
                     {% for group in attributes %}
@@ -13,7 +13,7 @@
                                 {% for attr in group.attr %}
                                     <div class="menu-tabs__line">
                                         <label class="menu-tabs__line-label">
-                                            <input type="checkbox"  name="attributes[]" value="{{ attr.attribute_id }}"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">{{ attr.name }}</span>
+                                            <input type="checkbox" {% if attr.checked == 1 %}checked{% endif %} name="attributes[]" value="{{ attr.attribute_id }}"><span class="menu-tabs__line-box"></span><span class="menu-tabs__line-name">{{ attr.name }}</span>
                                         </label>
                                     </div>
                                 {% endfor %}

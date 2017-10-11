@@ -294,6 +294,7 @@ class ControllerCatalogCategory extends Controller {
 			$data['error_name'] = array();
 		}
 
+
 		if (isset($this->error['meta_title'])) {
 			$data['error_meta_title'] = $this->error['meta_title'];
 		} else {

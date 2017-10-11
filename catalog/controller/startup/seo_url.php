@@ -16,6 +16,7 @@ class ControllerStartupSeoUrl extends Controller {
 				array_pop($parts);
 			}
 			$not_found = false;
+			$filter_page = false;
 			foreach ($parts as $key => $part) {
 				if($not_found){
 					break;
@@ -23,12 +24,29 @@ class ControllerStartupSeoUrl extends Controller {
 
 				switch($part){
 					case 'page':
-						$this->request->get['page'] = $parts[$key + 1];
+						//$this->request->get['page'] = $parts[$key + 1];
 						break;
 					case 'filter':
+						$filter_page = true;
+						$this->load->model('catalog/catalog');
+						$attributes = $this->model_catalog_catalog->getAttributes();
+						$attrs_names =[];
+						for($i = $key + 1; $i < count($parts); $i++){
+							//$group_name = explode(':',$parts[$i])[0];
+							//$attrs_names = explode(',',explode(':',$parts[$i])[1]);
+							$attrs_names[] = $parts[$i];
+
+						}
+						foreach($attributes as $attr_group){
+							foreach($attr_group['attr'] as $attr){
+								if(in_array($attr['filter_name'], $attrs_names)){
+									$this->request->get['attributes'][] =$attr['attribute_id'];
+								}
+							}
+						}
 						break;
 					default:
-						if(!isset($parts[$key - 1]) || $parts[$key - 1] != 'page'){
+						if((!isset($parts[$key - 1]) || $parts[$key - 1] != 'page') && !$filter_page){
 							$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE keyword = '" . $this->db->escape($part) . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "'");
 							if ($query->num_rows) {
 								$url = explode('=', $query->row['query']);
@@ -126,6 +144,7 @@ class ControllerStartupSeoUrl extends Controller {
 	}
 
 	public function rewrite($link) {
+
 		$url_info = parse_url(str_replace('&amp;', '&', $link));
 
 		$url = '';
@@ -133,12 +152,12 @@ class ControllerStartupSeoUrl extends Controller {
 		$data = array();
 
 		parse_str($url_info['query'], $data);
+		$attr_ids = [];
 
 		foreach ($data as $key => $value) {
 			if (isset($data['route'])) {
 				if (($data['route'] == 'product/product' && $key == 'product_id') || (($data['route'] == 'product/manufacturer/info' || $data['route'] == 'product/product') && $key == 'manufacturer_id') || ($data['route'] == 'information/information' && $key == 'information_id')) {
 					$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE `query` = '" . $this->db->escape($key . '=' . (int)$value) . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
-
 					if ($query->num_rows && $query->row['keyword']) {
 						$url .= '/' . $query->row['keyword'];
 
@@ -146,24 +165,59 @@ class ControllerStartupSeoUrl extends Controller {
 					}
 				} elseif ($key == 'path') {
 					$categories = explode('_', $value);
+					if($data['route'] != 'product/product'){
+						foreach ($categories as $category) {
+							$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE `query` = 'category_id=" . (int)$category . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
 
-					foreach ($categories as $category) {
-						$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE `query` = 'category_id=" . (int)$category . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+							if ($query->num_rows && $query->row['keyword']) {
+								$url .= '/' . $query->row['keyword'];
+							} else {
+								$url = '';
 
-						if ($query->num_rows && $query->row['keyword']) {
-							$url .= '/' . $query->row['keyword'];
-						} else {
-							$url = '';
-
-							break;
+								break;
+							}
 						}
 					}
+
 
 					unset($data[$key]);
 				} elseif ($key == 'route') {
 					$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE `query` = '" . $this->db->escape($data['route']) . "' AND store_id = '" . (int)$this->config->get('config_store_id') . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
 					if ($query->num_rows) /**/ {
 						$url .= '/' . $query->row['keyword'];
+					}
+				} elseif($key == 'page'){
+				//	$url .= '/page/' . $value;
+				//	unset($data[$key]);
+				}elseif($key == 'attributes'){
+					if($value){
+						foreach($value as $val){
+							$attr_ids[] = $val;
+						}
+					}
+					unset($data[$key]);
+				}
+			}
+		}
+
+		if($attr_ids){
+			$this->load->model('catalog/catalog');
+			$attributes = $this->model_catalog_catalog->getAttributes();
+			$url .= '/filter';
+			foreach($attributes as $attr_group){
+				$needed_ingridients = [];
+
+				foreach($attr_group['attr'] as $attribute){
+
+					if(in_array($attribute['attribute_id'],$attr_ids )){
+						$needed_ingridients[] = $attribute['filter_name'];
+					}
+				}
+
+				if($needed_ingridients){
+					//$url .= ('/'.$attr_group['group_filter_name'] .':'.implode(',',$needed_ingridients));
+					foreach($needed_ingridients as $ingridient){
+						$url .= '/'.$ingridient;
 					}
 				}
 			}

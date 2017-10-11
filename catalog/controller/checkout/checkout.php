@@ -221,6 +221,12 @@ class ControllerCheckoutCheckout extends Controller {
 		}else{
 			$shipping_method_title = '';
 		}
+		if($code == 'pickup'){
+			$this->session->data['shipping_method']['cost'] = -($this->cart->getTotal() - $this->session->data['guest']['used_points']) * 0.1;
+		}else{
+			$this->session->data['shipping_method']['cost'] = 0;
+		}
+
 		$this->session->data['shipping_method']['title'] = $shipping_method_title;
 
 		$this->session->data['comment'] = $this->request->post['comment'];

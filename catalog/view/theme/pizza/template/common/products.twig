@@ -27,7 +27,23 @@
 {% endfor %}
     <script type="text/javascript">
         $('document').ready(function(){
+            //change url
             history.pushState(null, null, '{{ url }}');
+            {% if change_meta %}
+            //set new title
+            {% if title != '' %}
+            document.title = '{{ title }}';
+            $('.menu h2').text('{{ title }}');
+            {% endif %}
+
+            $('meta[name=keywords]').remove();
+            $('head').append( '<meta name="keywords" content="{{ meta_keywords }}">' );
+
+            $('meta[name=description]').remove();
+            $('head').append( '<meta name="description" content="{{ meta_description }}">' );
+            {% endif %}
+
+
         });
     </script>
 {% endif %}

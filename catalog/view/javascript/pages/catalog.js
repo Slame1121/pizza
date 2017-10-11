@@ -38,8 +38,7 @@ var Catalog = {
 		this.end = false;
 		$.ajax( {
 			type: "GET",
-			url: form.attr( 'action' ) + '&page=' + form.find('input[name=page]').val(),
-			data: form.serialize(),
+			url: form.attr( 'action' ) + '&' + form.serialize(),
 			success: function( response ) {
 				$('.hit__content').empty().html(response);
 			}

@@ -50,7 +50,7 @@
                             <div class="tab-content">
                                 {% for language in languages %}
                                     <div class="tab-pane" id="language{{ language.language_id }}">
-                                        <div class="form-group required">
+                                        <!-- <div class="form-group required">
                                             <label class="col-sm-2 control-label" for="input-name{{ language.language_id }}">{{ entry_name }}</label>
                                             <div class="col-sm-10">
                                                 <input type="text" name="category_description[{{ language.language_id }}][name]" value="{{ category_description[language.language_id] ? category_description[language.language_id].name }}" placeholder="{{ entry_name }}" id="input-name{{ language.language_id }}" class="form-control" />
@@ -65,6 +65,7 @@
                                                 <textarea name="category_description[{{ language.language_id }}][description]" placeholder="{{ entry_description }}" id="input-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ category_description[language.language_id] ? category_description[language.language_id].description }}</textarea>
                                             </div>
                                         </div>
+                                        -->
                                         <div class="form-group required">
                                             <label class="col-sm-2 control-label" for="input-meta-title{{ language.language_id }}">{{ entry_meta_title }}</label>
                                             <div class="col-sm-10">

@@ -245,7 +245,6 @@ class Cart {
 				} else {
 					$recurring = false;
 				}
-
 				$product_data[] = array(
 					'cart_id'         => $cart['cart_id'],
 					'product_id'      => $product_query->row['product_id'],
@@ -376,8 +375,11 @@ class Cart {
 
 	public function getSubTotal() {
 		$total = 0;
-
+		$discouint_cart_id = $this->getDiscountCartId();
 		foreach ($this->getProducts() as $product) {
+			if($discouint_cart_id == $product['cart_id']){
+				$product['total'] = round($product['price']/2, 2) + $product['price'] * ($product['quantity'] - 1);
+			}
 			$total += $product['total'];
 		}
 

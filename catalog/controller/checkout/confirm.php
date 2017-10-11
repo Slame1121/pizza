@@ -2,7 +2,7 @@
 class ControllerCheckoutConfirm extends Controller {
 	public function index() {
 		$redirect = '';
-
+		$discount_cart_id = $this->cart->getDiscountCartId();
 		if ($this->cart->hasShipping()) {
 			// Validate if shipping address has been set.
 			if (!isset($this->session->data['shipping_address'])) {
@@ -84,11 +84,12 @@ class ControllerCheckoutConfirm extends Controller {
 					$this->load->model('extension/total/' . $result['code']);
 
 					// We have to put the totals in an array so that they pass by reference.
-					if(isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup'){
+					if(1==6 && isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup'){
 						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data, $total_data['total'] * 0.1);
 						foreach($total_data['totals'] as $key => $total_value){
 							if($total_value['code'] == 'total'){
-								$total_data['totals'][$key]['value'] = $total_data['total'] - $total_data['total'] * 0.1;
+								$used_bonuses = isset($this->session->data['guest']['used_points']) ? $this->session->data['guest']['used_points'] : 0;
+								$total_data['totals'][$key]['value'] = $total_data['total'] - $used_bonuses - $total_data['total'] * 0.1;
 							}
 						}
 					}else{
@@ -98,6 +99,20 @@ class ControllerCheckoutConfirm extends Controller {
 				}
 			}
 
+			if(isset($this->session->data['guest']['used_points']) && $this->session->data['guest']['used_points'] > 0){
+				$totals[] = [
+					'code' => 'bonuses',
+					'value' => -$this->session->data['guest']['used_points'],
+					'sort_order' => 2,
+					'title' => 'Используемые бонусы'
+				];
+				foreach($totals as $key => $total_t){
+					if($total_t['code'] == 'total'){
+						$totals[$key]['value'] = $total_t['value'] - $this->session->data['guest']['used_points'];
+					}
+				}
+
+			}
 			$sort_order = array();
 
 			foreach ($totals as $key => $value) {
@@ -107,7 +122,6 @@ class ControllerCheckoutConfirm extends Controller {
 			array_multisort($sort_order, SORT_ASC, $totals);
 
 			$order_data['totals'] = $totals;
-
 			$this->load->language('checkout/checkout');
 
 			$order_data['invoice_prefix'] = $this->config->get('config_invoice_prefix');
@@ -252,7 +266,9 @@ class ControllerCheckoutConfirm extends Controller {
 					);
 				}
 
-
+				if($product['cart_id'] == $discount_cart_id){
+					$product['total'] = round($product['price']/2,2) + $product['price'] * ($product['quantity'] -1);
+				}
 				$order_data['products'][] = array(
 					'product_id' => $product['product_id'],
 					'name'       => $product['name'],
@@ -368,6 +384,7 @@ class ControllerCheckoutConfirm extends Controller {
 
 
 			$this->load->model('checkout/order');
+
 			$this->session->data['order_id'] = $this->model_checkout_order->addOrder($order_data);
 
 			$this->load->model('tool/upload');
@@ -376,7 +393,7 @@ class ControllerCheckoutConfirm extends Controller {
 			$this->load->model('catalog/catalog');
 			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
 			$products = $this->cart->getProducts();
-			$discount_cart_id = $this->cart->getDiscountCartId();
+
 			foreach ($products as $product) {
 				$option_data = array();
 
@@ -468,7 +485,7 @@ class ControllerCheckoutConfirm extends Controller {
 			$data['bonuses'] = $this->cart->getTotal() * 0.05;
 			$data['total'] = $this->cart->getTotal();
 
-			if($order_data['used_points'] > 0 ){
+			if(isset($order_data['used_points']) && $order_data['used_points'] > 0 ){
 				$data['total']  -= $order_data['used_points'];
 			}
 

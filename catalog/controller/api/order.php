@@ -282,6 +282,7 @@ class ControllerApiOrder extends Controller {
 						}else{
 							$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 						}
+
 					}
 				}
 
@@ -292,6 +293,7 @@ class ControllerApiOrder extends Controller {
 				}
 
 				array_multisort($sort_order, SORT_ASC, $total_data['totals']);
+
 
 				$order_data = array_merge($order_data, $total_data);
 

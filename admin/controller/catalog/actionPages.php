@@ -178,7 +178,7 @@ class ControllerCatalogActionPages extends Controller {
         foreach ($results as $result) {
             $data['actionPages'][] = array(
                 'pages_id' => $result['pages_id'],
-                'name'        => $result['name'],
+                'name'        => $result['meta_title'],
                 'edit'        => $this->url->link('catalog/actionPages/edit', 'user_token=' . $this->session->data['user_token'] . '&pages_id=' . $result['pages_id'] . $url, true),
                 'delete'      => $this->url->link('catalog/actionPages/delete', 'user_token=' . $this->session->data['user_token'] . '&pages_id=' . $result['pages_id'] . $url, true)
             );
@@ -357,7 +357,7 @@ class ControllerCatalogActionPages extends Controller {
         foreach ($this->request->post['category_description'] as $language_id => $value) {
             if($value != 'link'){
                 if ((utf8_strlen($value['name']) < 1) || (utf8_strlen($value['name']) > 255)) {
-                    $this->error['name'][$language_id] = $this->language->get('error_name');
+                  //  $this->error['name'][$language_id] = $this->language->get('error_name');
                 }
 
                 if ((utf8_strlen($value['meta_title']) < 1) || (utf8_strlen($value['meta_title']) > 255)) {

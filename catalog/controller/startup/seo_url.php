@@ -30,13 +30,10 @@ class ControllerStartupSeoUrl extends Controller {
 						$filter_page = true;
 						$this->load->model('catalog/catalog');
 						$attributes = $this->model_catalog_catalog->getAttributes();
-						$attrs_names =[];
-						for($i = $key + 1; $i < count($parts); $i++){
-							//$group_name = explode(':',$parts[$i])[0];
-							//$attrs_names = explode(',',explode(':',$parts[$i])[1]);
-							$attrs_names[] = $parts[$i];
+						$attrs_names =explode('-', $parts[$key + 1]);
 
-						}
+
+
 						foreach($attributes as $attr_group){
 							foreach($attr_group['attr'] as $attr){
 								if(in_array($attr['filter_name'], $attrs_names)){
@@ -203,11 +200,12 @@ class ControllerStartupSeoUrl extends Controller {
 		if($attr_ids){
 			$this->load->model('catalog/catalog');
 			$attributes = $this->model_catalog_catalog->getAttributes();
-			$url .= '/filter';
-			foreach($attributes as $attr_group){
+			$url .= '/filter/';
+			$key = 0;
+			foreach($attributes as  $attr_group){
 				$needed_ingridients = [];
 
-				foreach($attr_group['attr'] as $attribute){
+				foreach($attr_group['attr'] as  $attribute){
 
 					if(in_array($attribute['attribute_id'],$attr_ids )){
 						$needed_ingridients[] = $attribute['filter_name'];
@@ -216,10 +214,13 @@ class ControllerStartupSeoUrl extends Controller {
 
 				if($needed_ingridients){
 					//$url .= ('/'.$attr_group['group_filter_name'] .':'.implode(',',$needed_ingridients));
-					foreach($needed_ingridients as $ingridient){
-						$url .= '/'.$ingridient;
+					if($key > 0){
+						$url .= '-';
 					}
+					$key++;
+					$url .= implode('-', $needed_ingridients);
 				}
+
 			}
 		}
 

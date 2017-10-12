@@ -819,7 +819,8 @@ class ControllerSaleOrder extends Controller {
 
 			$data['bonus_reserved'] = $order_info['reserved_points'];
 			$data['bonus_gotted'] = $order_info['got_points'];
-			$data['bonus_gotted_spent'] = $order_info['spent_points'];
+			//$data['bonus_gotted_spent'] = $order_info['spent_points'];
+			$data['bonus_gotted_spent'] = $order_info['used_points'];
 			$data['bonus_lost'] = $order_info['lost_points'];
 			
 			if ($order_info['store_id'] == 0) {

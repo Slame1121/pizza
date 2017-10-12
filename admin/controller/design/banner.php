@@ -383,7 +383,7 @@ class ControllerDesignBanner extends Controller {
 			foreach ($this->request->post['banner_image'] as $language_id => $value) {
 				foreach ($value as $banner_image_id => $banner_image) {
 					if ((utf8_strlen($banner_image['title']) < 2) || (utf8_strlen($banner_image['title']) > 64)) {
-						$this->error['banner_image'][$language_id][$banner_image_id] = $this->language->get('error_title');
+						//$this->error['banner_image'][$language_id][$banner_image_id] = $this->language->get('error_title');
 					}
 				}
 			}

@@ -6,16 +6,36 @@
         <div class="slider-item" style="background-image: url('{{ banner.image }}');"><img src="{{ banner.image }}" alt="{{ banner.title }}" />
             <div class="slider-item__wrap">
                 <div class="container">
-                    <div class="slider-item__title">
+                    <div class="slider-item__title"
+                            {% if banner.position == 1 %}
+                                style="align-self: center"
+                            {% elseif  banner.position == 2 %}
+                                style="align-self: flex-end"
+                            {% else %}
+
+                            {% endif %} >
                         {{ banner.title }}<span>{{ banner.title2 }}</span>
                     </div>
-                    <a class="btn slider-item__btn" href="{{ banner.link }}">{{ banner.link_title }}</a>
+                    {% if  banner.link_title != '' %}
+                    <a  {% if banner.position == 1 %}
+                        style="align-self: center"
+                    {% elseif  banner.position == 2 %}
+                        style="align-self: flex-end"
+                    {% else %}
+
+                    {% endif %} class="btn slider-item__btn" href="{{ banner.link }}">{{ banner.link_title }}</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
         {% endfor %}
 
     </div>
+</div>
+<div class="slider-small">
+        <div class="slider-small__title">{{ banners[0].title }}</div>
+        <div class="slider-small__text">{{ banners[0].title2 }}</div><a class="slider-small__btn" href="{{ banners[0].link }}">{{ banners[0].link_title }}</a>
+
 </div>
 <script type="text/javascript">
 

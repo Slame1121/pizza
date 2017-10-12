@@ -179,6 +179,7 @@
   .reviews__content .owl-nav .owl-prev {
     left: 10px; }
   .header-box__menu,
+  .header-link,
   .header-sing,
   .header-basket__summa,
   .header-box__ctrls {
@@ -195,10 +196,13 @@
     .container,
     .header__content {
       align-items: center; } }
-  .header-box:last-child {
+  .header-box
+  {
+	&:last-child {
     padding-bottom: 0;
     margin-left: 0; }
-  .phone__item:nth-child(2),
+  }
+
   .phone__text {
     display: none; }
   .phone__text--small {

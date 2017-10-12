@@ -260,7 +260,7 @@ class ControllerApiCart extends Controller {
 					$this->load->model('extension/total/' . $result['code']);
 					
 					// We have to put the totals in an array so that they pass by reference.
-					if(isset($this->session->data['shipping_method']) && $this->session->data['shipping_method']['code'] == 'pickup.pickup'){
+					if(1==6 && isset($this->session->data['shipping_method']) && $this->session->data['shipping_method']['code'] == 'pickup.pickup'){
 						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data, $total_data['total'] * 0.1);
 						foreach($total_data['totals'] as $key => $total_value){
 							if($total_value['code'] == 'total'){

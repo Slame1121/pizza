@@ -21,6 +21,7 @@ class ControllerExtensionModuleBanner extends Controller {
                     'title2' => $result['title2'],
 					'link'  => $result['link'],
                     'link_title'  => $result['link_title'],
+					'position'    => $result['position'],
 					'image' => HTTP_SERVER. 'image/' . $result['image']//$this->model_tool_image->resize($result['image'], $setting['width'], $setting['height'])
 				);
 			}

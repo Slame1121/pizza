@@ -153,6 +153,7 @@ class ModelSaleOrder extends Model {
 				'spent_points'            => $order_query->row['spent_points'],
 				'lost_points'             => $order_query->row['lost_points'],
 				'nominal'             => $order_query->row['nominal'],
+				'used_points'         => $order_query->row['used_points'],
 			);
 		} else {
 			return;

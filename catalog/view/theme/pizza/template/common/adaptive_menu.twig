@@ -1,0 +1,14 @@
+{% if categories %}
+
+    {% for category in categories %}
+        <li class="drop-menu__item"><a class="drop-menu__link" href="{{ category.href }}">{{ category.name }}</a></li>
+    {% endfor %}
+
+{% endif %}
+{% if custom_pages %}
+
+    {% for page in custom_pages %}
+        <li class="drop-menu__item"><a class="drop-menu__link" href="{{ page.link }}">{{ page.title }}</a></li>
+    {% endfor %}
+
+{% endif %}

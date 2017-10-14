@@ -81,6 +81,7 @@ class ControllerAccountOrder extends Controller {
 				$order_products_arr[] = '<span>'.$product['name'].', '.$product_options[0]['value'].'</span>';
 				$url .= ('&order_product_id[]='.$product['order_product_id']);
 			}
+			print_r($result);
 			$data['orders'][] = array(
 				'order_id'   => $result['order_id'],
 				'name'       => $result['firstname'] ,

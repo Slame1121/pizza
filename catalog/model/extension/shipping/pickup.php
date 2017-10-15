@@ -17,7 +17,6 @@ class ModelExtensionShippingPickup extends Model {
 
 		if ($status) {
 			$quote_data = array();
-
 			$quote_data['pickup'] = array(
 				'code'         => 'pickup.pickup',
 				'title'        => $this->language->get('text_description'),

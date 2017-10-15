@@ -47,7 +47,6 @@ class ControllerAccountOrder extends Controller {
 		$order_total = $this->model_account_order->getTotalOrders();
 
 		$results = $this->model_account_order->getOrders(($page - 1) * 10, 10);
-
         $data['txt_top_tit'] = $this->language->get('txt_top_tit');
         $data['txt_top_tit_end'] = $this->language->get('txt_top_tit_end');
         $data['txt_titl'] = $this->language->get('txt_titl');
@@ -78,10 +77,10 @@ class ControllerAccountOrder extends Controller {
 			foreach($products as $product){
 
 				$product_options = $this->model_account_order->getOrderOptions($result['order_id'], $product['order_product_id']);
-				$order_products_arr[] = '<span>'.$product['name'].', '.$product_options[0]['value'].'</span>';
+				$order_products_arr[] = '<span>'.$product['name'].', '.$product_options[0]['value'].' ('.$product['quantity'].')</span>' ;
 				$url .= ('&order_product_id[]='.$product['order_product_id']);
 			}
-			print_r($result);
+
 			$data['orders'][] = array(
 				'order_id'   => $result['order_id'],
 				'name'       => $result['firstname'] ,
@@ -93,6 +92,7 @@ class ControllerAccountOrder extends Controller {
 				'total'      => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
 				'view'       => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], true),
 				'got_bonuses' => $result['got_points'],
+				'used_bonuses' => $result['used_points'],
 				'spent_bonuses' => $result['spent_points'],
 				'reserved_bonuses' => $result['reserved_points'],
 				'reorder'    => $this->url->link('account/order/reorder', $url, true),

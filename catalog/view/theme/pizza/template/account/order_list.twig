@@ -19,16 +19,12 @@
                         <div class="profile-history__line-name">{{ txt_orders }}</div>
                         <div class="profile-history__line-value"> {{ order.products }}</div>
                     </div>
-                    {% if order.reserved_bonuses > 0 %}
+                    {% if order.used_bonuses > 0 %}
                         <div class="profile-history__line">
-                            <div class="profile-history__line-name"> <span style="font-size:12px;line-height:12px;">{{ txt_ball_txt }}</span> </div>
-                            <div class="profile-history__line-value"> {{ order.reserved_bonuses }}</div>
+                            <div class="profile-history__line-name"> <span style="font-size:12px;line-height:12px;">Используемые бонусы</span> </div>
+                            <div class="profile-history__line-value"> {{ order.used_bonuses }}</div>
                         </div>
                     {% endif %}
-                    <div class="profile-history__line">
-                        <div class="profile-history__line-name">{{ txt_ball }}</div>
-                        <div class="profile-history__line-value"> {{ order.got_bonuses }}</div>
-                    </div>
                     <div class="profile-history__line">
                         <div class="profile-history__line-name">{{ txt_all }}</div>
                         <div class="profile-history__line-value"> <b>{{ order.total }}</b></div>

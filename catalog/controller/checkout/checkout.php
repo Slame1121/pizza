@@ -190,9 +190,9 @@ class ControllerCheckoutCheckout extends Controller {
 		$this->session->data['guest']['nominal'] = isset($this->request->post['nominal']) ? $this->request->post['nominal'] : 0;
 		$this->session->data['guest']['telephone'] = $this->request->post['telephone'];
 		$this->session->data['guest']['used_points'] = isset($this->request->post['used_points']) ? (int)$this->request->post['used_points'] : 0;
-
+		$this->load->model('account/address');
 		if(isset($this->request->post['address_id'])){
-			$this->load->model('account/address');
+
 			$adress = $this->model_account_address->getAddress((int)$this->request->post['address_id']);
 			$this->session->data['shipping_address']['nas_punkt'] = $adress['nas_punkt'];
 			$this->session->data['shipping_address']['street'] = $adress['street'];
@@ -209,6 +209,10 @@ class ControllerCheckoutCheckout extends Controller {
 			$this->session->data['shipping_address']['floor'] = isset($this->request->post['floor']) ? $this->request->post['floor'] : '';
 			$this->session->data['shipping_address']['flat'] = isset($this->request->post['flat']) ? $this->request->post['flat'] : '';
 			$this->session->data['shipping_address']['code_door'] =isset($this->request->post['code_door']) ? $this->request->post['code_door'] : '';
+			if($this->customer->isLogged()){
+				$this->model_account_address->addAddress($this->customer->getId(), $this->request->post);
+			}
+
 		}
 
 

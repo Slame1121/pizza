@@ -9,7 +9,23 @@
     position: relative;
     h2 {
       margin-bottom: 0; } }
-  &__controls {}
+  &__controls {
+	&-breadcrumb{
+	  list-style-type: none;
+	  li{
+		display: inline;
+		color:#e9ae4a;
+		a{
+		  color:#e9ae4a;
+		  text-decoration: none;
+		}
+		i{
+		  color: rgba(33, 33, 33, 0.6);
+		  opacity: .6;
+		}
+	  }
+	}
+  }
   &__btn {
     color: #e9ae4a;
     font-size: 14px;
@@ -229,7 +245,9 @@
   &__recom {
     margin-bottom: 100px;
     h2 {
-      margin-bottom: 40px; } }
+      margin-bottom: 40px;
+		text-align: center;
+	} }
 
   &.error{
 	border: 1px solid red;

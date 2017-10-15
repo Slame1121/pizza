@@ -3,7 +3,16 @@
     <div class="container">
         <div class="card__top">
             <h2>{{ heading_title }}</h2>
-            <div class="card__controls"><a class="card__btn card__prev hidden" href="#">← Четыре сыра</a><a class="card__btn card__next hidden" href="#">Гавайская →</a></div>
+            <div class="card__controls">
+                <ul class="card__controls-breadcrumb">
+                    {% for breadcrumb in breadcrumbs %}
+                        <li> {% if loop.index != breadcrumbs|length  %}<a href="{{ breadcrumb.href }}"> {% endif %}{{ breadcrumb.text }} {% if loop.index != breadcrumbs|length  %}</a>{% endif %}</li>
+                        {% if loop.index != breadcrumbs|length  %}
+                            <li><i class="card__controls-breadcrumb_delimiter" >></i></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul><a class="card__btn card__next hidden" href="#">Гавайская →</a>
+            </div>
         </div>
         <div class="card__content">
             <div class="card__block">

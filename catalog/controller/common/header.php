@@ -134,6 +134,7 @@ class ControllerCommonHeader extends Controller {
 		}
 
 		$data['language_code'] = $this->session->data['language'];
+
 		$data['language_change_action']= $this->url->link('common/language/language', '', $this->request->server['HTTPS']);
 		if (!isset($this->request->get['route'])) {
 			$data['redirect'] = $this->url->link('common/home');

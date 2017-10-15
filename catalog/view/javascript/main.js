@@ -503,10 +503,15 @@ $('document').ready(function(){
 
         return false;
     }).on('click', '.top_lang_box',function(){
-		$('#form-language').submit();
+		if($(this).find('input').prop('checked') == true){
+			$('#form-language').submit();
+		}
 
 	}).on('click', '.adaptive_lang_box',function(){
-		$('#form-language-adaptive').submit();
+		if($(this).find('input').prop('checked') == true){
+			$('#form-language-adaptive').submit();
+		}
+
 
 	}).on('click', '#login_for_bonuses', function(){
 		$('.basket-log').removeClass('opened');

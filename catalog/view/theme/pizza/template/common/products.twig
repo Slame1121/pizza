@@ -33,7 +33,7 @@
             //set new title
             {% if title != '' %}
             document.title = '{{ title }}';
-            $('.menu h2').text('{{ title }}');
+            $('.menu h1').text('{{ title }}');
             {% endif %}
 
             $('meta[name=keywords]').remove();

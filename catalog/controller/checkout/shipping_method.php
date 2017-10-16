@@ -53,7 +53,12 @@ class ControllerCheckoutShippingMethod extends Controller {
 		if (isset($this->session->data['shipping_method']['code'])) {
 			$data['code'] = $this->session->data['shipping_method']['code'].'.'.$this->session->data['shipping_method']['code'];
 		} else {
-			$data['code'] = '';
+			if($this->customer->isLogged()){
+				$data['code'] = $this->customer->last_shipping_method.'.'. $this->customer->last_shipping_method;
+			}else{
+				$data['code'] = '';
+			}
+
 		}
 
 		if (isset($this->session->data['comment'])) {

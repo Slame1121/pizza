@@ -31,6 +31,9 @@ class Customer {
 				$this->bdate = $customer_query->row['bdate'];
 				$this->newsletter = $customer_query->row['newsletter'];
 				$this->address_id = $customer_query->row['address_id'];
+				$this->last_payment_method = $customer_query->row['last_pament_method'];
+				$this->last_shipping_method = $customer_query->row['last_shipping_method'];
+
 				if(isset($points->row['bonuses']) && (float)$points->row['bonuses'] > 0){
 					$this->bonuses = round($points->row['bonuses'], 2);
 				}else{

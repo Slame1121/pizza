@@ -34,31 +34,31 @@
 <div class="basket-log__form-box {% if addresses or  code == 'pickup' %}hidden{% endif %}" id="cart-adress-new">
     <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Населенный пункт<span>*</span></span>
         <select name="nas_punkt" class="basket-log__form-value">
-            <option>Вишневое</option>
-            <option>Софиевская Борщаговка</option>
-            <option>Петропавловская Борщаговка</option>
-            <option>Святопетровское</option>
-            <option>Киев</option>
+            <option {% if nas_punkt == 'Вишневое' %}selected{% endif %}>Вишневое</option>
+            <option {% if nas_punkt == 'Софиевская Борщаговка' %}selected{% endif %}>Софиевская Борщаговка</option>
+            <option {% if nas_punkt == 'Петропавловская Борщаговка' %}selected{% endif %}>Петропавловская Борщаговка</option>
+            <option {% if nas_punkt == 'Святопетровское' %}selected{% endif %}>Святопетровское</option>
+            <option {% if nas_punkt == 'Киев' %}selected{% endif %}>Киев</option>
         </select>
     </label>
     <label class="basket-log__form-label"><span class="basket-log__form-name">Улица<span>*</span></span>
-        <input required class="basket-log__form-value" type="text" name="street">
+        <input required class="basket-log__form-value" value="{{ street }}" type="text" name="street">
     </label>
     <div class="basket-log__form-multi">
         <label class="basket-log__form-label"><span class="basket-log__form-name">Дом<span>*</span></span>
-            <input required class="basket-log__form-value" type="text" name="house">
+            <input required class="basket-log__form-value" value="{{ house }}" type="text" name="house">
         </label>
         <label class="basket-log__form-label"><span class="basket-log__form-name">Парадное</span>
-            <input class="basket-log__form-value" type="text" name="paradnya">
+            <input class="basket-log__form-value" type="text" value="{{ paradnya }}" name="paradnya">
         </label>
         <label class="basket-log__form-label"><span class="basket-log__form-name">Этаж</span>
-            <input class="basket-log__form-value" type="text" name="floor">
+            <input class="basket-log__form-value" type="text" value="{{ floor }}" name="floor">
         </label>
         <label class="basket-log__form-label"><span class="basket-log__form-name">Квартира</span>
-            <input class="basket-log__form-value" type="text" name="flat">
+            <input class="basket-log__form-value" type="text" value="{{ flat }}" name="flat">
         </label>
         <label class="basket-log__form-label"><span class="basket-log__form-name">Код двери</span>
-            <input class="basket-log__form-value" type="text" name="code_door">
+            <input class="basket-log__form-value" type="text" value="{{ code_door }}" name="code_door">
         </label>
     </div>
 </div>

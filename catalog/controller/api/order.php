@@ -103,6 +103,9 @@ class ControllerApiOrder extends Controller {
 				
 				$order_data = array();
 
+				//nominal fix
+				$order_data['nominal'] = 0;
+
 				// Store Details
 				$order_data['invoice_prefix'] = $this->config->get('config_invoice_prefix');
 				$order_data['store_id'] = $this->config->get('config_store_id');

@@ -89,7 +89,9 @@ class ControllerExtensionModuleFeatured extends Controller {
         if (!$setting['limit']) {
             $setting['limit'] = 4;
         }
-        $products = $this->model_catalog_product->getRandProducts((int)$cat, (int)$setting['limit'],(int)$tek_product_id);
+        //var_dump($setting);die;
+        $products = $setting["product"];
+        //$products = $this->model_catalog_product->getRandProducts((int)$cat, (int)$setting['limit'],(int)$tek_product_id);
         //var_dump($products);
         if ($products) {
             foreach ($products as $product) {

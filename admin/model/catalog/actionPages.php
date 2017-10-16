@@ -10,8 +10,8 @@ class ModelCatalogActionPages extends Model {
 
     public function addActPages($data) {
         $this->db->query("INSERT INTO " . DB_PREFIX . "action_pages SET 
-        link = '" . $this->db->escape($data['link']). "', 
-        status = '1', 
+        link = '" . $this->db->escape($data['link']). "',
+        no_index = " . (int)$data['no_index']. " 
         date_added = NOW()");
 
         $pages_id = $this->db->getLastId();
@@ -34,7 +34,8 @@ class ModelCatalogActionPages extends Model {
 
     public function editActPages($pages_id, $data) {
         $this->db->query("UPDATE " . DB_PREFIX . "action_pages SET 
-        link = '" . $this->db->escape($data['link']). "'
+        link = '" . $this->db->escape($data['link']). "',
+        no_index = " . (int)$data['no_index']. "
         WHERE pages_id = '" . (int)$pages_id . "'");
 
         $this->db->query("DELETE FROM " . DB_PREFIX . "action_pages_desc WHERE pages_id = '" . (int)$pages_id . "'");

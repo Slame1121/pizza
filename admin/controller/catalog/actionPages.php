@@ -333,6 +333,14 @@ class ControllerCatalogActionPages extends Controller {
             $data['link'] = 0;
         }
 
+        if (isset($this->request->post['no_index'])) {
+            $data['no_index'] = $this->request->post['no_index'];
+        } elseif (!empty($category_info)) {
+            $data['no_index'] = $category_info['no_index'];
+        } else {
+            $data['no_index'] = 1;
+        }
+
         if (isset($this->request->post['category_description'])) {
             $data['category_description'] = $this->request->post['category_description'];
         } elseif (isset($this->request->get['pages_id'])) {
@@ -349,6 +357,7 @@ class ControllerCatalogActionPages extends Controller {
 
         $this->response->setOutput($this->load->view('catalog/action_pages_form', $data));
     }
+
     protected function validateForm() {
         if (!$this->user->hasPermission('modify', 'catalog/actionPages')) {
             $this->error['warning'] = $this->language->get('error_permission');

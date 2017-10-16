@@ -2,13 +2,13 @@
 <section class="profile page">
     <div class="container">
         <div class="profile__content">
-            <h2>Здравствуйте{% if firstname and firstname != '' %}, {{ firstname }}{% endif %}!</h2>
+            <h2>{{ text_acc_hello }}{% if firstname and firstname != '' %}, {{ firstname }}{% endif %}!</h2>
             {{ orders_list }}
-            <div class="profile__title">Вы можете отредактировать свои персональные данные</div>
+            <div class="profile__title">{{ text_acc_user_text }}</div>
             <form class="profile-form" method="post" action="{{ form_action }}">
                 <div class="profile-form__content">
                     <div class="profile-form__box">
-                        <label class="profile-form__label"><span class="profile-form__box-name">Адреса</span>
+                        <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_adr }}</span>
 
                         </label>
                         <div class="profile-form__box-current-adresses">
@@ -23,43 +23,41 @@
                                 {% set s= s +1 %}
                             {% endfor %}
                         </div>
-                        <div class="profile-form__add-label"><a href="#">+ Добавить адрес</a></div>
+                        <div class="profile-form__add-label"><a href="#">{{ text_acc_user_adr_add }}</a></div>
                         <div class="profile-form__drop">
-                            <label class="profile-form__label"><span class="profile-form__box-name">Населённый пункт</span>
+                            <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_sity }}</span>
                                 <select name="nas_punkt" class="basket-log__form-value">
-                                    <option>Вишневое</option>
-                                    <option>Софиевская Борщаговка</option>
-                                    <option>Петропавловская Борщаговка</option>
-                                    <option>Святопетровское</option>
-                                    <option>Киев</option>
+                                    {% for _sity in arr_sity %}
+                                        <option>{{ _sity }}</option>
+                                    {% endfor %}
                                 </select>
                             </label>
-                            <label class="profile-form__label"><span class="profile-form__box-name">Улица</span>
+                            <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_strit }}</span>
                                 <input type="text" name="street">
                             </label>
                             <div class="profile-form__drop-box">
                                 <div class="profile-form__drop-item">
-                                    <label class="profile-form__label"><span class="profile-form__box-name">Дом</span>
+                                    <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_dim }}</span>
                                         <input type="text" name="house">
                                     </label>
                                 </div>
                                 <div class="profile-form__drop-item">
-                                    <label class="profile-form__label"><span class="profile-form__box-name">Парадная</span>
+                                    <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_home }}</span>
                                         <input type="text" name="paradnya">
                                     </label>
                                 </div>
                                 <div class="profile-form__drop-item">
-                                    <label class="profile-form__label"><span class="profile-form__box-name">Этаж</span>
+                                    <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_lvl }}</span>
                                         <input type="text" name="floor">
                                     </label>
                                 </div>
                                 <div class="profile-form__drop-item">
-                                    <label class="profile-form__label"><span class="profile-form__box-name">Квартира</span>
+                                    <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_home_nom }}</span>
                                         <input type="text" name="flat">
                                     </label>
                                 </div>
                                 <div class="profile-form__drop-item">
-                                    <label class="profile-form__label"><span class="profile-form__box-name">Код двери</span>
+                                    <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_key_door }}</span>
                                         <input type="text" name="code_door">
                                     </label>
                                 </div>
@@ -69,25 +67,37 @@
                     </div>
 
                     <div class="profile-form__box">
-                        <label class="profile-form__label"><span class="profile-form__box-name">Имя</span>
+                        <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_name }}</span>
                             <input type="text" value="{{ firstname }}" name="firstname">
                         </label>
-                        <label class="profile-form__label"><span class="profile-form__box-name">Телефон</span>
+                        <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_tel }}</span>
                             <input type="tel" value="{{ telephone }}" name="telephone">
                         </label>
                         <label class="profile-form__label"><span class="profile-form__box-name">E-mail</span>
                             <input type="email" value="{{ email }}" name="email">
                         </label>
-                        <label class="profile-form__label"><span class="profile-form__box-name">Новый пароль</span>
-                            <input placeholder="Оставляем пустым, если изменять не надо" type="password" name="password">
+                        <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_date }}</span>
+                            <input type="text" value="{{ bdate }}" name="bdate" id="bdate">
                         </label>
-                        <label class="profile-form__label"><span class="profile-form__box-name">Повторите новый пароль</span>
-                            <input placeholder="Оставляем пустым, если изменять не надо" type="password" name="password">
+                        <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_pass }}</span>
+                            <input placeholder="{{ text_acc_user_place }}" type="password" name="password">
+                        </label>
+                        <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_new_pass }}</span>
+                            <input placeholder="{{ text_acc_user_place }}" type="password" name="password">
                         </label>
                     </div>
                 </div>
-
-                <div class="profile-form__controls"><input type="submit" class="btn profile-form__btn btn-orange" value="Сохранить"></div>
+                <script>
+                   $( "#bdate" ).datepicker({
+                        format: "dd.mm.yy",
+                        language: "{{ langs }}"
+                    });
+                </script>
+                <style>
+                    div.datepicker{ position: absolute; background: white; box-shadow: black 0px 0px 3px; font-size: initial; }
+                    div.datepicker > div { display: block; }
+                </style>
+                <div class="profile-form__controls"><input type="submit" class="btn profile-form__btn btn-orange" value="{{ text_acc_user_btn_tit }}"></div>
             </form>
         </div>
     </div>

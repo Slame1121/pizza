@@ -802,7 +802,7 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 .opencart-icon-cart-mini:before {
 	content: "\e91c";
 }
-div#mapsMarker { min-height: 400px;height: 400px;  }
+div#mapsMarker,div#mapsMarkerForms { min-height: 400px;height: 400px;  }
 .refreshMap.btn {
 	display: block;
 	width: 200px;
@@ -810,3 +810,20 @@ div#mapsMarker { min-height: 400px;height: 400px;  }
 	text-align: center;
 	cursor: pointer;
 }
+span.refreshMap {
+	display: block;
+	padding: 5px;
+	cursor: pointer;
+}
+span.hid-panel {
+	display: inline-block;
+	padding: 5px;
+	cursor: pointer;
+}
+.enabl {	box-shadow: inset 1px 1px 3px 0px black;}
+span.setMapPoli {display: block;padding: 5px;cursor: pointer;}
+span.redMapPoli {display: block;padding: 5px;cursor: pointer;}
+span.hid-panel {transform: rotate(0deg);}
+span.hid-panel.shows {transform: rotate(180deg);}
+.panel-heading .panel-title {cursor: pointer;}
+.panel-heading.enabl {background: rgba(0, 128, 0, 0.2);}

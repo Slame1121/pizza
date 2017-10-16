@@ -109,7 +109,7 @@ class ModelAccountOrder extends Model {
 			$limit = 1;
 		}
 
-		$query = $this->db->query("SELECT o.order_id, o.firstname,o.got_points,o.reserved_points,o.spent_points,o.lost_points,o.telephone, o.lastname, os.name as status, o.date_added, o.total, o.currency_code, o.currency_value, o.shipping_nas_punkt, o.shipping_street, o.shipping_house FROM `" . DB_PREFIX . "order` o LEFT JOIN " . DB_PREFIX . "order_status os ON (o.order_status_id = os.order_status_id) WHERE o.customer_id = '" . (int)$this->customer->getId() . "' AND o.order_status_id > '0' AND o.store_id = '" . (int)$this->config->get('config_store_id') . "' AND os.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY o.order_id DESC LIMIT " . (int)$start . "," . (int)$limit);
+		$query = $this->db->query("SELECT o.order_id, o.firstname,o.used_points,o.got_points,o.reserved_points,o.spent_points,o.lost_points,o.telephone, o.lastname, os.name as status, o.date_added, o.total, o.currency_code, o.currency_value, o.shipping_nas_punkt, o.shipping_street, o.shipping_house FROM `" . DB_PREFIX . "order` o LEFT JOIN " . DB_PREFIX . "order_status os ON (o.order_status_id = os.order_status_id) WHERE o.customer_id = '" . (int)$this->customer->getId() . "' AND o.order_status_id > '0' AND o.store_id = '" . (int)$this->config->get('config_store_id') . "' AND os.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY o.order_id DESC LIMIT " . (int)$start . "," . (int)$limit);
 
 		return $query->rows;
 	}

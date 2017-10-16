@@ -2,7 +2,7 @@
 class ControllerCheckoutConfirm extends Controller {
 	public function index() {
 		$redirect = '';
-
+		$discount_cart_id = $this->cart->getDiscountCartId();
 		if ($this->cart->hasShipping()) {
 			// Validate if shipping address has been set.
 			if (!isset($this->session->data['shipping_address'])) {
@@ -84,11 +84,12 @@ class ControllerCheckoutConfirm extends Controller {
 					$this->load->model('extension/total/' . $result['code']);
 
 					// We have to put the totals in an array so that they pass by reference.
-					if(isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup'){
+					if(1==6 && isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup'){
 						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data, $total_data['total'] * 0.1);
 						foreach($total_data['totals'] as $key => $total_value){
 							if($total_value['code'] == 'total'){
-								$total_data['totals'][$key]['value'] = $total_data['total'] - $total_data['total'] * 0.1;
+								$used_bonuses = isset($this->session->data['guest']['used_points']) ? $this->session->data['guest']['used_points'] : 0;
+								$total_data['totals'][$key]['value'] = $total_data['total'] - $used_bonuses - $total_data['total'] * 0.1;
 							}
 						}
 					}else{
@@ -98,6 +99,20 @@ class ControllerCheckoutConfirm extends Controller {
 				}
 			}
 
+			if(isset($this->session->data['guest']['used_points']) && $this->session->data['guest']['used_points'] > 0){
+				$totals[] = [
+					'code' => 'bonuses',
+					'value' => -$this->session->data['guest']['used_points'],
+					'sort_order' => 2,
+					'title' => 'Используемые бонусы'
+				];
+				foreach($totals as $key => $total_t){
+					if($total_t['code'] == 'total'){
+						$totals[$key]['value'] = $total_t['value'] - $this->session->data['guest']['used_points'];
+					}
+				}
+
+			}
 			$sort_order = array();
 
 			foreach ($totals as $key => $value) {
@@ -107,7 +122,6 @@ class ControllerCheckoutConfirm extends Controller {
 			array_multisort($sort_order, SORT_ASC, $totals);
 
 			$order_data['totals'] = $totals;
-
 			$this->load->language('checkout/checkout');
 
 			$order_data['invoice_prefix'] = $this->config->get('config_invoice_prefix');
@@ -135,9 +149,6 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['email'] = $customer_info['email'];
 				$order_data['telephone'] = $customer_info['telephone'];
 				$order_data['custom_field'] = json_decode($customer_info['custom_field'], true);
-
-
-
 			} elseif(isset($this->session->data['guest'])) {
 				$order_data['customer_id'] = 0;
 				$order_data['customer_group_id'] = $this->session->data['guest']['customer_group_id'];
@@ -252,7 +263,9 @@ class ControllerCheckoutConfirm extends Controller {
 					);
 				}
 
-
+				if($product['cart_id'] == $discount_cart_id){
+					$product['total'] = round($product['price']/2,2) + $product['price'] * ($product['quantity'] -1);
+				}
 				$order_data['products'][] = array(
 					'product_id' => $product['product_id'],
 					'name'       => $product['name'],
@@ -368,6 +381,7 @@ class ControllerCheckoutConfirm extends Controller {
 
 
 			$this->load->model('checkout/order');
+
 			$this->session->data['order_id'] = $this->model_checkout_order->addOrder($order_data);
 
 			$this->load->model('tool/upload');
@@ -375,7 +389,9 @@ class ControllerCheckoutConfirm extends Controller {
 			$data['products'] = array();
 			$this->load->model('catalog/catalog');
 			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
-			foreach ($this->cart->getProducts() as $product) {
+			$products = $this->cart->getProducts();
+
+			foreach ($products as $product) {
 				$option_data = array();
 
 				foreach ($product['option'] as $option) {
@@ -437,7 +453,12 @@ class ControllerCheckoutConfirm extends Controller {
 					];
 				}
 
-
+				if($discount_cart_id && $discount_cart_id == $product['cart_id']){
+					$total_sum = $this->currency->format($this->tax->calculate(round($product['price']/2,2), $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']) +
+						$this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * ($product['quantity'] - 1), $this->session->data['currency']);
+				}else{
+					$total_sum = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
+				}
 				$data['products'][] = array(
 					'cart_id'    => $product['cart_id'],
 					'product_id' => $product['product_id'],
@@ -450,17 +471,26 @@ class ControllerCheckoutConfirm extends Controller {
 					'quantity'   => $product['quantity'],
 					'subtract'   => $product['subtract'],
 					'price'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']),
-					'total'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']),
+					'total'      => $total_sum,
 					'href'       => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 				);
 			}
 
+
+
+
 			$data['bonuses'] = $this->cart->getTotal() * 0.05;
 			$data['total'] = $this->cart->getTotal();
+
+			if(isset($order_data['used_points']) && $order_data['used_points'] > 0 ){
+				$data['total']  -= $order_data['used_points'];
+			}
+
 			//10% на самовывоз
 			if($order_data['shipping_code'] == 'pickup'){
 				$data['total']  -= $data['total'] * 0.1;
 			}
+
 			$data['street'] = $order_data['shipping_street'];
 			$data['nas_punkt'] = $order_data['shipping_nas_punkt'];
 			$data['house'] = $order_data['shipping_house'];
@@ -469,6 +499,9 @@ class ControllerCheckoutConfirm extends Controller {
 			$data['flat'] = $order_data['shipping_flat'];
 			$data['code_door'] = $order_data['shipping_code_door'];
 			$data['payment_method'] = $order_data['payment_method'];
+			$data['telephone']= $order_data['telephone'];
+			$data['nominal']= $order_data['nominal'];
+			$data['comment'] = $order_data['comment'];
 			$data['shipping_method'] = $order_data['shipping_method'];
 
 			$data['firstname'] = $order_data['firstname'];

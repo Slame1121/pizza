@@ -262,7 +262,13 @@ class ControllerCatalogAttribute extends Controller {
 			$data['error_name'] = array();
 		}
 
-		if (isset($this->error['attribute_group'])) {
+        if (isset($this->error['filter_name'])) {
+            $data['error_filter_name'] = $this->error['filter_name'];
+        } else {
+            $data['error_filter_name'] = array();
+        }
+
+        if (isset($this->error['attribute_group'])) {
 			$data['error_attribute_group'] = $this->error['attribute_group'];
 		} else {
 			$data['error_attribute_group'] = '';
@@ -326,7 +332,15 @@ class ControllerCatalogAttribute extends Controller {
 			$data['attribute_group_id'] = '';
 		}
 
-		$this->load->model('catalog/attribute_group');
+        if (isset($this->request->post['filter_name'])) {
+            $data['filter_name'] = $this->request->post['filter_name'];
+        } elseif (!empty($attribute_info)) {
+            $data['filter_name'] = $attribute_info['filter_name'];
+        } else {
+            $data['filter_name'] = '';
+        }
+
+        $this->load->model('catalog/attribute_group');
 
 		$data['attribute_groups'] = $this->model_catalog_attribute_group->getAttributeGroups();
 
@@ -374,7 +388,11 @@ class ControllerCatalogAttribute extends Controller {
 			$this->error['attribute_group'] = $this->language->get('error_attribute_group');
 		}
 
-		foreach ($this->request->post['attribute_description'] as $language_id => $value) {
+		if (!$this->request->post['filter_name']) {
+            $this->error['filter_name'] = $this->language->get('error_name');
+        }
+
+        foreach ($this->request->post['attribute_description'] as $language_id => $value) {
 			if ((utf8_strlen($value['name']) < 1) || (utf8_strlen($value['name']) > 64)) {
 				$this->error['name'][$language_id] = $this->language->get('error_name');
 			}

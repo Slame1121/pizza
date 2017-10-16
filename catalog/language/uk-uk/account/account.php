@@ -24,3 +24,24 @@ $_['text_transactions'] = 'Транзакції';
 $_['text_affiliate_add'] = "Реєстрація партнерського облікового запису";
 $_['text_affiliate_edit'] = "Змінити партнерську інформацію";
 $_['text_tracking'] = 'Код відстеження партнерських відносин';
+
+$_['text_acc_hello'] = 'Привіт';
+$_['text_acc_user_text'] = 'Ви можете редагувати свої персональні дані';
+$_['text_acc_user_name'] = "Ім'я";
+$_['text_acc_user_tel'] = 'Телефон';
+$_['text_acc_user_date'] = 'День Народження';
+$_['text_acc_user_pass'] = 'Новий пароль';
+$_['text_acc_user_new_pass'] = 'Повторіть пароль';
+$_['text_acc_user_place'] = 'Залишаємо порожнім, якщо змінювати не треба';
+$_['text_acc_user_btn_tit'] = 'Зберегти';
+
+$_['text_acc_user_adr'] = 'Адреса';
+$_['text_acc_user_adr_add'] = '+ Додати адресу';
+$_['text_acc_user_sity'] = 'Населений пункт';
+$_['text_acc_user_arr_sity'] = ['Вишневе','Софіївська Борщагівка','Петропавлівська Борщагівка','Святопетровское','Київ'];
+$_['text_acc_user_strit'] = 'Вулиця';
+$_['text_acc_user_dim'] = 'Будинок';
+$_['text_acc_user_home'] = 'Парадна';
+$_['text_acc_user_lvl'] = 'Поверх';
+$_['text_acc_user_home_nom'] = 'Квартира';
+$_['text_acc_user_key_door'] = 'Код дверей';

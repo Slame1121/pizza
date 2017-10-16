@@ -21,7 +21,7 @@ class ControllerExtensionPaymentBankTransfer extends Controller {
 			$comment .= $this->language->get('text_payment');
 
 			$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_bank_transfer_order_status_id'), $comment, true);
-		
+
 			$json['redirect'] = $this->url->link('checkout/success');
 		}
 		

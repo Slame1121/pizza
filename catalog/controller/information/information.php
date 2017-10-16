@@ -23,7 +23,6 @@ class ControllerInformationInformation extends Controller {
 
 		if ($information_info) {
             $map = $this->model_catalog_information->getInformationMap($information_id);
-
             $data['map'] = $this->load->view('information/map', $map);
 			$this->document->setTitle($information_info['meta_title']);
 			$this->document->setDescription($information_info['meta_description']);

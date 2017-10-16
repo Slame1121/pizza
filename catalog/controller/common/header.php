@@ -70,6 +70,9 @@ class ControllerCommonHeader extends Controller {
 
         $data['text_auth_phon'] = $this->language->get('text_auth_phon');
          $data['text_auth_phon_smal'] = $this->language->get('text_auth_phon_smal');
+         $data['text_auth_phon_code'] = $this->language->get('text_auth_phon_code');
+         $data['text_phon_auth_tit'] = $this->language->get('text_phon_auth_tit');
+         $data['text_auth_phon_smal_code'] = $this->language->get('text_auth_phon_smal_code');
          $data['text_auth_pass'] = $this->language->get('text_auth_pass');
          $data['text_auth_pass_smal'] = $this->language->get('text_auth_pass_smal');
          $data['text_auth_chek'] = $this->language->get('text_auth_chek');
@@ -104,7 +107,7 @@ class ControllerCommonHeader extends Controller {
 		$data['search'] = $this->load->controller('common/search');
 		$data['cart'] = $this->load->controller('common/cart');
 		$data['menu'] = $this->load->controller('common/menu');
-
+		$data['adaptive_menu'] = $this->load->controller('common/menu/adaptive');
 		$data['checkout'] = $this->load->controller('checkout/checkout/checkout');
         $data['styles'] = $this->document->getStyles();
         $data['scripts'] = $this->document->getScripts('header');
@@ -114,6 +117,44 @@ class ControllerCommonHeader extends Controller {
         $data['header_slogan'] = $this->load->controller('extension/module/html', $setting_info);
         $data['text_title_txt'] = $this->language->get('text_title_txt');
         $data['text_titles'] = $this->language->get('text_titles');
+
+		$this->load->model('localisation/language');
+
+		$data['languages'] = array();
+
+		$results = $this->model_localisation_language->getLanguages();
+
+		foreach ($results as $result) {
+			if ($result['status']) {
+				$data['languages'][] = array(
+					'name' => $result['name'],
+					'code' => $result['code']
+				);
+			}
+		}
+
+		$data['language_code'] = $this->session->data['language'];
+
+		$data['language_change_action']= $this->url->link('common/language/language', '', $this->request->server['HTTPS']);
+		if (!isset($this->request->get['route'])) {
+			$data['redirect'] = $this->url->link('common/home');
+		} else {
+			$url_data = $this->request->get;
+
+			unset($url_data['_route_']);
+
+			$route = $url_data['route'];
+
+			unset($url_data['route']);
+
+			$url = '';
+
+			if ($url_data) {
+				$url = '&' . urldecode(http_build_query($url_data, '', '&'));
+			}
+
+			$data['redirect'] = $this->url->link($route, $url, $this->request->server['HTTPS']);
+		}
         //var_dump($data['header_slogan']);die;
         //$data['header_slogan'] = $this->model_catalog_information->getInformation($information_id);
 

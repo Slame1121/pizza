@@ -8,6 +8,7 @@ class Customer {
 	private $email;
 	private $telephone;
 	private $newsletter;
+	private $bdate;
 	private $address_id;
 
 	public function __construct($registry) {
@@ -27,6 +28,7 @@ class Customer {
 				$this->customer_group_id = $customer_query->row['customer_group_id'];
 				$this->email = $customer_query->row['email'];
 				$this->telephone = $customer_query->row['telephone'];
+				$this->bdate = $customer_query->row['bdate'];
 				$this->newsletter = $customer_query->row['newsletter'];
 				$this->address_id = $customer_query->row['address_id'];
 				if(isset($points->row['bonuses']) && (float)$points->row['bonuses'] > 0){
@@ -64,6 +66,7 @@ class Customer {
 			$this->customer_group_id = $customer_query->row['customer_group_id'];
 			$this->email = $customer_query->row['email'];
 			$this->telephone = $customer_query->row['telephone'];
+			$this->bdate = $customer_query->row['bdate'];
 			$this->newsletter = $customer_query->row['newsletter'];
 			$this->address_id = $customer_query->row['address_id'];
 		
@@ -84,6 +87,7 @@ class Customer {
 		$this->customer_group_id = '';
 		$this->email = '';
 		$this->telephone = '';
+		$this->bdate = '';
 		$this->newsletter = '';
 		$this->address_id = '';
 	}
@@ -114,6 +118,10 @@ class Customer {
 
 	public function getTelephone() {
 		return $this->telephone;
+	}
+
+	public function getBdate() {
+		return $this->bdate;
 	}
 
 	public function getNewsletter() {

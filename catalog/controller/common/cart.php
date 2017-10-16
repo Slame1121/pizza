@@ -47,7 +47,7 @@ class ControllerCommonCart extends Controller {
 			array_multisort($sort_order, SORT_ASC, $totals);
 		}
 
-		$data['text_items'] = $this->cart->countProducts();
+
 
 		$this->load->model('tool/image');
 		$this->load->model('tool/upload');
@@ -56,7 +56,11 @@ class ControllerCommonCart extends Controller {
 		$this->load->model('catalog/catalog');
 
 		$all_attrs = $this->model_catalog_catalog->getAllAtributes();
-		foreach ($this->cart->getProducts() as $product) {
+		$pretedends_for_discount = [
+		];
+		$cart_products = $this->cart->getProducts();
+		$quantity = 0;
+		foreach ($cart_products as $product) {
 			if ($product['image']) {
 				$image = $this->model_tool_image->resize($product['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_cart_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_cart_height'));
 			} else {
@@ -95,10 +99,6 @@ class ControllerCommonCart extends Controller {
 				$price = false;
 				$total = false;
 			}
-
-
-
-
 			$attributes = [];
 
 			foreach($product['attrs'] as $igredient_id => $count){
@@ -108,7 +108,14 @@ class ControllerCommonCart extends Controller {
 					'count' => $count
 				];
 			}
-
+			$this->load->model('catalog/product');
+			$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
+			$pizza_product= false;
+			foreach($categories as $category_id){
+				if($category_id == '59'){
+					$pizza_product = true;
+				}
+			}
 			$data['products'][] = array(
 				'cart_id'   => $product['cart_id'],
 				'thumb'     => $image,
@@ -120,9 +127,51 @@ class ControllerCommonCart extends Controller {
 				'price'     => $price,
 				'total'     => $total,
 				'attrs'     => $attributes,
+				'discount_pizza' => 0,
 				'href'      => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 			);
+			$days = [
+				'Sunday',
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday'
+			];
+			//Если это пицца и дело происходит в понедельник, вторник, среду или четвер между 12 утра и 4 вечера
+			if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
+				for( $i = 1; $i <= $product['quantity']; $i++){
+					$pretedends_for_discount[] =['price' => $price, 'key' => count($data['products']) - 1];
+				}
+			}
+			$quantity += $product['quantity'];
 		}
+
+		$data['text_items'] = $quantity;
+
+		if(count($pretedends_for_discount) > 1){
+			while(count($pretedends_for_discount) > 1){
+				if($pretedends_for_discount[0]['price'] >= $pretedends_for_discount[1]['price']){
+					array_splice($pretedends_for_discount, 0, 1);
+				}else{
+					$next = $pretedends_for_discount[1];
+					$pretedends_for_discount[1] =  $pretedends_for_discount[0];
+					$pretedends_for_discount[0] = $next;
+				}
+			}
+
+			if($pretedends_for_discount){
+				if(isset($data['products'][$pretedends_for_discount[0]['key']])){
+					$data['products'][$pretedends_for_discount[0]['key']]['discount_pizza'] = 1;
+					$total = round($data['products'][$pretedends_for_discount[0]['key']]['price']/2,2) + $data['products'][$pretedends_for_discount[0]['key']]['price'] * ($data['products'][$pretedends_for_discount[0]['key']]['quantity'] - 1);
+
+					$data['products'][$pretedends_for_discount[0]['key']]['total'] = $this->currency->format($total, $this->session->data['currency']);
+
+				}
+			}
+		}
+
 		// Gift Voucher
 		$data['vouchers'] = array();
 

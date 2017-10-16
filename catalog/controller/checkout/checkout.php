@@ -59,12 +59,19 @@ class ControllerCheckoutCheckout extends Controller {
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('checkout/checkout', '', true)
 		);
+		$data['want_to_use'] = isset($this->session->data['guest']['used_points']) ? $this->session->data['guest']['used_points'] : 0;
 		$data['total_cart_price_def'] = $this->cart->getTotal();
-		$data['total_cart_price'] = $this->cart->getTotal();
+		$data['total_cart_price'] = $this->cart->getTotal() - $data['want_to_use'] ;
 		//10% на самовывоз
 		if (isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup') {
 			$data['total_cart_price'] -= $data['total_cart_price'] * 0.1;
+			$data['pickup_discount'] = $data['total_cart_price'] * 0.1;
 		}
+
+		if(isset($this->session->data['shipping_method']['code'])){
+			$data['shipping_method_code'] = $this->session->data['shipping_method']['code'];
+		}
+
 		$data['text_checkout_option'] = sprintf($this->language->get('text_checkout_option'), 1);
 		$data['text_checkout_account'] = sprintf($this->language->get('text_checkout_account'), 2);
 		$data['text_checkout_payment_address'] = sprintf($this->language->get('text_checkout_payment_address'), 2);
@@ -110,11 +117,13 @@ class ControllerCheckoutCheckout extends Controller {
 			}
 
 		}
-
+		$data['comment'] = isset($this->session->data['comment']) ? $this->session->data['comment'] : '';
 		$data['firstname'] = $this->customer->getFirstName();
 		$data['telephone'] = $this->customer->getTelephone();
 		$data['bonuses'] = isset($this->customer->bonuses) ? ($this->customer->bonuses) : 0;
+
 		$data['can_get_bonuses'] = $this->cart->getTotal() * 0.05;
+
 
 		//$data['column_left'] = $this->load->controller('common/column_left');
 		//$data['column_right'] = $this->load->controller('common/column_right');
@@ -132,7 +141,7 @@ class ControllerCheckoutCheckout extends Controller {
 			if(isset($this->customer->bonuses ) && $this->customer->bonuses >= $bon){
 				$this->response->setOutput((1));
 			}else{
-				if(!isset($this->customer->bonuses)){
+				if(!isset($this->customer->bonuses) && $bon == 0){
 					$this->response->setOutput((1));
 				}else{
 					$this->response->setOutput((0));
@@ -181,9 +190,9 @@ class ControllerCheckoutCheckout extends Controller {
 		$this->session->data['guest']['nominal'] = isset($this->request->post['nominal']) ? $this->request->post['nominal'] : 0;
 		$this->session->data['guest']['telephone'] = $this->request->post['telephone'];
 		$this->session->data['guest']['used_points'] = isset($this->request->post['used_points']) ? (int)$this->request->post['used_points'] : 0;
-
+		$this->load->model('account/address');
 		if(isset($this->request->post['address_id'])){
-			$this->load->model('account/address');
+
 			$adress = $this->model_account_address->getAddress((int)$this->request->post['address_id']);
 			$this->session->data['shipping_address']['nas_punkt'] = $adress['nas_punkt'];
 			$this->session->data['shipping_address']['street'] = $adress['street'];
@@ -200,6 +209,10 @@ class ControllerCheckoutCheckout extends Controller {
 			$this->session->data['shipping_address']['floor'] = isset($this->request->post['floor']) ? $this->request->post['floor'] : '';
 			$this->session->data['shipping_address']['flat'] = isset($this->request->post['flat']) ? $this->request->post['flat'] : '';
 			$this->session->data['shipping_address']['code_door'] =isset($this->request->post['code_door']) ? $this->request->post['code_door'] : '';
+			if($this->customer->isLogged()){
+				$this->model_account_address->addAddress($this->customer->getId(), $this->request->post);
+			}
+
 		}
 
 
@@ -212,6 +225,12 @@ class ControllerCheckoutCheckout extends Controller {
 		}else{
 			$shipping_method_title = '';
 		}
+		if($code == 'pickup'){
+			$this->session->data['shipping_method']['cost'] = -($this->cart->getTotal() - $this->session->data['guest']['used_points']) * 0.1;
+		}else{
+			$this->session->data['shipping_method']['cost'] = 0;
+		}
+
 		$this->session->data['shipping_method']['title'] = $shipping_method_title;
 
 		$this->session->data['comment'] = $this->request->post['comment'];

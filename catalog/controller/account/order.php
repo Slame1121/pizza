@@ -47,7 +47,25 @@ class ControllerAccountOrder extends Controller {
 		$order_total = $this->model_account_order->getTotalOrders();
 
 		$results = $this->model_account_order->getOrders(($page - 1) * 10, 10);
-
+        $data['txt_top_tit'] = $this->language->get('txt_top_tit');
+        $data['txt_top_tit_end'] = $this->language->get('txt_top_tit_end');
+        $data['txt_titl'] = $this->language->get('txt_titl');
+        $data['txt_adress'] = $this->language->get('txt_adress');
+        $data['txt_tel'] = $this->language->get('txt_tel');
+        $data['txt_orders'] = $this->language->get('txt_orders');
+        $data['txt_ball_txt'] = $this->language->get('txt_ball_txt');
+        $data['txt_ball'] = $this->language->get('txt_ball');
+        $data['txt_all'] = $this->language->get('txt_all');
+        $data['txt_new'] = $this->language->get('txt_new');
+        $data['txt_view'] = $this->language->get('txt_view');
+        $data['txt_ball_true'] = $this->language->get('txt_ball_true');
+        $data['txt_ball_sell'] = $this->language->get('txt_ball_sell');
+        $data['txt_ball_not'] = $this->language->get('txt_ball_not');
+        $data['txt_pay_date'] = $this->language->get('txt_pay_date');
+        $data['txt_pay_cash'] = $this->language->get('txt_pay_cash');
+        $data['txt_pay_ball'] = $this->language->get('txt_pay_ball');
+        $data['txt_pay_ball_sell'] = $this->language->get('txt_pay_ball_sell');
+        $data['txt_data_end'] = $this->language->get('txt_data_end');
 
 		$total_bonuses = 0;
 		$bonuses_spent = 0;
@@ -59,9 +77,10 @@ class ControllerAccountOrder extends Controller {
 			foreach($products as $product){
 
 				$product_options = $this->model_account_order->getOrderOptions($result['order_id'], $product['order_product_id']);
-				$order_products_arr[] = '<span>'.$product['name'].', '.$product_options[0]['value'].'</span>';
+				$order_products_arr[] = '<span>'.$product['name'].', '.$product_options[0]['value'].' ('.$product['quantity'].')</span>' ;
 				$url .= ('&order_product_id[]='.$product['order_product_id']);
 			}
+
 			$data['orders'][] = array(
 				'order_id'   => $result['order_id'],
 				'name'       => $result['firstname'] ,
@@ -73,6 +92,7 @@ class ControllerAccountOrder extends Controller {
 				'total'      => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
 				'view'       => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], true),
 				'got_bonuses' => $result['got_points'],
+				'used_bonuses' => $result['used_points'],
 				'spent_bonuses' => $result['spent_points'],
 				'reserved_bonuses' => $result['reserved_points'],
 				'reorder'    => $this->url->link('account/order/reorder', $url, true),
@@ -377,7 +397,9 @@ class ControllerAccountOrder extends Controller {
 			if (isset($this->request->get['order_product_id']) && $this->request->get['order_product_id']) {
 				$this->cart->clear();
 				foreach($this->request->get['order_product_id'] as $order_product_id){
+
 					$order_product_info = $this->model_account_order->getOrderProduct($order_id, $order_product_id);
+
 					if ($order_product_info) {
 						$this->load->model('catalog/product');
 
@@ -399,8 +421,8 @@ class ControllerAccountOrder extends Controller {
 									$option_data[$order_option['product_option_id']] = $this->encryption->encrypt($this->config->get('config_encryption'), $order_option['value']);
 								}
 							}
-
-							$this->cart->add($order_product_info['product_id'], $order_product_info['quantity'], $option_data);
+							$attrs = json_decode($order_product_info['attrs'], true);
+							$this->cart->add($order_product_info['product_id'], $order_product_info['quantity'], $option_data, 0,$attrs);
 
 							$this->session->data['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $product_info['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
 
@@ -417,7 +439,7 @@ class ControllerAccountOrder extends Controller {
 
 			}
 		}
-
+		$this->response->setOutput(json_encode(['total' => $this->cart->getTotal()]));
 		//$this->response->redirect($this->url->link('account/order/info', 'order_id=' . $order_id));
 	}
 }

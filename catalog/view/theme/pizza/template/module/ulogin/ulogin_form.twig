@@ -1,6 +1,7 @@
 <div class="ulogin_form">
     {% if uloginid %}
-        <div id="uLogin" data-ulogin="display=panel;fields=first_name,last_name,email,photo;verify=1;theme=flat;providers=facebook;redirect_uri={{ redirect_uri }};callback={{ callback }}"></div>
+        <div id="uLogin" data-ulogin="display=panel;fields=first_name,last_name,email,phone,photo,bdate;verify=1;theme=flat;providers=facebook;redirect_uri={{ redirect_uri }};callback={{ callback }}"></div>
+
     {% else %}
         <div id="uLogin" data-uloginid="<?php echo $uloginid; ?>" data-ulogin="redirect_uri={{ redirect_uri }};callback={{ callback }}"></div>
     {% endif %}

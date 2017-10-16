@@ -22,6 +22,9 @@ $_['text_pay_carts'] = 'Оформити замовлення';
 
 $_['text_auth_phon'] = 'Телефон';
 $_['text_auth_phon_smal'] = 'телефон';
+$_['text_auth_phon_code']           = 'Код';
+$_['text_phon_auth_tit'] = "Отримати смс з кодом для верифікації телефону, дія обов'язкова";
+$_['text_auth_phon_smal_code']           = 'код из смс';
 $_['text_auth_pass'] = 'Пароль';
 $_['text_auth_pass_smal'] = 'пароль';
 $_['text_auth_chek'] = "Запам'ятати мене";

@@ -47,9 +47,17 @@
         display: block;
         transition: .1s;
         cursor: default;
-        &:hover,
+
+		&:hover {
+		  color: #e9ae4a;
+		  .hit-item__btn {
+			
+			cursor: pointer; }
+		  .hit-item__info-block {
+			border-color: #e9ae4a; } }
+
         &.active {
-          color: #e9ae4a;
+
           .hit-item__btn {
             background-color: #e9ae4a;
             color: #fff;
@@ -58,7 +66,7 @@
             border-color: #e9ae4a; } } }
       &-block {
         border-radius: 2px;
-        border: 1px solid #bababa;
+
         margin-bottom: 20px;
         display: block;
         padding: 10px 0; }

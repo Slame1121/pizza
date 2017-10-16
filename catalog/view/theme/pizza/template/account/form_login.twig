@@ -3,6 +3,8 @@
     <input class="auth_login" type="hidden" name="type_login" value="{{ form_login_action }}">
     <input class="auth_registr" type="hidden" name="type_registr" value="{{ form_register_action }}">
     <input class="auth_forgots" type="hidden" name="type_forgot" value="{{ form_forgot_action }}">
+    <input class="smsRec" name="sms_rec" type="hidden">
+    <input class="smsForg" name="sms_for" type="hidden">
     <label class="sing-log__label label-info hidden">
         <span class="sing-log__label-info">Info</span>
     </label>
@@ -23,6 +25,24 @@
         <div>
             <input class="auth_pass" type="password" name="password" placeholder="{{ text_auth_pass_smal }}" required>
         </div>
+    </label>
+    <label class="sing-log__label  label-tel-code hidden">
+        <span class="sing-log__label-name">{{ text_auth_phon_code }}</span>
+        <div>
+            <input class="auth_tel_code" type="number" name="tel_code" placeholder="{{ text_auth_phon_smal_code }}" data-mask="0000">
+        </div>
+        <span class="sing-log__label-name send-sms-tel" style="text-align: center;" title="{{ text_phon_auth_tit }}">
+            <img class="sms-send" src="/image/sms.png" width="30" height="30" style="cursor: pointer;">
+        </span>
+    </label>
+    <label class="sing-log__label  label-tel-codes hidden">
+        <span class="sing-log__label-name">{{ text_auth_phon_code }}</span>
+        <div>
+            <input class="auth_tel_codes" type="number" name="tel_codes" placeholder="{{ text_auth_phon_smal_code }}" data-mask="0000">
+        </div>
+        <span class="sing-log__label-name send-sms-tel" style="text-align: center;" title="{{ text_phon_auth_tit }}">
+            <img class="sms-sends" src="/image/sms.png" width="30" height="30" style="cursor: pointer;">
+        </span>
     </label>
     <div class="sing-log__box label-confirm">
         <label class="sing-log__box-label">
@@ -46,3 +66,6 @@
         <a class="btn sing-log__btn btn-orange  noLink" href="#" data-auth="{{ text_auth_login }}" data-regis="{{ text_register }}" data-send="{{ text_auth_send }}">{{ text_auth_login }}</a>
     </div>
 </form>
+<style>
+    .redBord{border: 1px solid red;}
+</style>

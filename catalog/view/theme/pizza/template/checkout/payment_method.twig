@@ -12,18 +12,18 @@
     {% endfor %}</select>
     </div>
 
-    <div class="basket-log__form-box cheque_price  {% if payment_method.code != 'cheque' %}hidden{% endif %}">
+    <div class="basket-log__form-box cheque_price {{ payment_method.code  }}  {% if code != 'cheque' %}hidden{% endif %}">
         <label class="basket-log__form-label basket-log__form-label--select"><span class="basket-log__form-name">Купюра номиналом: </span>
             <select name="nominal" class="basket-log__form-value">
-            <option value="0">Выберите номинал</option>
-            <option value="50">50 грн</option>
-            <option value="100">100 грн</option>
-            <option value="250">250 грн</option>
-            <option value="300">300 грн</option>
-            <option value="350">350 грн</option>
-            <option value="400">400 грн</option>
-            <option value="450">450 грн</option>
-            <option value="500">500 грн</option>
+            <option {% if not nominal or nominal == 0  %}selected{% endif %} value="0">Выберите номинал</option>
+            <option {% if nominal and nominal == 50  %}selected{% endif %} value="50">50 грн</option>
+            <option {% if nominal and nominal == 100  %}selected{% endif %} value="100">100 грн</option>
+            <option {% if nominal and nominal == 250  %}selected{% endif %} value="250">250 грн</option>
+            <option {% if nominal and nominal == 300  %}selected{% endif %} value="300">300 грн</option>
+            <option {% if nominal and nominal == 350  %}selected{% endif %} value="350">350 грн</option>
+            <option {% if nominal and nominal == 400  %}selected{% endif %} value="400">400 грн</option>
+            <option {% if nominal and nominal == 450  %}selected{% endif %} value="450">450 грн</option>
+            <option {% if nominal and nominal == 500  %}selected{% endif %} value="500">500 грн</option>
         </select>
     </div>
 

@@ -244,8 +244,12 @@ class ControllerApiShipping extends Controller {
 				}
 
 				if (!$json) {
+
 					$this->session->data['shipping_method'] = $this->session->data['shipping_methods'][$shipping[0]]['quote'][$shipping[1]];
 
+					if($this->session->data['shipping_method']['code'] == 'pickup.pickup'){
+						$this->session->data['shipping_method']['cost'] = -$this->cart->getTotal() * 0.1;
+					}
 					$json['success'] = $this->language->get('text_method');
 				}
 			} else {

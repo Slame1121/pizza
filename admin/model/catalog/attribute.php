@@ -1,7 +1,7 @@
 <?php
 class ModelCatalogAttribute extends Model {
 	public function addAttribute($data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "attribute SET attribute_group_id = '" . (int)$data['attribute_group_id'] . "', sort_order = '" . (int)$data['sort_order'] . "'");
+		$this->db->query("INSERT INTO " . DB_PREFIX . "attribute SET attribute_group_id = '" . (int)$data['attribute_group_id'] . "', sort_order = '" . (int)$data['sort_order'] . "', filter_name = '".$this->db->escape($data['filter_name']) . "'");
 
 		$attribute_id = $this->db->getLastId();
 
@@ -13,7 +13,7 @@ class ModelCatalogAttribute extends Model {
 	}
 
 	public function editAttribute($attribute_id, $data) {
-		$this->db->query("UPDATE " . DB_PREFIX . "attribute SET attribute_group_id = '" . (int)$data['attribute_group_id'] . "', price = ".(int)$data['price'].", image = '".$data['image']."', sort_order = '" . (int)$data['sort_order'] . "' WHERE attribute_id = '" . (int)$attribute_id . "'");
+		$this->db->query("UPDATE " . DB_PREFIX . "attribute SET attribute_group_id = '" . (int)$data['attribute_group_id'] . "', price = ".(int)$data['price'].", image = '".$data['image']."', sort_order = '" . (int)$data['sort_order'] . "', filter_name = '".$this->db->escape($data['filter_name']). "' WHERE attribute_id = '" . (int)$attribute_id . "'");
 
 		$this->db->query("DELETE FROM " . DB_PREFIX . "attribute_description WHERE attribute_id = '" . (int)$attribute_id . "'");
 

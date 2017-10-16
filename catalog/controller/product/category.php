@@ -73,6 +73,7 @@ class ControllerProductCategory extends Controller {
 				$category_info = $this->model_catalog_category->getCategory($path_id);
 
 				if ($category_info) {
+
 					$data['breadcrumbs'][] = array(
 						'text' => $category_info['name'],
 						'href' => $this->url->link('product/category', 'path=' . $path . $url)
@@ -148,10 +149,33 @@ class ControllerProductCategory extends Controller {
 				$this->request->get['page'] = $i;
 				$data['products'] .= $this->productslist($category_id);
 			}
-
-
+			$seo_filter = [];
 			$this->load->model('catalog/catalog');
 			$data['attributes'] = $this->model_catalog_catalog->getAttributes();
+			foreach($data['attributes'] as $group_id => $attribute_group){
+				foreach($attribute_group['attr'] as $key => $attribute){
+					if(isset($this->request->get['attributes']) && in_array($attribute['attribute_id'],$this->request->get['attributes'])){
+						$data['attributes'][$group_id]['attr'][$key]['checked'] = 1;
+					}
+					if(isset($this->request->get['attributes']) && in_array($attribute['attribute_id'], $this->request->get['attributes'])){
+						$seo_filter []=  $attribute['filter_name'];
+					}
+				}
+			}
+
+			if(isset($this->request->get['attributes'])){
+
+				$this->load->model('catalog/seofilter');
+				$seo_data = $this->model_catalog_seofilter->getSeFilter(implode('/', $seo_filter));
+				if($seo_data){
+					$this->document->setTitle($seo_data['meta_title']);
+					$this->document->setKeywords($seo_data['meta_keyword']);
+					$this->document->setDescription($seo_data['meta_description']);
+					$data['heading_title'] = $seo_data['meta_title'];
+				}
+			}
+
+
 			$url = '';
 
 			if (isset($this->request->get['filter'])) {
@@ -269,6 +293,7 @@ class ControllerProductCategory extends Controller {
 			$data['sort'] = $sort;
 			$data['order'] = $order;
 			$data['limit'] = $limit;
+			$data['page'] = $page;
 			$data['path'] = $this->request->get['path'];
 			$data['continue'] = $this->url->link('common/home');
 
@@ -345,6 +370,7 @@ class ControllerProductCategory extends Controller {
 			$limit = $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit');
 		}
 
+
 		if (isset($this->request->get['path'])) {
 
 			$parts = explode('_', (string)$this->request->get['path']);
@@ -357,6 +383,7 @@ class ControllerProductCategory extends Controller {
 		} else {
 			$page = 1;
 		}
+
 		if (isset($this->request->get['filter'])) {
 			$filter = $this->request->get['filter'];
 		} else {
@@ -384,10 +411,10 @@ class ControllerProductCategory extends Controller {
 			'start'              => ($page - 1) * $limit,
 			'limit'              => $limit
 		);
-		if(isset($this->request->post['attributes']) && $this->request->post['attributes']){
-			$filter_data['filter_attrs_id'] = $this->request->post['attributes'];
-		}
 
+		if(isset($this->request->get['attributes']) && $this->request->get['attributes']){
+			$filter_data['filter_attrs_id'] = $this->request->get['attributes'];
+		}
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 		$results = $this->model_catalog_product->getProducts($filter_data);
 		foreach ($results as $result) {
@@ -511,7 +538,49 @@ class ControllerProductCategory extends Controller {
 			);
 		}
         //var_dump($products_template);die;
-		$data['products'] = $this->load->view('common/products', ['products' => $products_template]);
+		$url = '';
+		$new_title = 'Пицца';
+		$meta_keywords = '';
+		$meta_description = '';
+		if(isset($this->request->get['attributes'] )){
+			$this->load->model('catalog/catalog');
+			$data['attributes'] = $this->model_catalog_catalog->getAttributes();
+			foreach($this->request->get['attributes'] as $attribute){
+				$url .= '&attributes[]=' . $attribute;
+			}
+			$filter_data = [];
+			foreach($data['attributes'] as $group_id => $attribute_group){
+				foreach($attribute_group['attr'] as $key => $attribute) {
+					if(in_array($attribute['attribute_id'], $this->request->get['attributes'])){
+						$filter_data[] = $attribute['filter_name'];
+					}
+				}
+			}
+			if($filter_data){
+				$this->load->model('catalog/seofilter');
+				$seo_data = $this->model_catalog_seofilter->getSeFilter(implode('/', $filter_data));
+				if($seo_data){
+					$new_title = $seo_data['meta_title'];
+					$meta_keywords = $seo_data['meta_keyword'];
+					$meta_description = $seo_data['meta_description'];
+				}
+			}
+		}
+		$page_url = $page > 1 ? '&page=' . $page : '';
+		$url = $this->url->link('product/category', 'path=' . $category_id .$page_url . $url);
+
+
+		$url = str_replace('&amp;', '&', $url);
+
+		$list_data =  [
+			'products' => $products_template,
+			'url' => $url,
+			'title' => $new_title,
+			'meta_keywords' => $meta_keywords,
+			'meta_description' => $meta_description,
+			'change_meta' => $category_id == 59
+		];
+		$data['products'] = $this->load->view('common/products',$list_data);
 		$url = '';
 
 		if (isset($this->request->get['filter'])) {
@@ -534,9 +603,9 @@ class ControllerProductCategory extends Controller {
 		$pagination->total = $product_total;
 		$pagination->page = $page;
 		$pagination->limit = $limit;
-		$pagination->url = $this->url->link('product/category', 'path=' . $category_id . $url . '&page={page}');
+		//$pagination->url = $this->url->link('product/category', 'path=' . $category_id . $url . '&page={page}');
 
-		$data['pagination'] = $pagination->render();
+	//	$data['pagination'] = $pagination->render();
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($product_total) ? (($page - 1) * $limit) + 1 : 0, ((($page - 1) * $limit) > ($product_total - $limit)) ? $product_total : ((($page - 1) * $limit) + $limit), $product_total, ceil($product_total / $limit));
 

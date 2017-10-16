@@ -66,6 +66,7 @@ class ControllerExtensionModuleBestSeller extends Controller {
                                 'name'                    => $option_value['name'],
                                 'image'                   => $this->model_tool_image->resize($option_value['image'], 50, 50),
                                 'price'                   => $price,
+								'weight'                   => $option_value['weight'],
                                 'price_prefix'            => $option_value['price_prefix']
                             );
                             $opt_val[] = array('prod_val'=>$option_value['product_option_value_id'],'opt_val'=>$option['product_option_id']);
@@ -118,9 +119,11 @@ class ControllerExtensionModuleBestSeller extends Controller {
 			}
             $data['text_hit'] = $this->language->get('text_hit');
             $data['cont'] = false;
-            //var_dump($_SERVER);die;
+            //var_dump($setting);die;
             if(@$this->request->get['route'] == "common/home" || $_SERVER["REQUEST_URI"] == '/'){
                 $data['cont'] = true;
+                $data['title'] = $setting["name"];
+
             }
             //var_dump($data['products']);die;
             if ($data['products']) {

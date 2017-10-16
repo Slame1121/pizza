@@ -13,8 +13,8 @@ var Catalog = {
 				progress = true;
 				form.find('input[name=page]').val(parseInt(form.find('input[name=page]').val()) + 1);
 				$.ajax( {
-					type: "POST",
-					url: form.attr( 'action' ) + '&page=' + form.find('input[name=page]').val() + '&path='+path,
+					type: "GET",
+					url: form.attr( 'action' ) ,
 					data: form.serialize(),
 					success: function( response ) {
 						if(response == ''){
@@ -37,9 +37,8 @@ var Catalog = {
 		form.find('input[name=page]').val(1);
 		this.end = false;
 		$.ajax( {
-			type: "POST",
-			url: form.attr( 'action' ) + '&page=' + form.find('input[name=page]').val(),
-			data: form.serialize(),
+			type: "GET",
+			url: form.attr( 'action' ) + '&' + form.serialize(),
 			success: function( response ) {
 				$('.hit__content').empty().html(response);
 			}

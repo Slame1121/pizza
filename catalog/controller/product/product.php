@@ -61,10 +61,11 @@ class ControllerProductProduct extends Controller {
 					$url .= '&limit=' . $this->request->get['limit'];
 				}
 
-				$data['breadcrumbs'][] = array(
+				/*$data['breadcrumbs'][] = array(
 					'text' => $category_info['name'],
 					'href' => $this->url->link('product/category', 'path=' . $this->request->get['path'] . $url)
 				);
+				*/
 			}
 		}
 
@@ -210,10 +211,7 @@ class ControllerProductProduct extends Controller {
 				$url .= '&limit=' . $this->request->get['limit'];
 			}
 
-			$data['breadcrumbs'][] = array(
-				'text' => $product_info['name'],
-				'href' => $this->url->link('product/product', $url . '&product_id=' . $this->request->get['product_id'])
-			);
+
 
 			$this->document->setTitle($product_info['meta_title']);
 			$this->document->setDescription($product_info['meta_description']);
@@ -228,12 +226,33 @@ class ControllerProductProduct extends Controller {
 			//$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
 
 			$categories = $this->model_catalog_product->getProductCategories($product_id);
+
 			if(in_array(59, $categories)){
 				$data['is_pizza'] = 1;
+				$data['breadcrumbs'][] = array(
+					'text' => 'Пицца',
+					'href' => $this->url->link('product/category', '&path=59')
+				);
 			}else{
+				if(in_array(61, $categories)){
+					$data['breadcrumbs'][] = array(
+						'text' => 'Напитки',
+						'href' => $this->url->link('product/category', '&path=61')
+					);
+				}else{
+					if(in_array(60, $categories)){
+						$data['breadcrumbs'][] = array(
+							'text' => 'Салаты',
+							'href' => $this->url->link('product/category', '&path=60')
+						);
+					}
+				}
 				$data['is_pizza'] = 0;
 			}
-
+			$data['breadcrumbs'][] = array(
+				'text' => $product_info['name'],
+				'href' => $this->url->link('product/product', $url . '&product_id=' . $this->request->get['product_id'])
+			);
 
 			$data['heading_title'] = $product_info['name'];
 

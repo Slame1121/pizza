@@ -73,7 +73,7 @@ var valid = {
             $(el).next('.reviews-text-error').remove();
             htm = '<span class="reviews-text-error hidden">'+txt+'</span>';
             $(el).addClass('error').after(htm).show();
-            $(el).parent().parent().find('.sing-log__label-name').addClass('error').attr('title',er.text);
+            $(el).parent().parent().find('.sing-log__label-name').addClass('error').attr('title',txt);
             //$(el).next('.reviews-text-error');//.css('left', pos.left+'px');
         }
         $(el).bind('click', {}, function(eventObject){ valid.resetErr(this);} );
@@ -85,9 +85,9 @@ var valid = {
             this.addErr(inp,valid.error_txt.no_data);
         }else {
             if (/^[0-9]/.test(vals)) {
-                this.addErr(inp, valid.error_txt.no_val);
+               // this.addErr(inp, valid.error_txt.no_val);
             } else {
-                if (vals.length < 3) {
+                if (vals.length < 1) {
                     this.addErr(inp, valid.error_txt.min_val);
                 } else {
                     if (vals.length > 40) {
@@ -139,10 +139,10 @@ var valid = {
             // if (/[+^[0-9]/.test(vals)) {
             //     this.addErr(inp,valid.error_txt.no_val);
             // } else {
-                if (vals.length < 3) {
+                if (vals.length < 16) {
                     this.addErr(inp, valid.error_txt.min_val_tel);
                 } else {
-                    if (vals.length > 40) {
+                    if (vals.length > 20) {
                         this.addErr(inp, valid.error_txt.max_val_tel);
                     } else {
                         this.resetErr(inp);

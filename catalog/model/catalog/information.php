@@ -24,13 +24,13 @@ class ModelCatalogInformation extends Model {
     public function getInformationMap($information_id) {
         $map_data = array();
 
-        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "map_metka WHERE information_id = '" . (int)$information_id . "'");
+        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "map_metka WHERE information_id = '" . (int)$information_id . "' AND status = 1");
         if($query->rows){
             $map_data = $query->rows[0];
             $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "map_metka_poligon WHERE information_id = '" . (int)$information_id . "'");
 
             foreach ($query->rows as $result) {
-                $map_data['poligon'][] = $result;
+                $map_data['poligon'][$result["zona"]][] = $result;
             }
         }
 

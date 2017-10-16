@@ -20,24 +20,28 @@
         </div>
         <div class="basket-log__form-box">
             <label class="basket-log__form-label"><span class="basket-log__form-name">Комментарий</span>
-                <textarea name="comment" class="basket-log__form-mess"></textarea>
+                <textarea name="comment" class="basket-log__form-mess">{{ comment }}</textarea>
             </label>
         </div>
         <div class="basket-log__form-box">
             <label class="basket-log__form-label basket-log__form-label--bonus"><span class="basket-log__form-name basket-log__form-name--bonus">Количество бонусов<span>Доступно {{ bonuses }}</span></span>
-                <input class="basket-log__form-value basket-log__form-value--bonus" type="text" name="used_points">
+                <input class="basket-log__form-value basket-log__form-value--bonus" value="{{ want_to_use }}" type="text" name="used_points">
             </label>
         </div>
         {{ payment_method }}
         <div class="basket-log__form-box">
             <div class="basket-log__form-summa">
                 <div class="basket-log__form-name">Цена</div>
-                <div class="basket-log__form-num" data-price="{{ total_cart_price_def }}"><span>{{ total_cart_price }}</span> грн</div>
+                <div class="basket-log__form-num" data-price="{{ total_cart_price_def }}"><span>{{ total_cart_price }}</span> грн <p class="pickup_text {% if not shipping_method_code or shipping_method_code != 'pickup' %}hidden{% endif %}">{% if pickup_discount %}(- {{ pickup_discount }} грн за самовывоз){% endif %}</p></div>
             </div>
         </div>
         {%  if not logged %}
-            <div class="basket-log__form-text">Вы получите <span>{{ can_get_bonuses }}</span> гривен на бонусный счет за этот заказ, <br>если сейчас присоединитесь к семье <a href="#">Pizza Famiglia</a></div>
+            <div class="basket-log__form-text">Вы получите <span>{{ can_get_bonuses }}</span> гривен на бонусный счет за этот заказ, <br>если сейчас присоединитесь к семье <a  href="#" id="login_for_bonuses">Pizza Famiglia</a></div>
         {%  endif %}
     </form>
 </div>
 <div class="basket-log__bottom basket-log__bottom--center"><a data-type="checkout" class="btn basket-log__btn btn-orange" href="#">Далее</a></div>
+
+<script type="text/javascript">
+    $('.basket-log__form-label--telephone input').mask('+38 000 000 00 00');
+</script>

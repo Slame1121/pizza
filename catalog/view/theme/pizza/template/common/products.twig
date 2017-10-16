@@ -1,3 +1,4 @@
+{% if products %}
 {% for product in products %}
 <div class="hit-item">
     <a class="hit-item__box {% if product.prod_type > 0 %} mode-hit {% endif %}" href="{{ product.href }}" style="background-image: url({{ product.thumb }});" data-info="{{ product.label_text }}">
@@ -8,7 +9,7 @@
         <span class="hit-item__info">
             {% for option in product.options %}
                 {% for key, value in option.product_option_value %}
-                    <span class="hit-item__info-box {% if key == 0 %}active{% endif %}">
+                    <span class="hit-item__info-box {% if key == option.product_option_value|length  - 1 %}active{% endif %}">
                         <span class="hit-item__info-block">
                             <span class="hit-item__info-size">{{ value.name }}{% if value.weight > 0 %}<span>{{ value.weight }}</span>{% endif %}</span>
                             <span class="hit-item__info-price">{{ value.price }}</span>
@@ -24,3 +25,25 @@
     </a>
 </div>
 {% endfor %}
+    <script type="text/javascript">
+        $('document').ready(function(){
+            //change url
+            history.pushState(null, null, '{{ url }}');
+            {% if change_meta %}
+            //set new title
+            {% if title != '' %}
+            document.title = '{{ title }}';
+            $('.menu h1').text('{{ title }}');
+            {% endif %}
+
+            $('meta[name=keywords]').remove();
+            $('head').append( '<meta name="keywords" content="{{ meta_keywords }}">' );
+
+            $('meta[name=description]').remove();
+            $('head').append( '<meta name="description" content="{{ meta_description }}">' );
+            {% endif %}
+
+
+        });
+    </script>
+{% endif %}

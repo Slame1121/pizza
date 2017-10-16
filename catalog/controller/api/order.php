@@ -55,7 +55,12 @@ class ControllerApiOrder extends Controller {
 					}
 
 					if (!$json) {
+
 						$this->session->data['shipping_method'] = $this->session->data['shipping_methods'][$shipping[0]]['quote'][$shipping[1]];
+
+						if($this->session->data['shipping_method']['code'] == 'pickup.pickup'){
+							$this->session->data['shipping_method']['cost'] = -$this->cart->getTotal() * 0.1;
+						}
 					}
 				}
 
@@ -285,6 +290,7 @@ class ControllerApiOrder extends Controller {
 						}else{
 							$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 						}
+
 					}
 				}
 
@@ -295,6 +301,7 @@ class ControllerApiOrder extends Controller {
 				}
 
 				array_multisort($sort_order, SORT_ASC, $total_data['totals']);
+
 
 				$order_data = array_merge($order_data, $total_data);
 
@@ -445,7 +452,12 @@ class ControllerApiOrder extends Controller {
 
 						if (!$json) {
 							$this->session->data['shipping_method'] = $this->session->data['shipping_methods'][$shipping[0]]['quote'][$shipping[1]];
+							if($this->session->data['shipping_method']['code'] == 'pickup.pickup'){
+								$this->session->data['shipping_method']['cost'] = -$this->cart->getTotal() * 0.1;
+							}
 						}
+
+
 					}
 
 					if (!isset($this->session->data['shipping_method'])) {
@@ -456,6 +468,9 @@ class ControllerApiOrder extends Controller {
 					unset($this->session->data['shipping_method']);
 					unset($this->session->data['shipping_methods']);
 				}
+
+
+
 
 				// Cart
 				if ((!$this->cart->hasProducts() && empty($this->session->data['vouchers'])) || (!$this->cart->hasStock() && !$this->config->get('config_stock_checkout'))) {
@@ -561,6 +576,8 @@ class ControllerApiOrder extends Controller {
 						} else {
 							$order_data['shipping_code'] = '';
 						}
+
+
 					} else {
 						$order_data['shipping_firstname'] = '';
 						$order_data['shipping_lastname'] = '';
@@ -658,18 +675,10 @@ class ControllerApiOrder extends Controller {
 					foreach ($results as $result) {
 						if ($this->config->get('total_' . $result['code'] . '_status')) {
 							$this->load->model('extension/total/' . $result['code']);
-							
+
 							// We have to put the totals in an array so that they pass by reference.
-							if(isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup.pickup'){
-								$this->{'model_extension_total_' . $result['code']}->getTotal($total_data, $total_data['total'] * 0.1);
-								foreach($total_data['totals'] as $key => $total_value){
-									if($total_value['code'] == 'total'){
-										$total_data['totals'][$key]['value'] = $total_data['total'] - $total_data['total'] * 0.1;
-									}
-								}
-							}else{
-								$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
-							}
+							$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+
 						}
 					}
 
@@ -678,7 +687,6 @@ class ControllerApiOrder extends Controller {
 					foreach ($total_data['totals'] as $key => $value) {
 						$sort_order[$key] = $value['sort_order'];
 					}
-
 					array_multisort($sort_order, SORT_ASC, $total_data['totals']);
 					$order_data = array_merge($order_data, $total_data);
 

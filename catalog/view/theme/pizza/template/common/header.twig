@@ -54,7 +54,7 @@
                                 <div class="phone__item">{{ telephone }}</div>
                                 <div class="phone__item">{{ telephone2 }}</div>
                                 <div class="phone__text">11:00 - 23:00 {{ text_titles }}</div>
-                                <div class="phone__text phone__text--small">с 11 до 23:00</div>
+                                <div class="phone__text phone__text--small">с 11:00 до 23:00</div>
                             </div>
                         </div>
                         <div class="header-box__ctrls">
@@ -133,9 +133,9 @@
             <div class="drop-menu__box"><a class="drop-menu__close noLink" href="#"></a>
                 <div class="drop-menu__sing">
                     {% if logged %}
-                        <a class="drop-menu__sing-link" href="{{ logout }}">{{ text_logout }}</a>
+                        <a class="drop-menu__sing-link " href="{{ account }}" title="Личный Кабинет">Личный Кабинет</a> | <a class="drop-menu__sing-link" href="{{ logout }}">{{ text_logout }}</a>
                     {% else %}
-                        <a class="drop-menu__sing-link noLink" href="#"><span> </span>{{ text_login_txt }}</a>
+                        <a class="drop-menu__sing-link " href="#"><span> </span>{{ text_login_txt }}</a>
                     {% endif %}
                 </div>
                 <div class="drop-menu__sing-content">
@@ -145,24 +145,22 @@
                     {% endif %}
                 </div>
                 <ul class="drop-menu__list">
-                    <li class="drop-menu__item"><a class="drop-menu__link" href="#">Пицца</a></li>
-                    <li class="drop-menu__item"><a class="drop-menu__link" href="#">Салаты</a></li>
-                    <li class="drop-menu__item"><a class="drop-menu__link" href="#">Напитки</a></li>
-                    <li class="drop-menu__item"><a class="drop-menu__link" href="#">Акции</a></li>
-                    <li class="drop-menu__item"><a class="drop-menu__link" href="#">О нас</a></li>
-                    <li class="drop-menu__item"><a class="drop-menu__link" href="#">Контакты</a></li>
-                    <li class="drop-menu__item"><a class="drop-menu__link" href="#">Доставка и оплата</a></li>
+                    {{ adaptive_menu }}
+
                 </ul>
                 <div class="drop-menu__lang">
                     <div class="header-box__lang">
-                        <div class="header-box__lang-box">
-                            <input type="radio" name="lang-menu" id="lang-uk-menu">
-                            <label class="header-box__lang-label header-box__lang-label-uk" for="lang-uk-menu">Укр</label>
-                        </div>
-                        <div class="header-box__lang-box">
-                            <input type="radio" name="lang-menu" id="lang-ru-menu" checked>
-                            <label class="header-box__lang-label header-box__lang-label-ru" for="lang-ru-menu">Рус</label>
-                        </div>
+                        {% if languages|length > 1 %}
+                        <form action="{{ language_change_action }}" method="post" enctype="multipart/form-data" id="form-language-adaptive">
+                            {% for language in languages %}
+                                <div class="header-box__lang-box adaptive_lang_box" id="">
+                                    <input value="{{ language.code }}" type="radio" {% if language.code == language_code %} checked {% endif %}  name="code" id="lang-{{ language.code }}-menu">
+                                    <label class="header-box__lang-label header-box__lang-label-{{ language.code }}" for="lang-{{ language.code }}-menu">{{ language.name }}</label>
+                                </div>
+                            {% endfor %}
+                            <input type="hidden" name="language_redirect" value="{{ redirect }}" />
+                        </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -418,6 +418,13 @@ class ControllerCatalogInformation extends Controller {
 		} else {
 			$data['map'] = array();
 		}
+        if(!isset($data['map']['lat'])){
+            $data['map'] = [
+                "lat" => "50.44263847959072",
+                "lng" => "30.5474853515625",
+                "zoom" => "8"
+            ];
+        }
 
 		$this->load->model('design/layout');
 

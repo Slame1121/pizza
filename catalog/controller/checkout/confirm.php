@@ -378,8 +378,17 @@ class ControllerCheckoutConfirm extends Controller {
 				$order_data['accept_language'] = '';
 			}
 
+			$this->load->model('account/customer');
 
 
+			if ($this->customer->isLogged()) {
+
+				$customer_order_data = [
+						'last_shipping_method' => $order_data['shipping_code'],
+						'last_pament_method' => $order_data['payment_code']
+				];
+				$this->model_account_customer->editOrderInformation($customer_order_data);
+			}
 			$this->load->model('checkout/order');
 
 			$this->session->data['order_id'] = $this->model_checkout_order->addOrder($order_data);

@@ -64,6 +64,12 @@ class ModelAccountCustomer extends Model {
 		$this->db->query("UPDATE " . DB_PREFIX . "customer SET newsletter = '" . (int)$newsletter . "' WHERE customer_id = '" . (int)$this->customer->getId() . "'");
 	}
 
+	public function editOrderInformation($data){
+		$this->db->query("UPDATE " . DB_PREFIX . "customer
+		SET  last_pament_method = '" . $data['last_pament_method'] . "', last_shipping_method = '" . $data['last_shipping_method'] . "'
+		  WHERE customer_id = '" . (int)$this->customer->getId() . "'");
+	}
+
 	public function getCustomer($customer_id) {
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE customer_id = '" . (int)$customer_id . "'");
 

@@ -89,9 +89,12 @@ class ControllerCheckoutPaymentMethod extends Controller {
 		if (isset($this->session->data['payment_method']['code'])) {
 			$data['code'] = $this->session->data['payment_method']['code'];
 		} else {
-			$data['code'] = '';
+			if($this->customer->isLogged()){
+				$data['code'] = $this->customer->last_payment_method;
+			}else{
+				$data['code'] = '';
+			}
 		}
-
 		if (isset($this->session->data['comment'])) {
 			$data['comment'] = $this->session->data['comment'];
 		} else {

@@ -1,7 +1,8 @@
 <?php
 class ModelCheckoutOrder extends Model {
 	public function addOrder($data) {
-		$this->db->query("INSERT INTO `" . DB_PREFIX . "order` SET 
+
+		$this->db->query("INSERT INTO `" . DB_PREFIX . "order` SET
 		                invoice_prefix = '" . $this->db->escape($data['invoice_prefix']) . "', 
 		                store_id = '" . (int)$data['store_id'] . "', 
 		                store_name = '" . $this->db->escape($data['store_name']) . "', 
@@ -42,7 +43,7 @@ class ModelCheckoutOrder extends Model {
 		                 shipping_paradnya = '" . $this->db->escape($data['shipping_paradnya']) . "',
 		                 shipping_floor = '" . $this->db->escape($data['shipping_floor']) . "',
 		                 shipping_flat = '" . $this->db->escape($data['shipping_flat']) . "',
-		                 nominal = '" . isset($data['nominal']) ? $this->db->escape($data['nominal']) : 0 . "',
+		                 nominal = '" . (isset($data['nominal']) ? $this->db->escape($data['nominal']) : 0) . "',
 		                   shipping_code_door = '" . $this->db->escape($data['shipping_code_door']) . "',
 		                shipping_country_id = '" . (int)$data['shipping_country_id'] . "', shipping_zone = '" . $this->db->escape($data['shipping_zone']) . "', shipping_zone_id = '" . (int)$data['shipping_zone_id'] . "', shipping_address_format = '" . $this->db->escape($data['shipping_address_format']) . "', shipping_custom_field = '" . $this->db->escape(isset($data['shipping_custom_field']) ? json_encode($data['shipping_custom_field']) : '') . "', shipping_method = '" . $this->db->escape($data['shipping_method']) . "', shipping_code = '" . $this->db->escape($data['shipping_code']) . "', comment = '" . $this->db->escape($data['comment']) . "', total = '" . (float)$data['total'] . "', affiliate_id = '" . (int)$data['affiliate_id'] . "', commission = '" . (float)$data['commission'] . "', marketing_id = '" . (int)$data['marketing_id'] . "', tracking = '" . $this->db->escape($data['tracking']) . "', language_id = '" . (int)$data['language_id'] . "', currency_id = '" . (int)$data['currency_id'] . "', currency_code = '" . $this->db->escape($data['currency_code']) . "', currency_value = '" . (float)$data['currency_value'] . "', ip = '" . $this->db->escape($data['ip']) . "', forwarded_ip = '" .  $this->db->escape($data['forwarded_ip']) . "', user_agent = '" . $this->db->escape($data['user_agent']) . "', accept_language = '" . $this->db->escape($data['accept_language']) . "',reserved_points = '".(isset($data['reserved_points']) ? $this->db->escape($data['reserved_points']) : 0)."', used_points = '".(isset($data['used_points']) ? $this->db->escape($data['used_points']) : 0)."',date_added = NOW(), date_modified = NOW()");
 

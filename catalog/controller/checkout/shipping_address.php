@@ -18,6 +18,48 @@ class ControllerCheckoutShippingAddress extends Controller {
 			$data['postcode'] = '';
 		}
 
+		if (isset($this->session->data['shipping_address']['nas_punkt'])) {
+			$data['nas_punkt'] = $this->session->data['shipping_address']['nas_punkt'];
+		} else {
+			$data['nas_punkt'] = '';
+		}
+
+		if (isset($this->session->data['shipping_address']['street'])) {
+			$data['street'] = $this->session->data['shipping_address']['street'];
+		} else {
+			$data['street'] = '';
+		}
+
+		if (isset($this->session->data['shipping_address']['house'])) {
+			$data['house'] = $this->session->data['shipping_address']['house'];
+		} else {
+			$data['house'] = '';
+		}
+
+		if (isset($this->session->data['shipping_address']['paradnya'])) {
+			$data['paradnya'] = $this->session->data['shipping_address']['paradnya'];
+		} else {
+			$data['paradnya'] = '';
+		}
+
+		if (isset($this->session->data['shipping_address']['floor'])) {
+			$data['floor'] = $this->session->data['shipping_address']['floor'];
+		} else {
+			$data['floor'] = '';
+		}
+
+		if (isset($this->session->data['shipping_address']['flat'])) {
+			$data['flat'] = $this->session->data['shipping_address']['flat'];
+		} else {
+			$data['flat'] = '';
+		}
+
+		if (isset($this->session->data['shipping_address']['code_door'])) {
+			$data['code_door'] = $this->session->data['shipping_address']['code_door'];
+		} else {
+			$data['code_door'] = '';
+		}
+
 		if (isset($this->session->data['shipping_address']['country_id'])) {
 			$data['country_id'] = $this->session->data['shipping_address']['country_id'];
 		} else {
@@ -53,7 +95,15 @@ class ControllerCheckoutShippingAddress extends Controller {
 			$data['shipping_address_custom_field'] = array();
 		}
 
-		$data['code'] = isset($this->session->data['shipping_method']['code']) ? $this->session->data['shipping_method']['code'] : '';
+		 if(isset($this->session->data['shipping_method']['code'])) {
+			 $data['code'] =  $this->session->data['shipping_method']['code'] ;
+		}else{
+			 if($this->customer->isLogged()){
+				 $data['code']= $this->customer->last_shipping_method;
+			 }else{
+				 $data['code']= '';
+			 }
+		}
 
 		return $this->load->view('checkout/shipping_address', $data);
 	}

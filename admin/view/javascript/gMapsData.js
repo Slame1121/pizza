@@ -89,7 +89,7 @@ $(document).ready(function() {
             }else{
                 mapPos = false;
             }
-            if(zonMet){
+            if(zonMet && count(zonMet[0])){
                 zonMet[0].checked = true;
             }
         }

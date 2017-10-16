@@ -70,8 +70,14 @@ class ControllerCheckoutCheckout extends Controller {
 
 		if(isset($this->session->data['shipping_method']['code'])){
 			$data['shipping_method_code'] = $this->session->data['shipping_method']['code'];
-		}
+		}else{
 
+			if($this->customer->isLogged()){
+				$data['shipping_method_code']= $this->customer->last_shipping_method;
+			}else{
+				$data['shipping_method_code']= '';
+			}
+		}
 		$data['text_checkout_option'] = sprintf($this->language->get('text_checkout_option'), 1);
 		$data['text_checkout_account'] = sprintf($this->language->get('text_checkout_account'), 2);
 		$data['text_checkout_payment_address'] = sprintf($this->language->get('text_checkout_payment_address'), 2);
@@ -118,8 +124,8 @@ class ControllerCheckoutCheckout extends Controller {
 
 		}
 		$data['comment'] = isset($this->session->data['comment']) ? $this->session->data['comment'] : '';
-		$data['firstname'] = $this->customer->getFirstName();
-		$data['telephone'] = $this->customer->getTelephone();
+		$data['firstname'] = isset($this->session->data['guest']['firstname']) ? $this->session->data['guest']['firstname'] : $this->customer->getFirstName();
+		$data['telephone'] = isset($this->session->data['guest']['telephone']) ? $this->session->data['guest']['telephone'] : $this->customer->getTelephone();
 		$data['bonuses'] = isset($this->customer->bonuses) ? ($this->customer->bonuses) : 0;
 
 		$data['can_get_bonuses'] = $this->cart->getTotal() * 0.05;
@@ -191,6 +197,19 @@ class ControllerCheckoutCheckout extends Controller {
 		$this->session->data['guest']['telephone'] = $this->request->post['telephone'];
 		$this->session->data['guest']['used_points'] = isset($this->request->post['used_points']) ? (int)$this->request->post['used_points'] : 0;
 		$this->load->model('account/address');
+
+		$code = explode('.',$this->request->post['shipping_method'])[0];
+		$this->session->data['shipping_method']['code'] = $code;
+		if(isset($this->session->data['shipping_methods'][$code])){
+			$shipping_method_title = $this->session->data['shipping_methods'][$code]['title'];
+		}else{
+			$shipping_method_title = '';
+		}
+		if($code == 'pickup'){
+			$this->session->data['shipping_method']['cost'] = -($this->cart->getTotal() - $this->session->data['guest']['used_points']) * 0.1;
+		}else{
+			$this->session->data['shipping_method']['cost'] = 0;
+		}
 		if(isset($this->request->post['address_id'])){
 
 			$adress = $this->model_account_address->getAddress((int)$this->request->post['address_id']);
@@ -210,7 +229,10 @@ class ControllerCheckoutCheckout extends Controller {
 			$this->session->data['shipping_address']['flat'] = isset($this->request->post['flat']) ? $this->request->post['flat'] : '';
 			$this->session->data['shipping_address']['code_door'] =isset($this->request->post['code_door']) ? $this->request->post['code_door'] : '';
 			if($this->customer->isLogged()){
-				$this->model_account_address->addAddress($this->customer->getId(), $this->request->post);
+				if($this->session->data['shipping_method']['code'] != 'pickup'){
+					$this->model_account_address->addAddress($this->customer->getId(), $this->session->data['shipping_address']);
+				}
+
 			}
 
 		}
@@ -218,23 +240,13 @@ class ControllerCheckoutCheckout extends Controller {
 
 
 
-		$code = explode('.',$this->request->post['shipping_method'])[0];
-		$this->session->data['shipping_method']['code'] = $code;
-		if(isset($this->session->data['shipping_methods'][$code])){
-			$shipping_method_title = $this->session->data['shipping_methods'][$code]['title'];
-		}else{
-			$shipping_method_title = '';
-		}
-		if($code == 'pickup'){
-			$this->session->data['shipping_method']['cost'] = -($this->cart->getTotal() - $this->session->data['guest']['used_points']) * 0.1;
-		}else{
-			$this->session->data['shipping_method']['cost'] = 0;
-		}
+
 
 		$this->session->data['shipping_method']['title'] = $shipping_method_title;
 
 		$this->session->data['comment'] = $this->request->post['comment'];
 		$this->session->data['payment_method']['code'] = $this->request->post['payment_method'];
+
 		if(isset($this->session->data['payment_methods'][$this->request->post['payment_method']])){
 			$payment_method_title = $this->session->data['payment_methods'][$this->request->post['payment_method']]['title'];
 		}else{

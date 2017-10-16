@@ -33,6 +33,11 @@ var Checkout = {
 			email.addClass('error')
 			error = true;
 		}
+		var telephone = $('#checkout-checkout').find('input[name=telephone]');
+		if(telephone.val() == ''){
+			telephone.parent().find('span').addClass('error');
+			telephone.addClass('error')
+		}
 		if(!error){
 			switch(method) {
 				case 'citylink.citylink':

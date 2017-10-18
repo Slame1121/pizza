@@ -32,7 +32,7 @@
         <div class="basket-log__form-box">
             <div class="basket-log__form-summa">
                 <div class="basket-log__form-name">Цена</div>
-                <div class="basket-log__form-num" data-price="{{ total_cart_price_def }}"><span>{{ total_cart_price }}</span> грн <p class="pickup_text {% if not shipping_method_code or shipping_method_code != 'pickup' %}hidden{% endif %}">{% if pickup_discount %}(- {{ pickup_discount }} грн за самовывоз){% endif %}</p></div>
+                <div class="basket-log__form-num" data-price="{{ total_cart_price_def }}"><span>{{ total_cart_price }}</span> грн <p class="pickup_text {% if shipping_method_code != 'pickup' %}hidden{% endif %}">{% if pickup_discount %}(- {{ pickup_discount }} грн за самовывоз){% endif %}</p></div>
             </div>
         </div>
         {%  if not logged %}

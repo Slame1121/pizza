@@ -26,7 +26,7 @@
 </div>
 {% endfor %}
     <script type="text/javascript">
-        $('document').ready(function(){
+        $('document').ready(function() {
             //change url
             history.pushState(null, null, '{{ url }}');
             {% if change_meta %}
@@ -34,6 +34,11 @@
             {% if title != '' %}
             document.title = '{{ title }}';
             $('.menu h1').text('{{ title }}');
+            {% endif %}
+
+            $('meta[name=robots]').remove();
+            {% if not allow_index %}
+                $('head').append( '<meta name="robots" content="noindex, follow">' );
             {% endif %}
 
             $('meta[name=keywords]').remove();

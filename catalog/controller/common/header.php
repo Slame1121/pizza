@@ -155,6 +155,8 @@ class ControllerCommonHeader extends Controller {
 
 			$data['redirect'] = $this->url->link($route, $url, $this->request->server['HTTPS']);
 		}
+
+		$data['no_index'] = $this->document->getNoIndex();
         //var_dump($data['header_slogan']);die;
         //$data['header_slogan'] = $this->model_catalog_information->getInformation($information_id);
 

@@ -127,12 +127,12 @@ class  ControllerProductReview extends Controller
                 $json['error'][] = ['inp' => "input[name='name']" , 'text' => $this->language->get('error_name')];
             }
 
-            if ((utf8_strlen($this->request->post['phone']) < 5) || (utf8_strlen($this->request->post['phone']) > 15)) {
-                $json['error'][] = ['inp' => "input[name='phone']" , 'text' => $this->language->get('error_name')];
+         //   if ((utf8_strlen($this->request->post['phone']) < 5) || (utf8_strlen($this->request->post['phone']) > 15)) {
+                //$json['error'][] = ['inp' => "input[name='phone']" , 'text' => $this->language->get('error_name')];
 
-            }
+          //  }
 
-            if ((utf8_strlen($this->request->post['text']) < 25) || (utf8_strlen($this->request->post['text']) > 1000)) {
+            if ((utf8_strlen($this->request->post['text']) < 5) || (utf8_strlen($this->request->post['text']) > 1000)) {
                 $json['error'][] = ['inp' => "textarea[name='text']" , 'text' => $this->language->get('error_text')];
             }
 

@@ -1,27 +1,34 @@
 {{ header }}
-<section class="card page">
-    <div class="container">
+<section class="card page" >
+    <div class="container" itemscope itemtype="http://schema.org/Product">
         <div class="card__top">
-            <h2>{{ heading_title }}</h2>
+            <h1 itemprop="name">{{ heading_title }}</h1>
             <div class="card__controls">
-                <ul class="card__controls-breadcrumb">
+                <ol itemscope itemtype="http://schema.org/BreadcrumbList" class="card__controls-breadcrumb">
+                    {% set count = 1 %}
                     {% for breadcrumb in breadcrumbs %}
-                        <li> {% if loop.index != breadcrumbs|length  %}<a href="{{ breadcrumb.href }}"> {% endif %}{{ breadcrumb.text }} {% if loop.index != breadcrumbs|length  %}</a>{% endif %}</li>
+                        <li itemprop="itemListElement" itemscope
+                            itemtype="http://schema.org/ListItem" > {% if loop.index != breadcrumbs|length  %}<a itemscope itemtype="http://schema.org/Thing"
+                                                                                                                 itemprop="item"  href="{{ breadcrumb.href }}"> {% endif %}<span itemprop="name">{{ breadcrumb.text }} </span>{% if loop.index != breadcrumbs|length  %}</a>{% endif %}
+                            <meta itemprop="position" content="{{ count }}" />
+                            {% set count = count + 1 %}
+                        </li>
                         {% if loop.index != breadcrumbs|length  %}
                             <li><i class="card__controls-breadcrumb_delimiter" >></i></li>
                         {% endif %}
                     {% endfor %}
-                </ul><a class="card__btn card__next hidden" href="#">Гавайская →</a>
+                </ol>
             </div>
         </div>
         <div class="card__content">
             <div class="card__block">
-                <div class="card__img"><img src="{{ thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}">
+                <div class="card__img"><img itemprop="image" src="{{ thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}">
                     <div class="card__text">Вид реального товара может незначительно отличаться от изображения на сайте</div>
                 </div>
             </div>
             <div class="card-price__wrap">
-                <div class="card-price">
+                <div class="card-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                    <meta itemprop="priceCurrency" content="UAH" />
                     {% if options %}
                         {% for option in options %}
                             {% if option.type == 'radio' %}
@@ -34,7 +41,8 @@
                                         <span class="card-price__size">{{ option_value.name }}
                                             <span>{{ option_value.weight }}</span>
                                         </span>
-                                        <span class="card-price__num">{% if option_value.price %}{{ option_value.price }}{% endif %}</span>
+                                        <span class="hidden" itemprop="price">{{ option_value.cost }}</span>
+                                        <span class="card-price__num" >{% if option_value.price %}{{ option_value.price }}{% endif %}</span>
                                     </span>
                                     </label>
                                 {% endfor %}
@@ -65,14 +73,15 @@
         </div>
         {{ content_bottom }}
     </div>
+
+    <div class="container container_reviews">
+        {{ reviews }}
+
+    </div>
     <div class="card-reviews">
         <div class="container">
             {{ reviews_add }}
         </div>
-    </div>
-    <div class="container container_reviews">
-        {{ reviews }}
-
     </div>
 </section>
 <div class="hidden">

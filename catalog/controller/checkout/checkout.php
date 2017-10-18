@@ -62,11 +62,6 @@ class ControllerCheckoutCheckout extends Controller {
 		$data['want_to_use'] = isset($this->session->data['guest']['used_points']) ? $this->session->data['guest']['used_points'] : 0;
 		$data['total_cart_price_def'] = $this->cart->getTotal();
 		$data['total_cart_price'] = $this->cart->getTotal() - $data['want_to_use'] ;
-		//10% на самовывоз
-		if (isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup') {
-			$data['total_cart_price'] -= $data['total_cart_price'] * 0.1;
-			$data['pickup_discount'] = $data['total_cart_price'] * 0.1;
-		}
 
 		if(isset($this->session->data['shipping_method']['code'])){
 			$data['shipping_method_code'] = $this->session->data['shipping_method']['code'];
@@ -78,6 +73,13 @@ class ControllerCheckoutCheckout extends Controller {
 				$data['shipping_method_code']= '';
 			}
 		}
+
+		//10% на самовывоз
+		if (isset($data['shipping_method_code']) && $data['shipping_method_code'] == 'pickup') {
+			$data['total_cart_price'] -= $data['total_cart_price'] * 0.1;
+			$data['pickup_discount'] = $data['total_cart_price'] * 0.1;
+		}
+
 		$data['text_checkout_option'] = sprintf($this->language->get('text_checkout_option'), 1);
 		$data['text_checkout_account'] = sprintf($this->language->get('text_checkout_account'), 2);
 		$data['text_checkout_payment_address'] = sprintf($this->language->get('text_checkout_payment_address'), 2);

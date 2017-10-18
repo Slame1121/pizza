@@ -11,7 +11,8 @@ class ControllerErrorNotFound extends Controller {
 			'text' => $this->language->get('text_home'),
 			'href' => $this->url->link('common/home')
 		);
-
+		$data['heading_title'] = $this->language->get('heading_title');
+		$data['text_error'] = $this->language->get('text_error');
 		if (isset($this->request->get['route'])) {
 			$url_data = $this->request->get;
 
@@ -41,7 +42,6 @@ class ControllerErrorNotFound extends Controller {
 		$data['content_bottom'] = $this->load->controller('common/content_bottom');
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
-
 		$this->response->addHeader($this->request->server['SERVER_PROTOCOL'] . ' 404 Not Found');
 
 		$this->response->setOutput($this->load->view('error/not_found', $data));

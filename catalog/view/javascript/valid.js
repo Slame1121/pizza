@@ -176,7 +176,7 @@ var valid = {
         if(vals.length == 0){
             this.addErr(inp,valid.error_txt.no_data);
         }else {
-            if (vals.length < 25) {
+            if (vals.length < 10) {
                 this.addErr(inp,valid.error_txt.min_val);
             } else {
                 if (vals.length > 1000) {

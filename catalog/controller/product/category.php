@@ -378,6 +378,7 @@ class ControllerProductCategory extends Controller {
 			$category_id = (int)array_pop($parts);
 		}
 
+
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
 		} else {
@@ -542,7 +543,11 @@ class ControllerProductCategory extends Controller {
 		$new_title = 'Пицца';
 		$meta_keywords = '';
 		$meta_description = '';
+		$allow_index = true;
+
 		if(isset($this->request->get['attributes'] )){
+			$allow_index= false;
+			$this->document->setNoIndex(true);
 			$this->load->model('catalog/catalog');
 			$data['attributes'] = $this->model_catalog_catalog->getAttributes();
 			foreach($this->request->get['attributes'] as $attribute){
@@ -563,6 +568,12 @@ class ControllerProductCategory extends Controller {
 					$new_title = $seo_data['meta_title'];
 					$meta_keywords = $seo_data['meta_keyword'];
 					$meta_description = $seo_data['meta_description'];
+					if($seo_data['no_index']){
+						$allow_index = false;
+					}else{
+						$allow_index = true;
+						$this->document->setNoIndex(false);
+					}
 				}
 			}
 		}
@@ -578,6 +589,7 @@ class ControllerProductCategory extends Controller {
 			'title' => $new_title,
 			'meta_keywords' => $meta_keywords,
 			'meta_description' => $meta_description,
+			'allow_index' => $allow_index,
 			'change_meta' => $category_id == 59
 		];
 		$data['products'] = $this->load->view('common/products',$list_data);

@@ -60,7 +60,7 @@ $('document').ready(function(){
             e.preventDefault();
             e.stopPropagation();
             var ind = $(this).index();
-            $("input[name='rating']").val(ind + 1);
+            //$("input[name='rating']").val(ind + 1);
             $("#reviewsAddForm .card-reviews__stars").removeClass('error').attr('title','');
             var star = $('a.card-reviews__stars-item');
             $.each(star, function(i, st) {

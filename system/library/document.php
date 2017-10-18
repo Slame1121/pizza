@@ -14,6 +14,7 @@ class Document {
 	private $title;
 	private $description;
 	private $keywords;
+	private $noindex = false;
 	private $links = array();
 	private $styles = array();
 	private $scripts = array();
@@ -25,6 +26,19 @@ class Document {
      */
 	public function setTitle($title) {
 		$this->title = $title;
+	}
+
+	/**
+	 *
+	 *
+	 * @param $noindex bool
+	 */
+	public function setNoIndex($noindex){
+		$this->noindex = $noindex;
+	}
+
+	public function getNoIndex(){
+		return $this->noindex;
 	}
 
 	/**

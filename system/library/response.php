@@ -11,7 +11,7 @@
 * Response class
 */
 class Response {
-	private $headers = array();
+	public $headers = array();
 	private $level = 0;
 	private $output;
 

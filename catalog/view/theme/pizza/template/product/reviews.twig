@@ -1,5 +1,5 @@
 {% if reviews %}
-    <h2>{{ text_titl }}</h2>
+    <span class="reviews_title">{{ text_titl }}</span>
     <div class="reviews__content">
         {% for _reviews in reviews %}
             <div class="reviews-item">
@@ -12,7 +12,7 @@
         {% endfor %}
     </div>
 {% else %}
-    <h2>{{ text_titl }}</h2>
+    <span class="reviews_title">{{ text_titl }}</span>
     <div class="reviews__content">
         <p>{{ text_no_reviews }}</p>
     </div>

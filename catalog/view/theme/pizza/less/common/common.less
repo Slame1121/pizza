@@ -83,8 +83,39 @@ ol, ul{
 	font-weight: 300; } }
 
 .page {
-  padding-top: 90px; }
-
+  padding-top: 90px;
+  margin-bottom: 80px;
+	h1,h2{
+	  margin-bottom:15px;
+	  text-align: center;
+	}
+  .breadcrumbs{
+	&_list{
+	  list-style-type: none;
+	  margin-left: 0;
+	  margin-bottom: 30px;
+	  li{
+		display: inline;
+		color:#e9ae4a;
+		a{
+		  color:#e9ae4a;
+		  text-decoration: none;
+		}
+	  }
+	}
+  }
+}
+.html_block{
+  &-title{
+	text-align: center;
+	margin-bottom: 40px;
+	font-family: Comfortaa, Arial, sans-serif;
+	font-size: 36px;
+	font-weight: 700;
+	line-height: 1;
+	display: block;
+  }
+}
 
 .hidden {
   display: none!important; }

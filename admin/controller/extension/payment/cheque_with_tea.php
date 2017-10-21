@@ -93,7 +93,7 @@ class ControllerExtensionPaymentChequeWithTea extends Controller {
 		} else {
 			$data['payment_cheque_sort_order'] = $this->config->get('payment_cheque_sort_order');
 		}
-
+		print_r($data);
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');

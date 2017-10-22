@@ -1,6 +1,22 @@
 {{ header }}
 <section class="menu page">
     <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumbs_list">
+                {% set count = 1 %}
+                {% for breadcrumb in breadcrumbs %}
+                    <li itemprop="itemListElement" itemscope
+                        itemtype="http://schema.org/ListItem" > {% if loop.index != breadcrumbs|length  %}<a itemscope itemtype="http://schema.org/Thing"
+                                                                                                             itemprop="item"  href="{{ breadcrumb.href }}"> {% endif %}<span itemprop="name">{{ breadcrumb.text }} </span>{% if loop.index != breadcrumbs|length  %}</a>{% endif %}
+                        <meta itemprop="position" content="{{ count }}" />
+                        {% set count = count + 1 %}
+                    </li>
+                    {% if loop.index != breadcrumbs|length  %}
+                        <li><i class="card__controls-breadcrumb_delimiter" >></i></li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        </div>
         <h1>{{ heading_title }}</h1>
         <div class="menu-tabs">
             <form id="filter_form" action="/index.php?route=product/category/filter_data" method="get">

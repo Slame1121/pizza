@@ -513,7 +513,16 @@ $('document').ready(function(){
 		}
 
 
-	}).on('click', '#login_for_bonuses', function(){
+	}).on('click', '#login_for_bonuses', function(e){
+		e.stopPropagation();
+		e.preventDefault();
+		$('.basket-log').removeClass('opened');
+		$('.sing-log').addClass('opened');
+		$('html, body').animate({ scrollTop: '50px' }, 'slow');
+
+	}).on('click', '#open_auth', function(e){
+		e.stopPropagation();
+		e.preventDefault();
 		$('.basket-log').removeClass('opened');
 		$('.sing-log').addClass('opened');
 		$('html, body').animate({ scrollTop: '50px' }, 'slow');

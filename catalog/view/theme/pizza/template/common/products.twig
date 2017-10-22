@@ -33,7 +33,7 @@
             //set new title
             {% if title != '' %}
             document.title = '{{ title }}';
-            $('.menu h1').text('{{ title }}');
+            $('.menu h1').text('{{ h1_tag }}');
             {% endif %}
 
             $('meta[name=robots]').remove();

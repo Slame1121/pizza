@@ -214,12 +214,13 @@ class ModelCatalogProduct extends Model {
 			}
 
 			//$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
+			$data['limit'] += ($data['start']);
 		}
 
 		$product_data = array();
 
 		$query = $this->db->query($sql);
-		$data['limit'] += ($data['start']);
+
 
 		$new_products = [];
 		foreach ($query->rows as $key => $result) {
@@ -248,7 +249,10 @@ class ModelCatalogProduct extends Model {
 				$new_products[]= $this->getProduct($result['product_id']);
 			}
 		}
-
+		if (!isset($data['start']) || !isset($data['limit'])) {
+			$data['start'] = 0;
+			$data['limit'] = 1000000000000;
+		}
 		foreach($new_products as $key=> $product){
 			if( $key >= (int)$data['start'] && $key < (int)$data['limit']){
 				$product_data[$product['product_id']] = $product;

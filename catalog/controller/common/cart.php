@@ -140,7 +140,7 @@ class ControllerCommonCart extends Controller {
 				'Saturday'
 			];
 			//Если это пицца и дело происходит в понедельник, вторник, среду или четвер между 12 утра и 4 вечера
-			if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
+			if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
 				for( $i = 1; $i <= $product['quantity']; $i++){
 					$pretedends_for_discount[] =['price' => $price, 'key' => count($data['products']) - 1];
 				}
@@ -166,7 +166,7 @@ class ControllerCommonCart extends Controller {
 					$data['products'][$pretedends_for_discount[0]['key']]['discount_pizza'] = 1;
 					$total = round($data['products'][$pretedends_for_discount[0]['key']]['price']/2,2) + $data['products'][$pretedends_for_discount[0]['key']]['price'] * ($data['products'][$pretedends_for_discount[0]['key']]['quantity'] - 1);
 
-					$data['products'][$pretedends_for_discount[0]['key']]['total'] = $this->currency->format($total, $this->session->data['currency']);
+					//$data['products'][$pretedends_for_discount[0]['key']]['total'] = $this->currency->format($total, $this->session->data['currency']);
 
 				}
 			}

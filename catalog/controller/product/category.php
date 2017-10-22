@@ -171,7 +171,7 @@ class ControllerProductCategory extends Controller {
 					$this->document->setTitle($seo_data['meta_title']);
 					$this->document->setKeywords($seo_data['meta_keyword']);
 					$this->document->setDescription($seo_data['meta_description']);
-					$data['heading_title'] = $seo_data['meta_title'];
+					$data['heading_title'] = $seo_data['name'];
 				}
 			}
 
@@ -544,7 +544,7 @@ class ControllerProductCategory extends Controller {
 		$meta_keywords = '';
 		$meta_description = '';
 		$allow_index = true;
-
+		$h1_tag = 'Пицца';
 		if(isset($this->request->get['attributes'] )){
 			$allow_index= false;
 			$this->document->setNoIndex(true);
@@ -564,10 +564,15 @@ class ControllerProductCategory extends Controller {
 			if($filter_data){
 				$this->load->model('catalog/seofilter');
 				$seo_data = $this->model_catalog_seofilter->getSeFilter(implode('/', $filter_data));
+
 				if($seo_data){
 					$new_title = $seo_data['meta_title'];
 					$meta_keywords = $seo_data['meta_keyword'];
 					$meta_description = $seo_data['meta_description'];
+					if($seo_data['name'] != ''){
+						$h1_tag = $seo_data['name'];
+					}
+
 					if($seo_data['no_index']){
 						$allow_index = false;
 					}else{
@@ -590,7 +595,8 @@ class ControllerProductCategory extends Controller {
 			'meta_keywords' => $meta_keywords,
 			'meta_description' => $meta_description,
 			'allow_index' => $allow_index,
-			'change_meta' => $category_id == 59
+			'change_meta' => $category_id == 59,
+			'h1_tag' => $h1_tag
 		];
 		$data['products'] = $this->load->view('common/products',$list_data);
 		$url = '';

@@ -314,7 +314,7 @@ class Cart {
 				}
 			}
 
-			if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
+			if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
 				for( $i = 1; $i <= $product['quantity']; $i++){
 					$pretedends_for_discount[] =['price' => $product['price'], 'cart_id' => $product['cart_id']];
 				}

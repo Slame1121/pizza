@@ -88,12 +88,12 @@ class ControllerExtensionPaymentChequeWithTea extends Controller {
 			$data['payment_cheque_with_tea_status'] = $this->config->get('payment_cheque_with_tea_status');
 		}
 
-		if (isset($this->request->post['payment_cheque_sort_order'])) {
-			$data['payment_cheque_sort_order'] = $this->request->post['payment_cheque_sort_order'];
+		if (isset($this->request->post['payment_cheque_with_tea_sort_order'])) {
+			$data['payment_cheque_with_tea_sort_order'] = $this->request->post['payment_cheque_with_tea_sort_order'];
 		} else {
-			$data['payment_cheque_sort_order'] = $this->config->get('payment_cheque_sort_order');
+			$data['payment_cheque_with_tea_sort_order'] = $this->config->get('payment_cheque_with_tea_sort_order');
 		}
-		print_r($data);
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');

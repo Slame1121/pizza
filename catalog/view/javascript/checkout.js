@@ -33,9 +33,10 @@ var Checkout = {
 			error = true;
 		}
 		var telephone = $('#checkout-checkout').find('input[name=telephone]');
-		if(telephone.val() == ''){
+		if(telephone.val().length != 17){
 			telephone.parent().find('span').addClass('error');
-			telephone.addClass('error')
+			telephone.addClass('error');
+			error = true;
 		}
 		if(!error){
 			switch(method) {

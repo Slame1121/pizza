@@ -4,7 +4,6 @@ class ControllerInformationSitemap extends Controller {
 		$this->load->language('information/sitemap');
 
 		$this->document->setTitle($this->language->get('heading_title'));
-
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
@@ -24,8 +23,9 @@ class ControllerInformationSitemap extends Controller {
 
 		$categories_1 = $this->model_catalog_category->getCategories(0);
 
-		foreach ($categories_1 as $category_1) {
+		foreach ($categories_1 as $key_1 => $category_1) {
 			$level_2_data = array();
+
 
 			$categories_2 = $this->model_catalog_category->getCategories($category_1['category_id']);
 
@@ -51,10 +51,17 @@ class ControllerInformationSitemap extends Controller {
 			$data['categories'][] = array(
 				'name'     => $category_1['name'],
 				'children' => $level_2_data,
+				'products' => $this->model_catalog_product->getProducts(['filter_category_id' => $category_1['category_id']]),
 				'href'     => $this->url->link('product/category', 'path=' . $category_1['category_id'])
 			);
+			if($data['categories'][count($data['categories']) - 1]['products']){
+				foreach($data['categories'][count($data['categories']) - 1]['products'] as $key => $product){
+					$data['categories'][count($data['categories']) - 1]['products'][$key]['href'] = $this->url->link('product/product', '&product_id=' . $product['product_id'] );
+				}
+			}
 		}
 
+		$data['heading_title'] = $this->language->get('heading_title');
 		$data['special'] = $this->url->link('product/special');
 		$data['account'] = $this->url->link('account/account', '', true);
 		$data['edit'] = $this->url->link('account/edit', '', true);

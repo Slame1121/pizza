@@ -1,7 +1,7 @@
 {% if products %}
     {% for product in products %}
         <div class="basket-log__item" id="basket-item-{{ product.cart_id }}" style="background-image: url('{{ product.thumb }}');"><a  data-cart-id="{{ product.cart_id }}" class="basket-log__item-close" href="#"></a>
-            <div class="basket-log__item-box"><a class="basket-log__item-name" href="{{ product.href }}">{{ product.name }}</a>
+            <div class="basket-log__item-box"><a  class="basket-log__item-name" href="{{ product.href }}">{{ product.name }}</a>
                             <span class="basket-log__item-options">({% for option in product.option %}
                                     {{ option.value }} {% endfor %})</span>
                 <div class="basket-log__item-attrs">

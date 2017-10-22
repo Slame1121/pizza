@@ -5,7 +5,7 @@
     {% for product in products %}
     <div class="basket-log__item basket-log__item--center" style="background-image: url({{ product.image }});">
         <div class="basket-log__item-box">
-            <a class="basket-log__item-name" href="{{ product.href }}">{{ product.name }}</a> <span>({% for option in product.option %}{{ option.name }} : {{ option.value }}{% endfor %})</span>
+            <a class="basket-log__item-name" href="{{ product.href }}">{{ product.name }} x{{ product.quantity }}</a> <span>({% for option in product.option %}{{ option.name }} : {{ option.value }}{% endfor %})</span>
             <div class="basket-log__item-price">{{ product.total }}</div>
         </div>
         <div class="basket-log__item-box">

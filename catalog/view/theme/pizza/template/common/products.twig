@@ -48,6 +48,20 @@
             $('head').append( '<meta name="description" content="{{ meta_description }}">' );
             {% endif %}
 
+            var breadcrumb = $('.breadcrumbs_list li:nth-child(5)');
+            if(breadcrumb.length > 0){
+                breadcrumb.find('span').text('{{ h1_tag }}')
+            }else{
+                $('.breadcrumbs_list').append('<li><i class="card__controls-breadcrumb_delimiter">> </i></li>');
+                $('.breadcrumbs_list').append('<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><span itemprop="name">{{ h1_tag }}</span><meta itemprop="position" content="3" /></li>');
+            }
+
+            {% if attributes is empty %}
+                $('.breadcrumbs_list li:nth-child(5)').remove();
+                $('.breadcrumbs_list li:nth-child(4)').remove();
+            {% endif %}
+
+            $('.menu .description').html('{{ category_description }}');
 
         });
     </script>

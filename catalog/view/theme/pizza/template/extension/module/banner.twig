@@ -14,7 +14,7 @@
                             {% else %}
 
                             {% endif %} >
-                        {{ banner.title }}<span>{{ banner.title2 }}</span>
+                        {{ banner.title }}{% if banner.title == '' %}&nbsp;{% endif %}<span>{{ banner.title2 }}{% if banner.title2 == '' %}&nbsp;{% endif %}</span>
                     </div>
                     {% if  banner.link_title != '' %}
                     <a  {% if banner.position == 1 %}

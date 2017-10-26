@@ -20,6 +20,17 @@ class ModelCatalogAttribute extends Model {
 		foreach ($data['attribute_description'] as $language_id => $value) {
 			$this->db->query("INSERT INTO " . DB_PREFIX . "attribute_description SET attribute_id = '" . (int)$attribute_id . "', language_id = '" . (int)$language_id . "', name = '" . $this->db->escape($value['name']) . "'");
 		}
+
+		//insert prices for different sizes
+		$sql = "DELETE FROM " . DB_PREFIX . "attribute_price WHERE attribute_id = ".$attribute_id;
+		$this->db->query($sql);
+
+		foreach($data['price'] as $option_value_id => $price){
+			$sql = "INSERT INTO " . DB_PREFIX . "attribute_price (attribute_id,option_value_id,	attribute_price) VALUES (".$attribute_id.", ".$option_value_id.", ".$price.")";
+			$this->db->query($sql);
+		}
+
+
 	}
 
 	public function deleteAttribute($attribute_id) {
@@ -31,6 +42,13 @@ class ModelCatalogAttribute extends Model {
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "attribute a LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id) WHERE a.attribute_id = '" . (int)$attribute_id . "' AND ad.language_id = '" . (int)$this->config->get('config_language_id') . "'");
 
 		return $query->row;
+	}
+
+
+	public function getAttributePrices($attribute_id){
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "attribute_price WHERE attribute_id = ".$attribute_id);
+
+		return $query->rows;
 	}
 
 	public function getAttributes($data = array()) {

@@ -3,6 +3,16 @@
 class ModelCatalogCatalog extends Model
 {
 
+	public function getAttributePrices($attribute_id){
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "attribute_price WHERE attribute_id = ".$attribute_id)->rows;
+		$prices = [];
+		foreach($query as $price){
+			$prices[$price['option_value_id']] = $price['attribute_price'];
+		}
+
+		return $prices;
+	}
+
 	public function getAttributes($data = array())
 	{
 		$sql = "SELECT a.*,ad.name, ag.filter_name as group_filter_name,

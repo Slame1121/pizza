@@ -141,7 +141,8 @@ $('document').ready(function(){
 		$('.profile-form__drop').toggleClass('opened');
 	});
 	$('.card-price__box').click(function() {
-		$(this).addClass('active')
+
+	$(this).addClass('active')
 			.siblings()
 			.removeClass('active');
 	});

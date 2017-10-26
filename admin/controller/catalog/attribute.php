@@ -307,9 +307,13 @@ class ControllerCatalogAttribute extends Controller {
 		}
 
 		$data['cancel'] = $this->url->link('catalog/attribute', 'user_token=' . $this->session->data['user_token'] . $url, true);
-
+		$prices = [];
 		if (isset($this->request->get['attribute_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
 			$attribute_info = $this->model_catalog_attribute->getAttribute($this->request->get['attribute_id']);
+			$result = $this->model_catalog_attribute->getAttributePrices($this->request->get['attribute_id']);
+			foreach($result as $price){
+				$prices[$price['option_value_id']] = $price['attribute_price'];
+			}
 		}
 
 		$this->load->model('localisation/language');
@@ -360,13 +364,25 @@ class ControllerCatalogAttribute extends Controller {
 			$data['image'] = 'no_image.png';
 		}
 
-		if (isset($this->request->post['price'])) {
-			$data['price'] = $this->request->post['price'];
-		} elseif (!empty($attribute_info) && $attribute_info['price'] > 0 ) {
-			$data['price'] = $attribute_info['price'];
-		} else {
-			$data['price'] = 0;
+
+
+
+		$this->load->model('catalog/option');
+
+		//$option = $this->model_catalog_option->getOption(13);
+		$option_values = $this->model_catalog_option->getOptionValues(13);
+
+		foreach($option_values as $values){
+			if(isset($prices[$values['option_value_id']])){
+				$data['prices'][$values['option_value_id']] = $prices[$values['option_value_id']];
+			}else{
+				$data['prices'][$values['option_value_id']] = 0;
+			}
+
 		}
+
+		usort($option_values, ["ControllerCatalogAttribute", "cmp"]);
+		$data['option_values'] = $option_values;
 
 		$this->load->model('tool/image');
 
@@ -377,6 +393,11 @@ class ControllerCatalogAttribute extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 
 		$this->response->setOutput($this->load->view('catalog/attribute_form', $data));
+	}
+
+	function cmp($a, $b)
+	{
+		return strcmp($a["sort_order"], $b["sort_order"]);
 	}
 
 	protected function validateForm() {

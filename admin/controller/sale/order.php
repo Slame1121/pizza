@@ -929,19 +929,23 @@ class ControllerSaleOrder extends Controller {
 			$this->load->model('tool/upload');
 
 			$this->load->model('catalog/catalog');
-
+			$this->load->model('catalog/attribute');
 			$data['products'] = array();
 
 			$products = $this->model_sale_order->getOrderProducts($this->request->get['order_id']);
 
 			$all_attr = $this->model_catalog_catalog->getAllAtributes();
 
+			$attr_prices = [];
+
 			foreach ($products as $product) {
 				$option_data = array();
 
 				$options = $this->model_sale_order->getOrderOptions($this->request->get['order_id'], $product['order_product_id']);
-
+				$size_value_id = 0;
 				foreach ($options as $option) {
+					$size_value_id = $option['option_value_id'];
+
 					if ($option['type'] != 'file') {
 						$option_data[] = array(
 							'name'  => $option['name'],
@@ -966,14 +970,26 @@ class ControllerSaleOrder extends Controller {
 				$product_attrs =[];
 				if($attrs && is_array($attrs)){
 					foreach($attrs as $attr_id => $count){
+						if(!isset($attr_prices[$attr_id])){
+							$result = $this->model_catalog_attribute->getAttributePrices($attr_id);
+							$prices = [];
+							foreach($result as $price){
+								if(!isset($prices[$price['attribute_id']] )){
+									$prices[$price['attribute_id']] = [];
+								}
+								$prices[$price['attribute_id']][$price['option_value_id']] = $price['attribute_price'];
+							}
+						}
+						if(isset($prices[$attr_id][$size_value_id])){
+							$attr_prices[$attr_id] = $prices[$attr_id][$size_value_id];
+						}
 						$product_attrs[] = [
 							'name' => $all_attr[$attr_id]['name'],
 							'count' => $count,
-							'total' => $all_attr[$attr_id]['price'] * $count
+							'total' => $attr_prices[$attr_id] * $count
 						];
 					}
 				}
-
 				$data['products'][] = array(
 					'order_product_id' => $product['order_product_id'],
 					'product_id'       => $product['product_id'],

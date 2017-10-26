@@ -6,10 +6,11 @@ var Product = {
 		$('.menu-tabs__link').on('click', function(){
 			var self = $(this);
 			var group_id = self.data('group-id');
+			var option_value_id = $('input.option:checked').data('option-value-id');
 			$.ajax({
 				url: 'index.php?route=product/product/getIndigrientsByGroup',
 				type: 'post',
-				data: {id: group_id},
+				data: {id: group_id, option_value_id: option_value_id},
 				dataType: 'html',
 				beforeSend: function() {
 				},
@@ -29,15 +30,35 @@ var Product = {
 		$('.for-popup').on('click', function(){
 			self.recalcPizzaPrice();
 		});
-
-		$('.card-price__box').on('click',function(){
-			var size = $(this).find('.card-price__size').html();
+		$("input.option").change(function() {
+			var size = $(this).parent().find('.card-price__size').html();
 			$('.ingredients-popup__item-size').html('('+size+')');
-			var price = $(this).find('.card-price__num').html();
+			var price = $(this).parent().find('.card-price__num').html();
 			$('.ingredients-popup__item-price').html(price);
 
+			//change attributes prices
+			var grou_attr_id = $('.menu-tabs .menu-tabs__link.active').data('group-id');
+			var option_value_id = $('input.option:checked').data('option-value-id');
+			$.ajax({
+				url: 'index.php?route=product/product/getIndigrientsByGroup',
+				type: 'post',
+				data: {id: grou_attr_id, option_value_id : option_value_id},
+				dataType: 'html',
+				beforeSend: function() {
+				},
+				complete: function() {
+				},
+				success: function(html) {
+					$('.ingredients-popup__range').empty().append(html);
+				}
+			});
 
+			//remove indegrients from add form
+			$('#ingredients .ingredients-popup__box >div').remove();
 		});
+
+
+
 	},
 	addIdigrientToPizza: function () {
 		var self = this;

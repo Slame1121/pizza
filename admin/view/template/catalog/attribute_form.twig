@@ -61,12 +61,15 @@
               <input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
             </div>
           </div>
+            {% for value in option_values %}
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-sort-order">Цена аттрибута</label>
+                <label class="col-sm-2 control-label" for="input-sort-order">Цена аттрибута({{ value.name }})</label>
                 <div class="col-sm-10">
-                    <input type="text" name="price" value="{{ price }}" placeholder="Цена аттрибута" id="input-sort-order" class="form-control" />
+                    <input type="text" name="price[{{ value.option_value_id }}]" value="{{ prices[value.option_value_id] }}" placeholder="Цена аттрибута" id="input-sort-order" class="form-control" />
                 </div>
             </div>
+            {% endfor %}
+
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-filter-name">Название для фильтра</label>
             <div class="col-sm-10">

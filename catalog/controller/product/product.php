@@ -337,10 +337,14 @@ class ControllerProductProduct extends Controller {
 			}
 
 			$data['options'] = array();
+			$chosed_size_option_value_id = 0;
 			foreach ($this->model_catalog_product->getProductOptions($this->request->get['product_id']) as $option) {
 				$product_option_value_data = array();
 
 				foreach ($option['product_option_value'] as $option_value) {
+					if($chosed_size_option_value_id == 0){
+						$chosed_size_option_value_id = $option_value['option_value_id'];
+					}
 					if (!$option_value['subtract'] || ($option_value['quantity'] > 0)) {
 						if ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option_value['price']) {
 							$price = $this->currency->format($this->tax->calculate($option_value['price'], $product_info['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
@@ -411,7 +415,7 @@ class ControllerProductProduct extends Controller {
 			$data['indegrients'] = $indigrients_groups;
 
 
-			$data['first_group_indigrients'] = $this->getIndigrientsByGroup(array_shift($indigrients_groups)['id']);
+			$data['first_group_indigrients'] = $this->getIndigrientsByGroup(array_shift($indigrients_groups)['id'], $chosed_size_option_value_id);
 			$data['products'] = array();
 
 			$results = $this->model_catalog_product->getProductRelated($this->request->get['product_id']);
@@ -655,8 +659,12 @@ class ControllerProductProduct extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	public function getIndigrientsByGroup($group_id_arg = false){
+	public function getIndigrientsByGroup($group_id_arg = false, $option_value_id= false){
 		$group_id = $group_id_arg ? $group_id_arg : intval($_POST['id']);
+
+		if(isset($_POST['option_value_id'])){
+			$option_value_id = (int)$_POST['option_value_id'];
+		}
 
 		$filter = ['filter_attribute_group_id' => $group_id];
 		$this->load->model('catalog/catalog');
@@ -665,9 +673,11 @@ class ControllerProductProduct extends Controller {
 
 		foreach($indigrients_groups as  $group_key => $group){
 			foreach($group['attr'] as $key => $indigrient){
+				$indigrients_groups[$group_key]['attr'][$key]['prices'] = $this->model_catalog_catalog->getAttributePrices($indigrient['attribute_id']);
 				$indigrients_groups[$group_key]['attr'][$key]['thumb'] = $this->model_tool_image->resize($indigrient['image'], 80, 60);
 			}
 		}
+		$data['option_value_id'] = $option_value_id;
 		$data['indegrients'] = $indigrients_groups;
 		if($group_id_arg){
 			return $this->load->view('product/indigrients', $data);

@@ -59,6 +59,7 @@ class ControllerCommonCart extends Controller {
 		$pretedends_for_discount = [
 		];
 		$cart_products = $this->cart->getProducts();
+
 		$quantity = 0;
 		foreach ($cart_products as $product) {
 			if ($product['image']) {

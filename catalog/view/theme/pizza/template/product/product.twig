@@ -34,7 +34,7 @@
                             {% if option.type == 'radio' %}
                                 {% for key, option_value in option.product_option_value %}
                                     <label class="card-price__box{% if key == 0 %} active{% endif %}">
-                                        <input class="option" value="{{ option_value.product_option_value_id }}" name="option[{{ option.product_option_id }}]" type="radio" name="card-price" {% if key == 0 %}checked{% endif %}>
+                                        <input class="option" data-option-value-id="{{ option_value.option_value_id }}" value="{{ option_value.product_option_value_id }}" name="option[{{ option.product_option_id }}]" type="radio" name="card-price" {% if key == 0 %}checked{% endif %}>
                                         <input type="hidden" name="size-price" value="{% if option_value.cost %}{{ option_value.cost }}{% endif %}" />
                                         <span class="card-price__dot"></span>
                                     <span class="card-price__info">
@@ -98,7 +98,7 @@
                         {% for option in options %}
                             {% if option.type == 'radio' %}
                                 {% for key, option_value in option.product_option_value %}
-                                    {% if key == 0 %} ({{ option_value.name }} 500 ± 50гр){% endif %}
+                                    {% if key == 0 %} ({{ option_value.name }} {{ option_value.weight }}){% endif %}
 
                                 {% endfor %}
                             {% endif %}

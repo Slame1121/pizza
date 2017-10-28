@@ -8,9 +8,11 @@ class ControllerAccountAccount extends Controller {
 			$this->response->redirect($this->url->link('account/login', '', true));
 		}
         $this->document->addStyle('/catalog/view/theme/default/stylesheet/bootstrap-datepicker3.min.css');
-		$this->document->addScript('/catalog/view/javascript/pages/account.js');
 		$this->document->addScript('/catalog/view/javascript/jquery-migrate-3.0.1.min.js');
+		$this->document->addScript('/catalog/view/javascript/libs/moment.min.js');
 		$this->document->addScript('/catalog/view/javascript/bootstrap-datepicker.js');
+		$this->document->addScript('/catalog/view/javascript/pages/account.js');
+
         $data['langs'] = 'ru';
 		if($this->language->data["code"] == "uk"){
             $data['langs'] = 'uk';
@@ -123,7 +125,8 @@ class ControllerAccountAccount extends Controller {
 		$data['email'] = $this->customer->getEmail();
 		$data['telephone'] = $this->customer->getTelephone();
 		$data['firstname'] = $this->customer->getFirstName();
-		$data['bdate'] = date( "d.m.Y", $this->customer->getBdate() );
+		$data['bdate'] = $this->customer->getBdate();
+		$data['bdate_formated'] = date( "d.m.Y", $data['bdate'] );
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
 		$data['content_top'] = $this->load->controller('common/content_top');

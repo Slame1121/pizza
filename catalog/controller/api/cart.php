@@ -156,8 +156,13 @@ class ControllerApiCart extends Controller {
 			$products = $this->cart->getProducts();
 
 			$this->load->model('catalog/catalog');
+			$this->load->model('catalog/catalog');
 
 			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
+			$attr_prices = [];
+			foreach($all_attrs as $attr){
+				$attr_prices[$attr['attribute_id']] =  $this->model_catalog_catalog->getAttributePrices($attr['attribute_id']);
+			}
 			foreach ($products as $product) {
 				$product_total = 0;
 
@@ -172,7 +177,7 @@ class ControllerApiCart extends Controller {
 				}
 
 				$option_data = array();
-
+				$size_value_id = $product['option'][0]['option_value_id'];
 				foreach ($product['option'] as $option) {
 					$option_data[] = array(
 						'product_option_id'       => $option['product_option_id'],
@@ -185,12 +190,13 @@ class ControllerApiCart extends Controller {
 				$attributes = [];
 
 				if($product['attrs']){
-					foreach($product['attrs'] as $igredient_id => $count){
+
+					foreach((array)$product['attrs'] as $igredient_id => $count){
 						$attributes[] = [
 							'id' => $igredient_id,
 							'name' => $all_attrs[$igredient_id]['name'],
 							'count' => $count,
-							'total' => $all_attrs[$igredient_id]['price'] * $count
+							'total' => $attr_prices[$igredient_id][$size_value_id] * $count
 						];
 					}
 				}

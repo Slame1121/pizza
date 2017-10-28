@@ -77,8 +77,9 @@
                             <input type="email" value="{{ email }}" name="email">
                         </label>
                         <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_date }}</span>
-                            <input type="text" value="{{ bdate }}" name="bdate" id="bdate">
+                            <input type="text" value="{{ bdate_formated }}" name="bdate" id="bdate" {% if bdate != 0 %}readonly="readonly"{% endif %}>
                         </label>
+                        <span class="profile-form__label_notice">{% if bdate != 0 %}Вы уже изменяли день рождения!{% else %}День рождения изменяется один раз!{% endif %}</span>
                         <label class="profile-form__label"><span class="profile-form__box-name">{{ text_acc_user_pass }}</span>
                             <input placeholder="{{ text_acc_user_place }}" type="password" name="password">
                         </label>
@@ -87,11 +88,31 @@
                         </label>
                     </div>
                 </div>
-                <script>
-                   $( "#bdate" ).datepicker({
-                        format: "dd.mm.yy",
-                        language: "{{ langs }}"
+                <script type="text/javascript">
+                    $('document').ready(function(){
+                        {% if bdate == 0 %}
+                        $( "#bdate" ).datepicker({
+                            format: "dd.mm.yyyy",
+                            language: "{{ langs }}"
+                        }).datepicker("setDate", new Date());
+                        {% endif %}
+                        $('.profile-form__btn').on('click', function(e){
+                            var bdate = $('#bdate');
+                            if(bdate.attr('readonly') != 'readonly'){
+                                var val = bdate.datepicker().val();
+                                var from = val.split(".");
+                                var years = 12 * 12 * 31 * 24 * 60 * 60 * 1000; //3 years
+                                var f = new Date(from[2], from[1] - 1, from[0]);
+                                var now = (new Date());
+                                if(now - f < years){
+                                    bdate.addClass('error');
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                }
+                            }
+                        });
                     });
+
                 </script>
                 <style>
                     div.datepicker{ position: absolute; background: white; box-shadow: black 0px 0px 3px; font-size: initial; }

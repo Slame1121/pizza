@@ -524,27 +524,41 @@ class ControllerSaleOrder extends Controller {
 
 
 			$this->load->model('catalog/catalog');
-
+			$this->load->model('catalog/attribute');
 			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
+			$attr_prices = [];
+			foreach($all_attrs as $attr){
+				$result = $this->model_catalog_attribute->getAttributePrices($attr['attribute_id']);
+				$attr_prices[$attr['attribute_id']] =  [];
+				foreach($result as $price){
+					$attr_prices[$attr['attribute_id']][$price['option_value_id']] = $price['attribute_price'];
+				}
+			}
+
 			foreach ($products as $product) {
 
 
 				$attributes = [];
+				$options = $this->model_sale_order->getOrderOptions($this->request->get['order_id'], $product['order_product_id']);
+				$size_value_id = $options[0]['option_value_id'];
 
 				if(json_decode($product['attrs'], true)){
 					foreach(json_decode($product['attrs'], true) as $igredient_id => $count){
+
 						$attributes[] = [
 							'id' => $igredient_id,
 							'name' => $all_attrs[$igredient_id]['name'],
-							'count' => $count
+							'count' => $count,
+							'total' => $attr_prices[$igredient_id][$size_value_id] * $count
 						];
 					}
 				}
+
 				$data['order_products'][] = array(
 					'product_id' => $product['product_id'],
 					'name'       => $product['name'],
 					'model'      => $product['model'],
-					'option'     => $this->model_sale_order->getOrderOptions($this->request->get['order_id'], $product['order_product_id']),
+					'option'     => $options,
 					'quantity'   => $product['quantity'],
 					'price'      => $product['price'],
 					'total'      => $product['total'],
@@ -935,8 +949,14 @@ class ControllerSaleOrder extends Controller {
 			$products = $this->model_sale_order->getOrderProducts($this->request->get['order_id']);
 
 			$all_attr = $this->model_catalog_catalog->getAllAtributes();
-
 			$attr_prices = [];
+			foreach($all_attr as $attr){
+				$result = $this->model_catalog_attribute->getAttributePrices($attr['attribute_id']);
+				$attr_prices[$attr['attribute_id']] =  [];
+				foreach($result as $price){
+					$attr_prices[$attr['attribute_id']][$price['option_value_id']] = $price['attribute_price'];
+				}
+			}
 
 			foreach ($products as $product) {
 				$option_data = array();
@@ -968,25 +988,13 @@ class ControllerSaleOrder extends Controller {
 				$attrs = json_decode($product['attrs'], true);
 
 				$product_attrs =[];
+
 				if($attrs && is_array($attrs)){
 					foreach($attrs as $attr_id => $count){
-						if(!isset($attr_prices[$attr_id])){
-							$result = $this->model_catalog_attribute->getAttributePrices($attr_id);
-							$prices = [];
-							foreach($result as $price){
-								if(!isset($prices[$price['attribute_id']] )){
-									$prices[$price['attribute_id']] = [];
-								}
-								$prices[$price['attribute_id']][$price['option_value_id']] = $price['attribute_price'];
-							}
-						}
-						if(isset($prices[$attr_id][$size_value_id])){
-							$attr_prices[$attr_id] = $prices[$attr_id][$size_value_id];
-						}
 						$product_attrs[] = [
 							'name' => $all_attr[$attr_id]['name'],
 							'count' => $count,
-							'total' => $attr_prices[$attr_id] * $count
+							'total' => $attr_prices[$attr_id][$size_value_id] * $count
 						];
 					}
 				}

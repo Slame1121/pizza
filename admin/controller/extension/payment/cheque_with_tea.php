@@ -62,10 +62,10 @@ class ControllerExtensionPaymentChequeWithTea extends Controller {
 			$data['payment_cheque_total'] = $this->config->get('payment_cheque_total');
 		}
 
-		if (isset($this->request->post['payment_cheque_order_status_id'])) {
-			$data['payment_cheque_order_status_id'] = $this->request->post['payment_cheque_order_status_id'];
+		if (isset($this->request->post['payment_cheque_with_tea_order_status_id'])) {
+			$data['payment_cheque_with_tea_order_status_id'] = $this->request->post['payment_cheque_with_tea_order_status_id'];
 		} else {
-			$data['payment_cheque_order_status_id'] = $this->config->get('payment_cheque_order_status_id');
+			$data['payment_cheque_with_tea_order_status_id'] = $this->config->get('payment_cheque_with_tea_order_status_id');
 		}
 
 		$this->load->model('localisation/order_status');

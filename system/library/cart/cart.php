@@ -309,43 +309,61 @@ class Cart {
 	}
 
 	public function getDiscountCartId(){
-		$products = $this->getProducts();
-		$pretedends_for_discount = [];
-		foreach ($products as $product) {
 
-			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . $product['product_id'] . "'");
-			$categories = [];
-			foreach ($query->rows as $result) {
-				$categories[] = $result['category_id'];
+		$bdate = $this->customer->getBdate();
+
+		$bday_in_this_year = date('Y'). date('-m-d',$bdate );
+		$bday_discount = false;
+		//3 дня до и после днюшки скидка 15% на все пиццы
+		if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+			if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+				$bday_discount = true;
 			}
-			$pizza_product= false;
-			foreach($categories as $category_id){
-				if($category_id == '59'){
-					$pizza_product = true;
+		}else{
+			if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+				$bday_discount = true;
+			}
+		}
+		if(!$bday_discount){
+			$products = $this->getProducts();
+			$pretedends_for_discount = [];
+			foreach ($products as $product) {
+
+				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . $product['product_id'] . "'");
+				$categories = [];
+				foreach ($query->rows as $result) {
+					$categories[] = $result['category_id'];
+				}
+				$pizza_product= false;
+				foreach($categories as $category_id){
+					if($category_id == '59'){
+						$pizza_product = true;
+					}
+				}
+
+				if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
+					for( $i = 1; $i <= $product['quantity']; $i++){
+						$pretedends_for_discount[] =['price' => $product['price'], 'cart_id' => $product['cart_id']];
+					}
 				}
 			}
+			if(count($pretedends_for_discount) > 1){
+				while(count($pretedends_for_discount) > 1){
+					if($pretedends_for_discount[0]['price'] >= $pretedends_for_discount[1]['price']){
+						array_splice($pretedends_for_discount, 0, 1);
+					}else{
+						$next = $pretedends_for_discount[1];
+						$pretedends_for_discount[1] =  $pretedends_for_discount[0];
+						$pretedends_for_discount[0] = $next;
+					}
+				}
 
-			if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
-				for( $i = 1; $i <= $product['quantity']; $i++){
-					$pretedends_for_discount[] =['price' => $product['price'], 'cart_id' => $product['cart_id']];
+				if($pretedends_for_discount){
+					return $pretedends_for_discount[0]['cart_id'];
 				}
 			}
 		}
-		if(count($pretedends_for_discount) > 1){
-			while(count($pretedends_for_discount) > 1){
-				if($pretedends_for_discount[0]['price'] >= $pretedends_for_discount[1]['price']){
-					array_splice($pretedends_for_discount, 0, 1);
-				}else{
-					$next = $pretedends_for_discount[1];
-					$pretedends_for_discount[1] =  $pretedends_for_discount[0];
-					$pretedends_for_discount[0] = $next;
-				}
-			}
 
-			if($pretedends_for_discount){
-				return $pretedends_for_discount[0]['cart_id'];
-			}
-		}
 
 		return false;
 	}
@@ -390,6 +408,25 @@ class Cart {
 		foreach ($this->getProducts() as $product) {
 			if($discouint_cart_id == $product['cart_id']){
 				$product['total'] = round($product['price']/2, 2) + $product['price'] * ($product['quantity'] - 1);
+			}else{
+				$bdate = $this->customer->getBdate();
+
+				$bday_in_this_year = date('Y'). date('-m-d',$bdate );
+				$bday_discount = false;
+				//3 дня до и после днюшки скидка 15% на все пиццы
+				if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+						$bday_discount = true;
+					}
+				}else{
+					if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+						$bday_discount = true;
+					}
+				}
+
+				if($bday_discount){
+					//$product['total'] = round($product['total'] - $product['total'] * 0.15, 2);
+				}
 			}
 			$total += $product['total'];
 		}
@@ -429,8 +466,32 @@ class Cart {
 					$this->tax->calculate($product['price'], $product['tax_class_id'],
 						$this->config->get('config_tax')) * ($product['quantity'] - 1));
 			} else {
-				$total += $this->tax->calculate($product['price'], $product['tax_class_id'],
-						$this->config->get('config_tax')) * $product['quantity'];
+
+				$bdate = $this->customer->getBdate();
+
+				$bday_in_this_year = date('Y'). date('-m-d',$bdate );
+				$bday_discount = false;
+				//3 дня до и после днюшки скидка 15% на все пиццы
+				if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+						$bday_discount = true;
+					}
+				}else{
+					if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+						$bday_discount = true;
+					}
+				}
+
+				if($bday_discount){
+					$product['price'] = round($product['price'] - $product['price'] * 0.15, 2);
+					$total += $this->tax->calculate($product['price'], $product['tax_class_id'],
+							$this->config->get('config_tax')) * $product['quantity'];
+				}else{
+					$total += $this->tax->calculate($product['price'], $product['tax_class_id'],
+							$this->config->get('config_tax')) * $product['quantity'];
+				}
+
+
 			}
 		}
 

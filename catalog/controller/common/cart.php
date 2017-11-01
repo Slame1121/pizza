@@ -117,6 +117,28 @@ class ControllerCommonCart extends Controller {
 					$pizza_product = true;
 				}
 			}
+
+			$bdate = $this->customer->getBdate();
+
+			$bday_in_this_year = date('Y'). date('-m-d',$bdate );
+			$bday_discount = false;
+			//3 дня до и после днюшки скидка 15% на все пиццы
+			if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+				if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+					$bday_discount = true;
+				}
+			}else{
+				if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+					$bday_discount = true;
+				}
+			}
+
+			if($bday_discount){
+				$price = round($price - $price * 0.15, 2);
+				$total = $this->currency->format($price * $product['quantity'], $this->session->data['currency']);
+			}
+			
+
 			$data['products'][] = array(
 				'cart_id'   => $product['cart_id'],
 				'thumb'     => $image,
@@ -140,10 +162,14 @@ class ControllerCommonCart extends Controller {
 				'Friday',
 				'Saturday'
 			];
-			//Если это пицца и дело происходит в понедельник, вторник, среду или четвер между 12 утра и 4 вечера
-			if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
-				for( $i = 1; $i <= $product['quantity']; $i++){
-					$pretedends_for_discount[] =['price' => $price, 'key' => count($data['products']) - 1];
+
+			//Если не днюшка
+			if(!$bday_discount){
+				//Если это пицца и дело происходит в понедельник, вторник, среду или четвер между 12 утра и 4 вечера
+				if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
+					for( $i = 1; $i <= $product['quantity']; $i++){
+						$pretedends_for_discount[] =['price' => $price, 'key' => count($data['products']) - 1];
+					}
 				}
 			}
 			$quantity += $product['quantity'];

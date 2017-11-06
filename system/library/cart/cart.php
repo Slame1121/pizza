@@ -44,7 +44,7 @@ class Cart {
 				$option_price = 0;
 				$option_points = 0;
 				$option_weight = 0;
-
+				$attr_price = 0;
 				$option_data = array();
 				$attrs_query =  $this->db->query('SELECT * FROM ' . DB_PREFIX . 'attribute_price');
 
@@ -481,8 +481,18 @@ class Cart {
 						$bday_discount = true;
 					}
 				}
-
-				if($bday_discount){
+				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . $product['product_id'] . "'");
+				$categories = [];
+				foreach ($query->rows as $result) {
+					$categories[] = $result['category_id'];
+				}
+				$pizza_product= false;
+				foreach($categories as $category_id){
+					if($category_id == '59'){
+						$pizza_product = true;
+					}
+				}
+				if($bday_discount && $pizza_product){
 					$product['price'] = round($product['price'] - $product['price'] * 0.15, 2);
 					$total += $this->tax->calculate($product['price'], $product['tax_class_id'],
 							$this->config->get('config_tax')) * $product['quantity'];

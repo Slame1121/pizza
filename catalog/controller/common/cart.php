@@ -123,20 +123,25 @@ class ControllerCommonCart extends Controller {
 			$bday_in_this_year = date('Y'). date('-m-d',$bdate );
 			$bday_discount = false;
 			//3 дня до и после днюшки скидка 15% на все пиццы
-			if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
-				if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
-					$bday_discount = true;
-				}
-			}else{
-				if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
-					$bday_discount = true;
+			if($pizza_product){
+				if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+						$bday_discount = true;
+					}
+				}else{
+					if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+						$bday_discount = true;
+					}
 				}
 			}
+
 
 			if($bday_discount){
 				$price = round($price - $price * 0.15, 2);
 				$total = $this->currency->format($price * $product['quantity'], $this->session->data['currency']);
 			}
+
+
 			
 
 			$data['products'][] = array(
@@ -145,6 +150,7 @@ class ControllerCommonCart extends Controller {
 				'name'      => $product['name'],
 				'model'     => $product['model'],
 				'option'    => $option_data,
+				'b_day'     => $bday_discount,
 				'recurring' => ($product['recurring'] ? $product['recurring']['name'] : ''),
 				'quantity'  => $product['quantity'],
 				'price'     => $price,

@@ -16,9 +16,39 @@ class ControllerCheckoutCheckout extends Controller {
 		// Validate minimum quantity requirements.
 		$products = $this->cart->getProducts();
 
-		foreach ($products as $product) {
+		$this->load->model('catalog/product');
+		$pickup_discount = 0;
+		foreach ($products as $key => $product) {
 			$product_total = 0;
 
+			$categories = $this->model_catalog_product->getProductCategories( $product['product_id']);
+			$bdate = $this->customer->getBdate();
+
+			$bday_in_this_year = date('Y'). date('-m-d',$bdate );
+			$bday_discount = false;
+
+			$pizza_product= false;
+			foreach($categories as $category_id){
+				if($category_id == '59'){
+					$pizza_product = true;
+				}
+			}
+			//3 дня до и после днюшки скидка 15% на все пиццы
+			if($pizza_product){
+				if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+						$bday_discount = true;
+					}
+				}else{
+					if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+						$bday_discount = true;
+					}
+				}
+			}
+			if(in_array(59, $categories) && !$bday_discount && (!in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7]) && time() >= strtotime('today 4:00:00 pm') && time() <= strtotime('today 00:00:00 am'))){
+				//Если это пицца, и не днюшка, и не счастливые часы то самовывоз
+				$pickup_discount += $products[$key]['price'] * 0.1;
+			}
 			foreach ($products as $product_2) {
 				if ($product_2['product_id'] == $product['product_id']) {
 					$product_total += $product_2['quantity'];
@@ -77,9 +107,9 @@ class ControllerCheckoutCheckout extends Controller {
 		//10% на самовывоз
 		if (isset($data['shipping_method_code']) && $data['shipping_method_code'] == 'pickup') {
 			$data['total_cart_price'] -= $data['total_cart_price'] * 0.1;
-			$data['pickup_discount'] = $data['total_cart_price'] * 0.1;
-		}
 
+		}
+		$data['pickup_discount'] = $pickup_discount;
 		$data['text_checkout_option'] = sprintf($this->language->get('text_checkout_option'), 1);
 		$data['text_checkout_account'] = sprintf($this->language->get('text_checkout_account'), 2);
 		$data['text_checkout_payment_address'] = sprintf($this->language->get('text_checkout_payment_address'), 2);

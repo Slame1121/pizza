@@ -129,6 +129,10 @@ var cart = {
 				total_price = parseFloat((price/2).toFixed(2)) + parseFloat(price*(count - 1));
 				discount_str= ' (-'+(price/2).toFixed(2)+' грн (50%))';
 			}
+			if($(input).data('b-day-discount') == 1){
+				total_price = parseFloat(((price - price * 0.15) * count).toFixed(2));
+				discount_str = ' (-'+(price * 0.15).toFixed(2)+' грн (15%))';
+			}
 			$('#basket-item-'+cart_id).find('.basket-log__item-price').html(total_price + ' грн' + discount_str);
 			total_summ += total_price;
 			total_count += count;

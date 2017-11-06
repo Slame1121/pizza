@@ -3,6 +3,7 @@ class ControllerCheckoutConfirm extends Controller {
 	public function index() {
 		$redirect = '';
 		$discount_cart_id = $this->cart->getDiscountCartId();
+		$this->load->model('catalog/product');
 		if ($this->cart->hasShipping()) {
 			// Validate if shipping address has been set.
 			if (!isset($this->session->data['shipping_address'])) {
@@ -262,10 +263,38 @@ class ControllerCheckoutConfirm extends Controller {
 						'type'                    => $option['type']
 					);
 				}
+				$bdate = $this->customer->getBdate();
 
-				if($product['cart_id'] == $discount_cart_id){
-					$product['total'] = round($product['price']/2,2) + $product['price'] * ($product['quantity'] -1);
+				$bday_in_this_year = date('Y'). date('-m-d',$bdate );
+				$bday_discount = false;
+				$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
+				$pizza_product= false;
+				foreach($categories as $category_id){
+					if($category_id == '59'){
+						$pizza_product = true;
+					}
 				}
+				//3 дня до и после днюшки скидка 15% на все пиццы
+				if($pizza_product){
+					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+						if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+							$bday_discount = true;
+						}
+					}else{
+						if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+							$bday_discount = true;
+						}
+					}
+				}
+				if($bday_discount){
+					$product['total'] =($product['price'] - $product['price'] * 0.15) * $product['quantity'];
+				}else{
+					if($product['cart_id'] == $discount_cart_id){
+						$product['total'] = round($product['price']/2,2) + $product['price'] * ($product['quantity'] -1);
+					}
+				}
+
+
 				$order_data['products'][] = array(
 					'product_id' => $product['product_id'],
 					'name'       => $product['name'],
@@ -461,16 +490,49 @@ class ControllerCheckoutConfirm extends Controller {
 						'count' => $count
 					];
 				}
+				$bdate = $this->customer->getBdate();
 
-				if($discount_cart_id && $discount_cart_id == $product['cart_id']){
-					$total_sum = $this->currency->format($this->tax->calculate(round($product['price']/2,2), $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']) +
-						$this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * ($product['quantity'] - 1), $this->session->data['currency']);
+				$bday_in_this_year = date('Y'). date('-m-d',$bdate );
+				$bday_discount = false;
 
-					$total_sum =$this->currency->format($this->tax->calculate(round($product['price']/2,2) + $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * ($product['quantity'] - 1), $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-
-				}else{
-					$total_sum = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
+				$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
+				$pizza_product= false;
+				foreach($categories as $category_id){
+					if($category_id == '59'){
+						$pizza_product = true;
+					}
 				}
+				//3 дня до и после днюшки скидка 15% на все пиццы
+				if($pizza_product){
+					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+						if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+							$bday_discount = true;
+						}
+					}else{
+						if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+							$bday_discount = true;
+						}
+					}
+				}
+				if($bday_discount){
+					$total_sum = $this->currency->format($this->tax->calculate(round($product['price'] - $product['price'] * 0.15, 2), $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
+				}else{
+					if($discount_cart_id && $discount_cart_id == $product['cart_id']){
+						$total_sum = $this->currency->format($this->tax->calculate(round($product['price']/2,2), $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']) +
+							$this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * ($product['quantity'] - 1), $this->session->data['currency']);
+
+						$total_sum =$this->currency->format($this->tax->calculate(round($product['price']/2,2) + $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * ($product['quantity'] - 1), $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+
+					}else{
+						$total_sum = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
+						//10% на самовывоз
+						if($order_data['shipping_code'] == 'pickup'){
+							$data['total']  -= $product['price'] * 0.1;
+						}
+
+					}
+				}
+
 
 				$data['products'][] = array(
 					'cart_id'    => $product['cart_id'],
@@ -499,10 +561,7 @@ class ControllerCheckoutConfirm extends Controller {
 				$data['total']  -= $order_data['used_points'];
 			}
 
-			//10% на самовывоз
-			if($order_data['shipping_code'] == 'pickup'){
-				$data['total']  -= $data['total'] * 0.1;
-			}
+
 
 			$data['street'] = $order_data['shipping_street'];
 			$data['nas_punkt'] = $order_data['shipping_nas_punkt'];

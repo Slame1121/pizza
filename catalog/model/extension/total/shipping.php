@@ -1,30 +1,49 @@
 <?php
 class ModelExtensionTotalShipping extends Model {
 	public function getTotal($total) {
-		if ($this->cart->hasShipping() && isset($this->session->data['shipping_method'])) {
 
+		$this->load->model('catalog/product');
+		$happy_time_discount = $this->cart->getDiscountCartId();
+		$pickup_discount = 0;
+		$bdate = $this->customer->getBdate();
 
-			/*if ($this->session->data['shipping_method']['tax_class_id']) {
-				$tax_rates = $this->tax->getRates($this->session->data['shipping_method']['cost'], $this->session->data['shipping_method']['tax_class_id']);
+		$bday_in_this_year = date('Y-m-d',$bdate );
+		$bday_discount = false;
+		$cart_products = $this->cart->getProducts();
+		foreach ($cart_products as $product) {
+			$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
+			$pizza_product= false;
+			foreach($categories as $category_id){
+				if($category_id == '59'){
+					$pizza_product = true;
+				}
+			}
+			if($pizza_product){
+				//Заодно расчитаем стоимость этой доставки заранее
+				$pickup_discount += $product['total'] * 0.1;
 
-				foreach ($tax_rates as $tax_rate) {
-					if (!isset($total['taxes'][$tax_rate['tax_rate_id']])) {
-						$total['taxes'][$tax_rate['tax_rate_id']] = $tax_rate['amount'];
-					} else {
-						$total['taxes'][$tax_rate['tax_rate_id']] += $tax_rate['amount'];
+				if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+						$bday_discount = true;
+					}
+				}else{
+					if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+						$bday_discount = true;
 					}
 				}
 			}
-			*/
-				$total['totals'][] = array(
-					'code'       => 'shipping',
-					'title'      => $this->session->data['shipping_method']['title'],
-					'value'      => $this->session->data['shipping_method']['cost'],
-					'sort_order' => $this->config->get('total_shipping_sort_order')
-				);
-
-
-			$total['total'] += $this->session->data['shipping_method']['cost'];
 		}
+		if($happy_time_discount == 0 && !$bday_discount && $pickup_discount > 0){
+			$total['totals'][] = array(
+				'code'       => 'shipping',
+				'title'      => 'Самовывооз',
+				'value'      => -$pickup_discount,
+				'sort_order' => $this->config->get('total_shipping_sort_order')
+			);
+
+
+			$total['total'] -= $pickup_discount;
+		}
+
 	}
 }

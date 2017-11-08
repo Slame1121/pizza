@@ -32,7 +32,6 @@ class ControllerCommonCart extends Controller {
 			foreach ($results as $result) {
 				if ($this->config->get('total_' . $result['code'] . '_status')) {
 					$this->load->model('extension/total/' . $result['code']);
-
 					// We have to put the totals in an array so that they pass by reference.
 					$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 				}
@@ -60,6 +59,8 @@ class ControllerCommonCart extends Controller {
 		];
 		$cart_products = $this->cart->getProducts();
 
+		$happy_times_cart_id = $this->cart->getDiscountCartId();
+
 		$quantity = 0;
 		foreach ($cart_products as $product) {
 			if ($product['image']) {
@@ -69,6 +70,8 @@ class ControllerCommonCart extends Controller {
 			}
 
 			$option_data = array();
+
+
 
 			foreach ($product['option'] as $option) {
 				if ($option['type'] != 'file') {
@@ -120,7 +123,7 @@ class ControllerCommonCart extends Controller {
 
 			$bdate = $this->customer->getBdate();
 
-			$bday_in_this_year = date('Y'). date('-m-d',$bdate );
+			$bday_in_this_year = date('Y-m-d',$bdate );
 			$bday_discount = false;
 			//3 дня до и после днюшки скидка 15% на все пиццы
 			if($pizza_product){
@@ -134,13 +137,6 @@ class ControllerCommonCart extends Controller {
 					}
 				}
 			}
-
-
-			if($bday_discount){
-				$price = round($price - $price * 0.15, 2);
-				$total = $this->currency->format($price * $product['quantity'], $this->session->data['currency']);
-			}
-
 
 			
 
@@ -156,54 +152,15 @@ class ControllerCommonCart extends Controller {
 				'price'     => $price,
 				'total'     => $total,
 				'attrs'     => $attributes,
-				'discount_pizza' => 0,
+				'discount_pizza' => (!$bday_discount && $product['cart_id'] == $happy_times_cart_id) ? 1 : 0,
 				'href'      => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 			);
-			$days = [
-				'Sunday',
-				'Monday',
-				'Tuesday',
-				'Wednesday',
-				'Thursday',
-				'Friday',
-				'Saturday'
-			];
 
-			//Если не днюшка
-			if(!$bday_discount){
-				//Если это пицца и дело происходит в понедельник, вторник, среду или четвер между 12 утра и 4 вечера
-				if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
-					for( $i = 1; $i <= $product['quantity']; $i++){
-						$pretedends_for_discount[] =['price' => $price, 'key' => count($data['products']) - 1];
-					}
-				}
-			}
 			$quantity += $product['quantity'];
 		}
 
 		$data['text_items'] = $quantity;
 
-		if(count($pretedends_for_discount) > 1){
-			while(count($pretedends_for_discount) > 1){
-				if($pretedends_for_discount[0]['price'] >= $pretedends_for_discount[1]['price']){
-					array_splice($pretedends_for_discount, 0, 1);
-				}else{
-					$next = $pretedends_for_discount[1];
-					$pretedends_for_discount[1] =  $pretedends_for_discount[0];
-					$pretedends_for_discount[0] = $next;
-				}
-			}
-
-			if($pretedends_for_discount){
-				if(isset($data['products'][$pretedends_for_discount[0]['key']])){
-					$data['products'][$pretedends_for_discount[0]['key']]['discount_pizza'] = 1;
-					$total = round($data['products'][$pretedends_for_discount[0]['key']]['price']/2,2) + $data['products'][$pretedends_for_discount[0]['key']]['price'] * ($data['products'][$pretedends_for_discount[0]['key']]['quantity'] - 1);
-
-					//$data['products'][$pretedends_for_discount[0]['key']]['total'] = $this->currency->format($total, $this->session->data['currency']);
-
-				}
-			}
-		}
 
 		// Gift Voucher
 		$data['vouchers'] = array();

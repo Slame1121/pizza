@@ -18,13 +18,15 @@ class ControllerCheckoutCheckout extends Controller {
 
 		$this->load->model('catalog/product');
 		$pickup_discount = 0;
+		$bdate = $this->customer->getBdate();
+
+		$happy_times_cart_id = $this->cart->getDiscountCartId();
+		$bday_in_this_year =  date('Y-m-d',$bdate );
 		foreach ($products as $key => $product) {
 			$product_total = 0;
 
 			$categories = $this->model_catalog_product->getProductCategories( $product['product_id']);
-			$bdate = $this->customer->getBdate();
 
-			$bday_in_this_year = date('Y'). date('-m-d',$bdate );
 			$bday_discount = false;
 
 			$pizza_product= false;
@@ -45,9 +47,10 @@ class ControllerCheckoutCheckout extends Controller {
 					}
 				}
 			}
-			if(in_array(59, $categories) && !$bday_discount && (!in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7]) && time() >= strtotime('today 4:00:00 pm') && time() <= strtotime('today 00:00:00 am'))){
+
+			if($happy_times_cart_id == 0 &&	!$bday_discount && $pizza_product){
 				//Если это пицца, и не днюшка, и не счастливые часы то самовывоз
-				$pickup_discount += $products[$key]['price'] * 0.1;
+				$pickup_discount += $products[$key]['price'] * 0.1 * $products[$key]['quantity'];
 			}
 			foreach ($products as $product_2) {
 				if ($product_2['product_id'] == $product['product_id']) {
@@ -238,12 +241,53 @@ class ControllerCheckoutCheckout extends Controller {
 			$shipping_method_title = '';
 		}
 		if($code == 'pickup'){
-			$this->session->data['shipping_method']['cost'] = -($this->cart->getTotal() - $this->session->data['guest']['used_points']) * 0.1;
+			$cart_products = $this->cart->getProducts();
+
+			$this->load->model('catalog/product');
+			$happy_time_discount = $this->cart->getDiscountCartId();
+			$pickup_discount = 0;
+			$bdate = $this->customer->getBdate();
+
+			$bday_in_this_year = date('Y-m-d',$bdate );
+			$bday_discount = false;
+			foreach ($cart_products as $product) {
+
+
+				$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
+				$pizza_product= false;
+				foreach($categories as $category_id){
+					if($category_id == '59'){
+						$pizza_product = true;
+					}
+				}
+
+
+				//3 дня до и после днюшки скидка 15% на все пиццы
+				if($pizza_product){
+					//Заодно расчитаем стоимость этой доставки заранее
+					$pickup_discount += $product['total'] * 0.1;
+
+					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+						if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+							$bday_discount = true;
+						}
+					}else{
+						if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+							$bday_discount = true;
+						}
+					}
+				}
+
+			}
+
+			if($happy_time_discount == 0 && !$bday_discount){
+				$this->session->data['shipping_method']['cost'] = -$pickup_discount;
+			}
+
 		}else{
 			$this->session->data['shipping_method']['cost'] = 0;
 		}
 		if(isset($this->request->post['address_id'])){
-
 			$adress = $this->model_account_address->getAddress((int)$this->request->post['address_id']);
 			$this->session->data['shipping_address']['nas_punkt'] = $adress['nas_punkt'];
 			$this->session->data['shipping_address']['street'] = $adress['street'];

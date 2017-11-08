@@ -84,36 +84,11 @@ class ControllerCheckoutConfirm extends Controller {
 				if ($this->config->get('total_' . $result['code'] . '_status')) {
 					$this->load->model('extension/total/' . $result['code']);
 
-					// We have to put the totals in an array so that they pass by reference.
-					if(1==6 && isset($this->session->data['shipping_method']['code']) && $this->session->data['shipping_method']['code'] == 'pickup'){
-						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data, $total_data['total'] * 0.1);
-						foreach($total_data['totals'] as $key => $total_value){
-							if($total_value['code'] == 'total'){
-								$used_bonuses = isset($this->session->data['guest']['used_points']) ? $this->session->data['guest']['used_points'] : 0;
-								$total_data['totals'][$key]['value'] = $total_data['total'] - $used_bonuses - $total_data['total'] * 0.1;
-							}
-						}
-					}else{
-						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
-					}
-
+					$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 				}
 			}
 
-			if(isset($this->session->data['guest']['used_points']) && $this->session->data['guest']['used_points'] > 0){
-				$totals[] = [
-					'code' => 'bonuses',
-					'value' => -$this->session->data['guest']['used_points'],
-					'sort_order' => 2,
-					'title' => 'Используемые бонусы'
-				];
-				foreach($totals as $key => $total_t){
-					if($total_t['code'] == 'total'){
-						$totals[$key]['value'] = $total_t['value'] - $this->session->data['guest']['used_points'];
-					}
-				}
 
-			}
 			$sort_order = array();
 
 			foreach ($totals as $key => $value) {
@@ -263,37 +238,6 @@ class ControllerCheckoutConfirm extends Controller {
 						'type'                    => $option['type']
 					);
 				}
-				$bdate = $this->customer->getBdate();
-
-				$bday_in_this_year = date('Y'). date('-m-d',$bdate );
-				$bday_discount = false;
-				$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
-				$pizza_product= false;
-				foreach($categories as $category_id){
-					if($category_id == '59'){
-						$pizza_product = true;
-					}
-				}
-				//3 дня до и после днюшки скидка 15% на все пиццы
-				if($pizza_product){
-					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
-						if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
-							$bday_discount = true;
-						}
-					}else{
-						if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
-							$bday_discount = true;
-						}
-					}
-				}
-				if($bday_discount){
-					$product['total'] =($product['price'] - $product['price'] * 0.15) * $product['quantity'];
-				}else{
-					if($product['cart_id'] == $discount_cart_id){
-						$product['total'] = round($product['price']/2,2) + $product['price'] * ($product['quantity'] -1);
-					}
-				}
-
 
 				$order_data['products'][] = array(
 					'product_id' => $product['product_id'],
@@ -525,10 +469,6 @@ class ControllerCheckoutConfirm extends Controller {
 
 					}else{
 						$total_sum = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
-						//10% на самовывоз
-						if($order_data['shipping_code'] == 'pickup'){
-							$data['total']  -= $product['price'] * 0.1;
-						}
 
 					}
 				}
@@ -551,16 +491,8 @@ class ControllerCheckoutConfirm extends Controller {
 				);
 			}
 
-
-
-
-			$data['bonuses'] = $this->cart->getTotal() * 0.05;
 			$data['total'] = $this->cart->getTotal();
-
-			if(isset($order_data['used_points']) && $order_data['used_points'] > 0 ){
-				$data['total']  -= $order_data['used_points'];
-			}
-
+			$data['bonuses'] = $data['total'] * 0.05;
 
 
 			$data['street'] = $order_data['shipping_street'];

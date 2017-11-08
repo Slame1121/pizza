@@ -313,18 +313,7 @@ class Cart {
 		$bdate = $this->customer->getBdate();
 
 		$bday_in_this_year = date('Y'). date('-m-d',$bdate );
-		$bday_discount = false;
-		//3 дня до и после днюшки скидка 15% на все пиццы
-		if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
-			if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
-				$bday_discount = true;
-			}
-		}else{
-			if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
-				$bday_discount = true;
-			}
-		}
-		if(!$bday_discount){
+
 			$products = $this->getProducts();
 			$pretedends_for_discount = [];
 			foreach ($products as $product) {
@@ -340,8 +329,21 @@ class Cart {
 						$pizza_product = true;
 					}
 				}
+				$bday_discount = false;
+				//3 дня до и после днюшки скидка 15% на все пиццы
+				if($pizza_product){
+					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
+						if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
+							$bday_discount = true;
+						}
+					}else{
+						if(abs((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24)  < 3){
+							$bday_discount = true;
+						}
+					}
+				}
 
-				if($pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4,5,6,7])  /*&& time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am')*/){
+				if(!$bday_discount && $pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4])  && time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am') ){
 					for( $i = 1; $i <= $product['quantity']; $i++){
 						$pretedends_for_discount[] =['price' => $product['price'], 'cart_id' => $product['cart_id']];
 					}
@@ -362,8 +364,6 @@ class Cart {
 					return $pretedends_for_discount[0]['cart_id'];
 				}
 			}
-		}
-
 
 		return false;
 	}

@@ -434,7 +434,6 @@ class ControllerExtensionModuleUlogin extends Controller {
 			$customer_info['lastname'] = $u_data['last_name'];
 		}
 
-
 		$this->model_account_customer->editCustomer($customer_info['customer_id'],$customer_info);
 
 		// если пользователь залогинен - выход из функции

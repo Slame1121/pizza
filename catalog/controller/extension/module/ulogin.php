@@ -433,6 +433,9 @@ class ControllerExtensionModuleUlogin extends Controller {
 		if (empty($customer_info['lastname']) && !empty($u_data['last_name']))	{
 			$customer_info['lastname'] = $u_data['last_name'];
 		}
+		if (empty($customer_info['bdate']) && !empty($u_data['bdate']))	{
+			$customer_info['bdate'] = $u_data['bdate'];
+		}
 
 		$this->model_account_customer->editCustomer($customer_info['customer_id'],$customer_info);
 

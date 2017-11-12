@@ -312,26 +312,37 @@ class Cart {
 
 		$bdate = $this->customer->getBdate();
 
-		$bday_in_this_year = date('Y'). date('-m-d',$bdate );
+		$sql = "SELECT * FROM " . DB_PREFIX . "action_data ";
+		//Праздничные дни
+		$weekends = $this->db->query($sql);
+		$not_working_days = [];
+		foreach($weekends->rows as $day){
+			$not_working_days[] = date('Y-m-d', $day['dataAct'] );
+		}
+		$bday_in_this_year = date('Y').date('-m-d',$bdate );
 
 			$products = $this->getProducts();
 			$pretedends_for_discount = [];
 			foreach ($products as $product) {
 
-				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . $product['product_id'] . "'");
-				$categories = [];
+				$query = $this->db->query("SELECT pc.*,c.birthday, c.happy_times FROM " . DB_PREFIX . "product_to_category pc
+				 INNER JOIN " . DB_PREFIX . "category  c ON c.category_id = pc.category_id
+				 WHERE pc.product_id = '" . $product['product_id'] . "'");
+
+				$happy_times_discount = false;
+				$birthday_discount = false;
 				foreach ($query->rows as $result) {
-					$categories[] = $result['category_id'];
-				}
-				$pizza_product= false;
-				foreach($categories as $category_id){
-					if($category_id == '59'){
-						$pizza_product = true;
+					if($result['happy_times'] == 1){
+						$happy_times_discount = true;
+					}
+					if($result['birthday'] == 1){
+						$birthday_discount = true;
 					}
 				}
+
 				$bday_discount = false;
-				//3 дня до и после днюшки скидка 15% на все пиццы
-				if($pizza_product){
+				//3 дня до и после днюшки скидка 15% на все категориии которые включают в себя эту скидку
+				if($birthday_discount){
 					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
 						if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
 							$bday_discount = true;
@@ -342,13 +353,14 @@ class Cart {
 						}
 					}
 				}
-
-				if(!$bday_discount && $pizza_product && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4])  && time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am') ){
+				//Если это не дни отмеченные в админке, и не днюха и это продукт пиццы который совпадает по времени с счастливыми часами
+				if(!in_array(date('Y-m-d'), $not_working_days) && !$bday_discount && $happy_times_discount && in_array(jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m"),date("d"), date("Y"))),[1,2,3,4])  && time() < strtotime('today 4:00:00 pm') && time() > strtotime('today 00:00:00 am') ){
 					for( $i = 1; $i <= $product['quantity']; $i++){
 						$pretedends_for_discount[] =['price' => $product['price'], 'cart_id' => $product['cart_id']];
 					}
 				}
 			}
+
 			if(count($pretedends_for_discount) > 1){
 				while(count($pretedends_for_discount) > 1){
 					if($pretedends_for_discount[0]['price'] >= $pretedends_for_discount[1]['price']){

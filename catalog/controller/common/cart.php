@@ -60,7 +60,12 @@ class ControllerCommonCart extends Controller {
 		$cart_products = $this->cart->getProducts();
 
 		$happy_times_cart_id = $this->cart->getDiscountCartId();
-
+		$this->load->model('catalog/category');
+		$all_categories = $this->model_catalog_category->getCategories();
+		$categories_data = [];
+		foreach($all_categories as $category){
+			$categories_data[$category['category_id']] = $category;
+		}
 		$quantity = 0;
 		foreach ($cart_products as $product) {
 			if ($product['image']) {
@@ -114,19 +119,20 @@ class ControllerCommonCart extends Controller {
 			}
 			$this->load->model('catalog/product');
 			$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
-			$pizza_product= false;
+			$bday_discount_config = false;
 			foreach($categories as $category_id){
-				if($category_id == '59'){
-					$pizza_product = true;
+				if($categories_data[$category_id]['birthday']){
+					$bday_discount_config = true;
 				}
 			}
 
 			$bdate = $this->customer->getBdate();
 
-			$bday_in_this_year = date('Y-m-d',$bdate );
+			$bday_in_this_year = date('Y').date('-m-d',$bdate );
 			$bday_discount = false;
 			//3 дня до и после днюшки скидка 15% на все пиццы
-			if($pizza_product){
+			if($bday_discount_config){
+
 				if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
 					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
 						$bday_discount = true;
@@ -138,7 +144,7 @@ class ControllerCommonCart extends Controller {
 				}
 			}
 
-			
+
 
 			$data['products'][] = array(
 				'cart_id'   => $product['cart_id'],

@@ -17,26 +17,35 @@ class ControllerCheckoutCheckout extends Controller {
 		$products = $this->cart->getProducts();
 
 		$this->load->model('catalog/product');
+		$this->load->model('catalog/category');
 		$pickup_discount = 0;
 		$bdate = $this->customer->getBdate();
 
+		$all_categories = $this->model_catalog_category->getCategories();
+		$categories_data = [];
+		foreach($all_categories as $category){
+			$categories_data[$category['category_id']] = $category;
+		}
 		$happy_times_cart_id = $this->cart->getDiscountCartId();
-		$bday_in_this_year =  date('Y-m-d',$bdate );
+		$bday_in_this_year =  date('Y').date('-m-d',$bdate );
 		foreach ($products as $key => $product) {
 			$product_total = 0;
 
-			$categories = $this->model_catalog_product->getProductCategories( $product['product_id']);
+			$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
 
-			$bday_discount = false;
-
-			$pizza_product= false;
+			$bday_discount_config = false;
+			$pickup_discount_config = false;
 			foreach($categories as $category_id){
-				if($category_id == '59'){
-					$pizza_product = true;
+				if($categories_data[$category_id]['birthday']){
+					$bday_discount_config = true;
+				}
+				if($categories_data[$category_id]['pickup']){
+					$pickup_discount_config = true;
 				}
 			}
 			//3 дня до и после днюшки скидка 15% на все пиццы
-			if($pizza_product){
+			$bday_discount = false;
+			if($bday_discount_config){
 				if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
 					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
 						$bday_discount = true;
@@ -48,7 +57,7 @@ class ControllerCheckoutCheckout extends Controller {
 				}
 			}
 
-			if($happy_times_cart_id == 0 &&	!$bday_discount && $pizza_product){
+			if($happy_times_cart_id == 0 &&	!$bday_discount && $pickup_discount_config){
 				//Если это пицца, и не днюшка, и не счастливые часы то самовывоз
 				$pickup_discount += $products[$key]['price'] * 0.1 * $products[$key]['quantity'];
 			}
@@ -248,7 +257,7 @@ class ControllerCheckoutCheckout extends Controller {
 			$pickup_discount = 0;
 			$bdate = $this->customer->getBdate();
 
-			$bday_in_this_year = date('Y-m-d',$bdate );
+			$bday_in_this_year = date('Y').date('-m-d',$bdate );
 			$bday_discount = false;
 			foreach ($cart_products as $product) {
 

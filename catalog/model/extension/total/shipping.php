@@ -7,7 +7,7 @@ class ModelExtensionTotalShipping extends Model {
 		$pickup_discount = 0;
 		$bdate = $this->customer->getBdate();
 
-		$bday_in_this_year = date('Y-m-d',$bdate );
+		$bday_in_this_year = date('Y').date('-m-d',$bdate );
 		$bday_discount = false;
 		$cart_products = $this->cart->getProducts();
 		foreach ($cart_products as $product) {

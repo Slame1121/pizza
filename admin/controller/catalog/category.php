@@ -52,6 +52,7 @@ class ControllerCatalogCategory extends Controller {
 		$this->load->model('catalog/category');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+
 			$this->model_catalog_category->editCategory($this->request->get['category_id'], $this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
@@ -456,6 +457,30 @@ class ControllerCatalogCategory extends Controller {
 			$data['top'] = $category_info['top'];
 		} else {
 			$data['top'] = 0;
+		}
+
+		if (isset($this->request->post['birthday'])) {
+			$data['birthday'] = $this->request->post['birthday'];
+		} elseif (!empty($category_info)) {
+			$data['birthday'] = $category_info['birthday'];
+		} else {
+			$data['birthday'] = 0;
+		}
+
+		if (isset($this->request->post['pickup'])) {
+			$data['pickup'] = $this->request->post['pickup'];
+		} elseif (!empty($category_info)) {
+			$data['pickup'] = $category_info['pickup'];
+		} else {
+			$data['pickup'] = 0;
+		}
+
+		if (isset($this->request->post['happy_times'])) {
+			$data['happy_times'] = $this->request->post['happy_times'];
+		} elseif (!empty($category_info)) {
+			$data['happy_times'] = $category_info['happy_times'];
+		} else {
+			$data['happy_times'] = 0;
 		}
 
 		if (isset($this->request->post['column'])) {

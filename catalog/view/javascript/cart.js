@@ -124,17 +124,20 @@ var cart = {
 			var cart_id = $(input).data('cart-id');
 			var count  = parseInt($(input).val());
 			var total_price = (count * price);
+			var real_price = (count * price);
 			var discount_str = '';
 			if($(input).data('discount') == 1){
 				total_price = parseFloat(price*count);
+				real_price = parseFloat(price/2 + price * (count - 1));
 				discount_str= ' (-'+(price/2 * count).toFixed(2).replace(/[.,]00$/, "")+' грн (50%))';
 			}
 			if($(input).data('b-day-discount') == 1){
 				total_price = parseFloat(parseFloat(price * count).toFixed(2).replace(/[.,]00$/, ""));
+				real_price = parseFloat((price - price * 0.15) * count);
 				discount_str = ' (-'+parseFloat(price * 0.15 * count).toFixed(2).replace(/[.,]00$/, "")+' грн (15%))';
 			}
 			$('#basket-item-'+cart_id).find('.basket-log__item-price').html(total_price + ' грн' + discount_str);
-			total_summ += total_price;
+			total_summ += real_price;
 			total_count += count;
 		});
 		$('.basket-log__summa').html(total_summ + ' грн');

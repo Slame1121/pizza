@@ -118,7 +118,7 @@ class ControllerCheckoutCheckout extends Controller {
 
 		//10% на самовывоз
 		if (isset($data['shipping_method_code']) && $data['shipping_method_code'] == 'pickup') {
-			$data['total_cart_price'] -= $data['total_cart_price'] * 0.1;
+			$data['total_cart_price'] -= $pickup_discount;
 
 		}
 		$data['pickup_discount'] = $pickup_discount;

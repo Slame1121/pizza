@@ -372,7 +372,8 @@ class ControllerCheckoutConfirm extends Controller {
 			$this->load->model('catalog/catalog');
 			$all_attrs = $this->model_catalog_catalog->getAllAtributes();
 			$products = $this->cart->getProducts();
-
+			$pickup_discount = 0;
+			$bday_discount = false;
 			foreach ($products as $product) {
 				$option_data = array();
 
@@ -448,6 +449,10 @@ class ControllerCheckoutConfirm extends Controller {
 				}
 				//3 дня до и после днюшки скидка 15% на все пиццы
 				if($pizza_product){
+
+					//Заодно расчитаем стоимость этой доставки заранее
+					$pickup_discount += $product['total'] * 0.1;
+
 					if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) > 0){
 						if(((time() - strtotime($bday_in_this_year)) / 60 / 60 / 24) - 1 < 3){
 							$bday_discount = true;
@@ -492,6 +497,9 @@ class ControllerCheckoutConfirm extends Controller {
 			}
 
 			$data['total'] = $this->cart->getTotal();
+			if(!$discount_cart_id && !$bday_discount && $pickup_discount > 0 && $order_data['shipping_code'] == 'pickup'){
+				$data['total'] -= $pickup_discount;
+			}
 			$data['bonuses'] = $data['total'] * 0.05;
 
 

@@ -129,7 +129,7 @@ var cart = {
 			if($(input).data('discount') == 1){
 				total_price = parseFloat(price*count);
 				real_price = parseFloat(price/2 + price * (count - 1));
-				discount_str= ' (-'+(price/2 * count).toFixed(2).replace(/[.,]00$/, "")+' грн (50%))';
+				discount_str= ' (-'+(price/2).toFixed(2).replace(/[.,]00$/, "")+' грн (50%))';
 			}
 			if($(input).data('b-day-discount') == 1){
 				total_price = parseFloat(parseFloat(price * count).toFixed(2).replace(/[.,]00$/, ""));

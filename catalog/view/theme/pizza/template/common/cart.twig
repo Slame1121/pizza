@@ -21,7 +21,7 @@
                     <div class="basket-log__item-num"><a class="basket-log__item-btn basket-log__item-btn--left" href="#">-</a>
                         <input {% if product.discount_pizza == 1 %}data-discount="1"{% endif %} {% if product.b_day == 1 %}data-b-day-discount="1"{% endif %} class="product_counter_input" data-product-price="{{ product.price }}" data-cart-id="{{ product.cart_id }}" type="text" name="num[]" value="{{ product.quantity }}"><a class="basket-log__item-btn basket-log__item-btn--right" href="#">+</a>
                     </div>
-                    <div class="basket-log__item-price" >{{ product.total }} {% if product.b_day == 1 %}(-{{ product.price * 0.15 *  product.quantity  }} грн (15%)){% endif %}{% if product.discount_pizza ==1 %}(-{{ product.price * 0.5 *  product.quantity }} грн (50%)){% endif %}</div>
+                    <div class="basket-log__item-price" >{{ product.total }} {% if product.b_day == 1 %}(-{{ product.price * 0.15 *  product.quantity  }} грн (15%)){% endif %}{% if product.discount_pizza ==1 %}(-{{ product.price * 0.5 }} грн (50%)){% endif %}</div>
                 </div>
             </div>
         </div>
